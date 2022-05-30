@@ -1,37 +1,78 @@
 var map;
 var overlay;
 var poiLayer = L.geoJson();
-var markerCluster = L.markerClusterGroup({
-	spiderfyOnMaxZoom: false,
+
+markerClusterGroupOptions = {
+  spiderfyOnMaxZoom: false,
 	showCoverageOnHover: false,
 	zoomToBoundsOnClick: false
-});
+};
+var markerClusterOsmosis = L.markerClusterGroup(markerClusterGroupOptions);
+var markerClusterPhoenix = L.markerClusterGroup(markerClusterGroupOptions);
 
 var populateNetworks = function (networks) {
   ns=$('#networkSelector');
   for (const [key, value] of Object.entries(networks)) {
-    ns.append('<option>'+key)
+    ns.append(`<option value=${key}>${key}</option>`);
     // console.log(`${key}: ${value}`);
   }
+  ns.append(`<option value='all' onclick="addNetwork('all')">All`);
 
-  ns.append('<option>All');
   networks["osmosis-1"].forEach(function (location) {
-    poiLayer.addLayer(L.marker([location.lat, location.lon],{
-        icon: L.icon({
-          'iconUrl': 'js/img/marker-icon-2x.png',
-          'iconSize': [25, 41],
-        }),
-    }));
-    markerCluster.addLayer(L.marker([location.lat, location.lon],{
+    markerClusterOsmosis.addLayer(L.marker([location.lat, location.lon],{
       icon: L.icon({
         'iconUrl': 'js/img/marker-icon-2x.png',
         'iconSize': [25, 41],
       }),
-  }));
+    }));
   });
-  // poiLayer.addTo(map);
-  map.addLayer(markerCluster);
+
+  networks["phoenix-1"].forEach(function (location) {
+    markerClusterPhoenix.addLayer(L.marker([location.lat, location.lon],{
+      icon: L.icon({
+        'iconUrl': 'js/img/marker-icon-2x.png',
+        'iconSize': [25, 41],
+      }),
+    }));
+  });
+
+  ns.click(evt=>{
+    console.log(evt.target.value);
+    switch (evt.target.value) {
+      case "osmosis-1":
+        map.removeLayer(markerClusterPhoenix);
+        map.addLayer(markerClusterOsmosis);
+        break;
+      case "phoenix-1":
+        map.removeLayer(markerClusterOsmosis);
+        map.addLayer(markerClusterPhoenix);
+        break;
+      case "all":
+        map.removeLayer(markerClusterOsmosis);
+        map.removeLayer(markerClusterPhoenix);
+        map.addLayer(markerClusterOsmosis);
+        map.addLayer(markerClusterPhoenix);
+        break;
+      default:
+        map.removeLayer(markerClusterOsmosis);
+        map.removeLayer(markerClusterPhoenix);
+        break;
+    }
+  });
 };
+
+var addOsmosisNetwork = function (network) {
+  map.addLayer(markerClusterOsmosis);
+};
+
+
+var addPhoenixNetwork = function (network) {
+  map.addLayer(markerClusterPhoenix);
+};
+
+function addNetwork(network) {
+  console.log(network);
+}
 
 $(document).ready(function () {
   map = L.map("map").setView([51.505, -0.09], 13);
@@ -52,9 +93,9 @@ $(document).ready(function () {
       sidebar.show();
   }, 500);
 
-  var marker = L.marker([51.2, 7]).addTo(map).on('click', function () {
-      sidebar.toggle();
-  });
+  // var marker = L.marker([51.2, 7]).addTo(map).on('click', function () {
+  //     sidebar.toggle();
+  // });
 
   map.on('click', function () {
       sidebar.hide();
@@ -79,6 +120,7 @@ $(document).ready(function () {
   L.DomEvent.on(sidebar.getCloseButton(), 'click', function () {
       console.log('Close button clicked.');
   });
+
   L.tileLayer.provider('Esri.OceanBasemap').addTo(map);
   $.ajax("data/peers.json", {
     dataType: "json",
