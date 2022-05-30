@@ -1,61 +1,78 @@
-
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>leaflet-sidebar example</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" href="/style/leaflet.css" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <link rel="stylesheet" href="/style/leaflet-1.0.3.css" />
     <link rel="stylesheet" href="/style/L.Control.Sidebar.css" />
-    <link rel="stylesheet" href="/style/MarkerCluster.css">
-    <link rel="stylesheet" href="/style/MarkerCluster.Default.css">
-    <!--[if lte IE 8]><link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" /><![endif]-->
+    <link rel="stylesheet" href="/style/MarkerCluster.css" />
+    <link rel="stylesheet" href="/style/MarkerCluster.Default.css" />
+    <!--[if lte IE 8
+      ]><link
+        rel="stylesheet"
+        href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css"
+    /><![endif]-->
     <style>
-        body {
-            padding: 0;
-            margin: 0;
-        }
-        html, body, #map {
-            height: 100%;
-        }
-        .lorem {
-            font-style: italic;
-            color: #AAA;
-        }
-        #map{
-            width: 100%;
-            height: 1000px;
-        }
-        #networkSelector{
-            position: absolute;
-            top: 20px;
-            left: calc(50% - 50px);
-            z-index: 100;
-        }
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      html,
+      body,
+      #map {
+        height: 100%;
+      }
+      .lorem {
+        font-style: italic;
+        color: #aaa;
+      }
+      #map {
+        width: 100%;
+        height: 1000px;
+      }
+      #networkSelector {
+        position: absolute;
+        top: 20px;
+        left: calc(50% - 50px);
+        z-index: 500;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="sidebar">
-        <h1>leaflet-sidebar</h1>
-
-        <p>A responsive sidebar plugin for for <a href="http://leafletjs.com/">Leaflet</a>, a JS library for interactive maps.</p>
-
-        <p><b>Click on the marker to show the sidebar again when you've closed it.</b></p>
+      <div id="networkName">networkName</div>
+      <div>
+          <span>STATS FOR THE SELECTED PIN:</span>
+          <span>NUMBER OF NODE:</span><span id="numNodes">XXX</span>
+          <span>[MONIKER:</span><span id="markerMoniker">XXX</span><span>, ID:</span><span id="markerID"></span>
+          <div>
+            <select>
+                <option value="COUNTRY">COUNTRY</option>
+                <option value="ISP">ISP</option>
+                <option value="DATA CENTER"></option>
+            </select>
+          </div>
+      </div>
     </div>
-    <select id="networkSelector"></select>
+    <select id="networkSelector">
+      <option hidden disabled selected value>-- select an option --</option>
+    </select>
     <div id="map"></div>
 
-    <a href="https://github.com/Turbo87/leaflet-sidebar/"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"></a>
-
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script> -->
+    <script src="js/leaflet-src-1.0.3.js"></script>
     <script src="js/jquery.min.js"></script>
     <!-- <script src="js/jquery-ui.min.js"></script> -->
     <script src="js/bootstrap.min.js"></script>
     <script src="js/leaflet-providers.js"></script>
-    <script src="js/leaflet.markercluster.js"></script>
+    <!-- <script src="js/leaflet.markercluster.js"></script> -->
+    <script src="js/leaflet.markercluster-src-1.0.3.js"></script>
     <script src="js/L.Control.Sidebar.js"></script>
     <script src="index.js"></script>
 
-    <script>
-    </script>
-</body>
+    <script></script>
+  </body>
 </html>

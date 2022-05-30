@@ -1,9 +1,8 @@
 var map;
 var overlay;
-var poiLayer = L.geoJson();
 
 markerClusterGroupOptions = {
-  spiderfyOnMaxZoom: false,
+  spiderfyOnMaxZoom: true,
 	showCoverageOnHover: false,
 	zoomToBoundsOnClick: false
 };
@@ -24,6 +23,7 @@ var populateNetworks = function (networks) {
         'iconUrl': 'js/img/marker-icon-2x.png',
         'iconSize': [25, 41],
       }),
+      properties:location,
     }));
   });
 
@@ -33,6 +33,7 @@ var populateNetworks = function (networks) {
         'iconUrl': 'js/img/marker-icon-2x.png',
         'iconSize': [25, 41],
       }),
+      properties:location,
     }));
   });
 
@@ -58,6 +59,24 @@ var populateNetworks = function (networks) {
         map.removeLayer(markerClusterPhoenix);
         break;
     }
+  });
+
+  markerClusterOsmosis.on('click', function (a) {
+    console.log('marker ' + a.layer);
+    map.sidebar.show();
+    document.getElementById('networkName').innerHTML = document.getElementById('networkSelector').value;
+  });
+
+  markerClusterPhoenix.on('click', function (a) {
+    console.log('marker ' + a.layer);
+    map.sidebar.show();
+    document.getElementById('networkName').innerHTML = document.getElementById('networkSelector').value;
+  });
+
+  markerClusterOsmosis.on('clusterclick', function (a) {
+    // a.layer is actually a cluster
+    console.log('cluster ' + a.layer.getAllChildMarkers().length);
+    map.sidebar.show();
   });
 };
 
@@ -88,6 +107,7 @@ $(document).ready(function () {
       position: 'left'
   });
   map.addControl(sidebar);
+  map.sidebar = sidebar;
 
   setTimeout(function () {
       sidebar.show();
