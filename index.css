@@ -21,3 +21,7 @@ body,
   left: calc(50% - 50px);
   z-index: 500;
 }
+
+.hidden{
+    display: none;
+}

@@ -2,7 +2,7 @@ var map;
 var overlay;
 
 markerClusterGroupOptions = {
-  spiderfyOnMaxZoom: true,
+  spiderfyOnMaxZoom: false,
   showCoverageOnHover: false,
   zoomToBoundsOnClick: false,
 };
@@ -15,7 +15,7 @@ var populateNetworks = function (networks) {
     ns.append(`<option value=${key}>${key}</option>`);
     // console.log(`${key}: ${value}`);
   }
-  ns.append(`<option value='all' onclick="addNetwork('all')">All`);
+  ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
 
   networks["osmosis-1"].forEach(function (location) {
     markerClusterOsmosis.addLayer(
@@ -68,21 +68,41 @@ var populateNetworks = function (networks) {
   markerClusterOsmosis.on("click", function (a) {
     console.log("marker " + a.layer);
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML =
-      document.getElementById("networkSelector").value;
+    document.getElementsByClassName('singlenodeonly')[0].style.display = 'block';
+    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
+    document.getElementById("markerMoniker").innerHTML = a.layer.options.properties.moniker;
+    document.getElementById("markerID").innerHTML = a.layer.options.properties.nodeId;
+    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
+    document.getElementById("numNodes").innerHTML = '1';
   });
 
   markerClusterPhoenix.on("click", function (a) {
     console.log("marker " + a.layer);
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML =
-      document.getElementById("networkSelector").value;
+    document.getElementsByClassName('singlenodeonly')[0].style.display = 'block';
+    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
+    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
+    document.getElementById("numNodes").innerHTML = '1';
   });
 
   markerClusterOsmosis.on("clusterclick", function (a) {
     // a.layer is actually a cluster
-    console.log("cluster " + a.layer.getAllChildMarkers().length);
     map.sidebar.show();
+    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
+    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
+    console.log("cluster " + a.layer.getAllChildMarkers().length);
+    document.getElementById("numNodes").innerHTML = a.layer.getAllChildMarkers().length;
+    document.getElementsByClassName('singlenodeonly')[0].style.display = 'none';
+  });
+  
+  markerClusterPhoenix.on("clusterclick", function (a) {
+    // a.layer is actually a cluster
+    map.sidebar.show();
+    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
+    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
+    console.log("cluster " + a.layer.getAllChildMarkers().length);
+    document.getElementsByClassName('singlenodeonly')[0].style.display = 'none';
+
   });
 };
 
@@ -123,7 +143,9 @@ $(document).ready(function () {
   // });
 
   map.on("click", function () {
-    sidebar.hide();
+    // sidebar.hide();
+    
+    document.getElementById("statsFor").innerHTML = 'WHOLE WORLD';
   });
 
   sidebar.on("show", function () {
