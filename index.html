@@ -15,46 +15,25 @@
         rel="stylesheet"
         href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css"
     /><![endif]-->
-    <style>
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      html,
-      body,
-      #map {
-        height: 100%;
-      }
-      .lorem {
-        font-style: italic;
-        color: #aaa;
-      }
-      #map {
-        width: 100%;
-        height: 1000px;
-      }
-      #networkSelector {
-        position: absolute;
-        top: 20px;
-        left: calc(50% - 50px);
-        z-index: 500;
-      }
-    </style>
+    <style></style>
   </head>
   <body>
     <div id="sidebar">
       <div id="networkName">networkName</div>
       <div>
-          <span>STATS FOR THE SELECTED PIN:</span>
-          <span>NUMBER OF NODE:</span><span id="numNodes">XXX</span>
-          <span>[MONIKER:</span><span id="markerMoniker">XXX</span><span>, ID:</span><span id="markerID"></span>
-          <div>
-            <select>
-                <option value="COUNTRY">COUNTRY</option>
-                <option value="ISP">ISP</option>
-                <option value="DATA CENTER"></option>
-            </select>
-          </div>
+        <span>STATS FOR THE SELECTED PIN:</span>
+        <span>NUMBER OF NODE:</span><span id="numNodes">XXX</span>
+        <div class="singlenodeonly">
+          <span>[MONIKER:</span><span id="markerMoniker">XXX</span
+          ><span>, ID:</span><span id="markerID"></span>
+        </div>
+        <div>
+          <select>
+            <option value="COUNTRY">COUNTRY</option>
+            <option value="ISP">ISP</option>
+            <option value="DATA CENTER"></option>
+          </select>
+        </div>
       </div>
     </div>
     <select id="networkSelector">
