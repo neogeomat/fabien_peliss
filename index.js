@@ -69,88 +69,127 @@ var populateNetworks = function (networks) {
 
   markerClusterOsmosis.on("click", function (a) {
     console.log("marker " + a.layer);
-    if(selected){
-      selected.setIcon(L.icon({
-        iconUrl: "js/img/marker-icon-2x.png",
-        iconSize: [25, 41],
-      }));
+    try {
+      if (selected) {
+        selected.getAllChildMarkers();
+        markerClusterOsmosis.refreshClusters();
+      }
+    } catch (e) {
+      console.log(e);
+      selected.setIcon(
+        L.icon({
+          iconUrl: "js/img/marker-icon-2x.png",
+          iconSize: [25, 41],
+        })
+      );
     }
     selected = a.layer;
-    selected.setIcon(L.icon({
-      iconUrl: "js/img/marker-icon-2x-selected.png",
-      iconSize: [25, 41],
-    }));
+    selected.setIcon(
+      L.icon({
+        iconUrl: "js/img/marker-icon-2x-selected.png",
+        iconSize: [25, 41],
+      })
+    );
 
     map.sidebar.show();
-    document.getElementsByClassName('singlenodeonly')[0].style.display = 'block';
-    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
-    document.getElementById("markerMoniker").innerHTML = a.layer.options.properties.moniker;
-    document.getElementById("markerID").innerHTML = a.layer.options.properties.nodeId;
-    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
-    document.getElementById("numNodes").innerHTML = ': 1';
+    document.getElementsByClassName("singlenodeonly")[0].style.display =
+      "block";
+    document.getElementById("networkName").innerHTML =
+      document.getElementById("networkSelector").value;
+    document.getElementById("markerMoniker").innerHTML =
+      a.layer.options.properties.moniker;
+    document.getElementById("markerID").innerHTML =
+      a.layer.options.properties.nodeId;
+    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+    document.getElementById("numNodes").innerHTML = ": 1";
   });
 
   markerClusterPhoenix.on("click", function (a) {
-    console.log("marker " + a.layer);
-    if(selected){
-      selected.setIcon(L.icon({
-        iconUrl: "js/img/marker-icon-2x.png",
-        iconSize: [25, 41],
-      }));
+    console.log("marker " + a.layer);try {
+      if (selected) {
+        selected.getAllChildMarkers();
+        markerClusterOsmosis.refreshClusters();
+      }
+    } catch (e) {
+      console.log(e);
+      selected.setIcon(
+        L.icon({
+          iconUrl: "js/img/marker-icon-2x.png",
+          iconSize: [25, 41],
+        })
+      );
     }
     selected = a.layer;
-    selected.setIcon(L.icon({
-      iconUrl: "js/img/marker-icon-2x-selected.png",
-      iconSize: [25, 41],
-    }));
+    selected.setIcon(
+      L.icon({
+        iconUrl: "js/img/marker-icon-2x-selected.png",
+        iconSize: [25, 41],
+      })
+    );
     map.sidebar.show();
-    document.getElementsByClassName('singlenodeonly')[0].style.display = 'block';
-    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
-    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
-    document.getElementById("numNodes").innerHTML = ': 1';
+    document.getElementsByClassName("singlenodeonly")[0].style.display =
+      "block";
+    document.getElementById("networkName").innerHTML =
+      document.getElementById("networkSelector").value;
+    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+    document.getElementById("numNodes").innerHTML = ": 1";
   });
 
   markerClusterOsmosis.on("clusterclick", function (a) {
     // a.layer is actually a cluster
-    if(selected){
-      selected.setIcon(L.icon({
-        iconUrl: "js/img/marker-icon-2x.png",
-        iconSize: [25, 41],
-      }));
+    try {
+      if (selected) {
+        selected.getAllChildMarkers();
+        markerClusterOsmosis.refreshClusters();
+      }
+    } catch (e) {
+      console.log(e);
+      selected.setIcon(
+        L.icon({
+          iconUrl: "js/img/marker-icon-2x.png",
+          iconSize: [25, 41],
+        })
+      );
     }
     selected = a.layer;
-    selected.setIcon(L.icon({
-      iconUrl: "js/img/marker-icon-2x-selected.png",
-      iconSize: [25, 41],
-    }));
+    selected._icon.style.backgroundColor='red';
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
-    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
+    document.getElementById("networkName").innerHTML =
+      document.getElementById("networkSelector").value;
+    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     console.log("cluster " + a.layer.getAllChildMarkers().length);
-    document.getElementById("numNodes").innerHTML = 'S: ' + a.layer.getAllChildMarkers().length;
-    document.getElementsByClassName('singlenodeonly')[0].style.display = 'none';
+    document.getElementById("numNodes").innerHTML =
+      "S: " + a.layer.getAllChildMarkers().length;
+    document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
   });
-  
+
   markerClusterPhoenix.on("clusterclick", function (a) {
     // a.layer is actually a cluster
-    if(selected){
-      selected.setIcon(L.icon({
-        iconUrl: "js/img/marker-icon-2x.png",
-        iconSize: [25, 41],
-      }));
+    try {
+      if (selected) {
+        selected.getAllChildMarkers();
+        markerClusterOsmosis.refreshClusters();
+      }
+    } catch (e) {
+      console.log(e);
+      selected.setIcon(
+        L.icon({
+          iconUrl: "js/img/marker-icon-2x.png",
+          iconSize: [25, 41],
+        })
+      );
     }
     selected = a.layer;
-    selected.setIcon(L.icon({
-      iconUrl: "js/img/marker-icon-2x-selected.png",
-      iconSize: [25, 41],
-    }));
+    
+    selected._icon.style.backgroundColor='red';
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML = document.getElementById("networkSelector").value;
-    document.getElementById("statsFor").innerHTML = 'SELECTED NODE';
+    document.getElementById("networkName").innerHTML =
+      document.getElementById("networkSelector").value;
+    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     console.log("cluster " + a.layer.getAllChildMarkers().length);
-    document.getElementById("numNodes").innerHTML = 'S: ' + a.layer.getAllChildMarkers().length;
-    document.getElementsByClassName('singlenodeonly')[0].style.display = 'none';
-
+    document.getElementById("numNodes").innerHTML =
+      "S: " + a.layer.getAllChildMarkers().length;
+    document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
   });
 };
 
@@ -192,8 +231,8 @@ $(document).ready(function () {
 
   map.on("click", function () {
     // sidebar.hide();
-    document.getElementById("statsFor").innerHTML = 'WHOLE WORLD';
-    document.getElementById("networkName").innerHTML = 'ALL NETWORKS';
+    document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
+    document.getElementById("networkName").innerHTML = "ALL NETWORKS";
   });
 
   sidebar.on("show", function () {
@@ -218,7 +257,7 @@ $(document).ready(function () {
 
   L.tileLayer.provider("Esri.OceanBasemap").addTo(map);
   $.ajax("data/peers.json", {
-  // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
+    // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     success: populateNetworks,
     error: function (xhr, st, et) {
