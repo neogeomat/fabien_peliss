@@ -398,21 +398,33 @@ function updateTable(){
         }
         break;
       case "ISP":
-        try{
-          var ISPs = {};
-          selected.getAllChildMarkers().forEach(a => {
-            // console.log(a);
-            ISPs[a.options.properties.isp] = ISPs[a.options.properties.isp] + 1 || 1;
-          });
-          console.table(ISPs);
-        }catch(e){
-          // console.error(e);
-          // console.log(selected);
-          if (e instanceof TypeError) {
+        if(selected){
+          try{
             var ISPs = {};
-            ISPs[selected.options.properties.isp] = 1;
+            selected.getAllChildMarkers().forEach(a => {
+             // console.log(a);
+              ISPs[a.options.properties.isp] = ISPs[a.options.properties.isp] + 1 || 1;
+            });
+           console.table(ISPs);
+          }catch(e){
+            // console.error(e);
+            // console.log(selected);
+            if (e instanceof TypeError) {
+              var ISPs = {};
+              ISPs[selected.options.properties.isp] = 1;
+            }
+            console.table(ISPs);
           }
-          console.table(ISPs);
+        }else{
+          var ISPs = {};
+          for (const key in markerClusterGroups) {
+            if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+              const element = markerClusterGroups[key];
+              element.getLayers().forEach(a => {
+                ISPs[a.options.properties.isp] = ISPs[a.options.properties.isp] + 1 || 1;
+              });
+            }
+          }
         }
         for(var key in ISPs){
           var table_row = document.createElement("tr");
