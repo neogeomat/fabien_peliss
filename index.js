@@ -74,144 +74,203 @@ var populateNetworks = function (networks) {
     }
   });
 
-  markerClusterOsmosis.on("click", function (a) {
-    console.log("marker " + a.layer);
-    try {
-      if (selected) {
-        selected.getAllChildMarkers();
-        markerClusterOsmosis.refreshClusters();
-      }
-    } catch (e) {
-      console.log(e);
-      selected.setIcon(
-        L.icon({
-          iconUrl: "js/img/marker-icon-2x.png",
-          iconSize: [25, 41],
-        })
-      );
-    }
-    selected = a.layer;
-    selected.setIcon(
-      L.icon({
-        iconUrl: "js/img/marker-icon-2x-selected.png",
-        iconSize: [25, 41],
-      })
-    );
+  for (const key in markerClusterGroups) {
+    if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+      const element = markerClusterGroups[key];
+      // yakchau marker pinta
+      markerClusterGroups[key].on("click", function (a) {
+        console.log("marker " + a.layer);
+        try {
+          if (selected) {
+            selected.getAllChildMarkers();
+            markerClusterGroups[key].refreshClusters();
+          }
+        } catch (e) {
+          console.log(e);
+          selected.setIcon(
+            L.icon({
+              iconUrl: "js/img/marker-icon-2x.png",
+              iconSize: [25, 41],
+            })
+          );
+        }
+        selected = a.layer;
+        selected.setIcon(
+          L.icon({
+            iconUrl: "js/img/marker-icon-2x-selected.png",
+            iconSize: [25, 41],
+          })
+        );
+    
+        map.sidebar.show();
+        document.getElementsByClassName("singlenodeonly")[0].style.display =
+          "block";
+        document.getElementById("networkName").innerHTML =
+          markerClusterOsmosis.name;
+        document.getElementById("markerMoniker").innerHTML =
+          a.layer.options.properties.moniker;
+        document.getElementById("markerID").innerHTML =
+          a.layer.options.properties.nodeId;
+        document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+        document.getElementById("numNodes").innerHTML = ": 1";
+      });
 
-    map.sidebar.show();
-    document.getElementsByClassName("singlenodeonly")[0].style.display =
-      "block";
-    document.getElementById("networkName").innerHTML =
-      markerClusterOsmosis.name;
-    document.getElementById("markerMoniker").innerHTML =
-      a.layer.options.properties.moniker;
-    document.getElementById("markerID").innerHTML =
-      a.layer.options.properties.nodeId;
-    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
-    document.getElementById("numNodes").innerHTML = ": 1";
-  });
+      // sagolyau marker pinta
+      markerClusterGroups[key].on("clusterclick", function (a) {
+      // a.layer is actually a cluster
+        try {
+          if (selected) {
+            selected.getAllChildMarkers();
+            markerClusterGroups[key].refreshClusters();
+          }
+        } catch (e) {
+          console.log(e);
+          selected.setIcon(
+            L.icon({
+              iconUrl: "js/img/marker-icon-2x.png",
+              iconSize: [25, 41],
+            })
+          );
+        }
+        selected = a.layer;
+        selected._icon.style.backgroundColor = "red";
+        map.sidebar.show();
+        document.getElementById("networkName").innerHTML =
+          markerClusterOsmosis.name;
+        document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+        console.log("cluster " + a.layer.getAllChildMarkers().length);
+        document.getElementById("numNodes").innerHTML =
+          "S: " + a.layer.getAllChildMarkers().length;
+        document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
+      });
+    }   
+  }
+  // markerClusterOsmosis.on("click", function (a) {
+  //   console.log("marker " + a.layer);
+  //   try {
+  //     if (selected) {
+  //       selected.getAllChildMarkers();
+  //       markerClusterOsmosis.refreshClusters();
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     selected.setIcon(
+  //       L.icon({
+  //         iconUrl: "js/img/marker-icon-2x.png",
+  //         iconSize: [25, 41],
+  //       })
+  //     );
+  //   }
+  //   selected = a.layer;
+  //   selected.setIcon(
+  //     L.icon({
+  //       iconUrl: "js/img/marker-icon-2x-selected.png",
+  //       iconSize: [25, 41],
+  //     })
+  //   );
 
-  markerClusterPhoenix.on("click", function (a) {
-    console.log("marker " + a.layer);
-    try {
-      if (selected) {
-        selected.getAllChildMarkers();
-        markerClusterOsmosis.refreshClusters();
-      }
-    } catch (e) {
-      console.log(e);
-      selected.setIcon(
-        L.icon({
-          iconUrl: "js/img/marker-icon-2x.png",
-          iconSize: [25, 41],
-        })
-      );
-    }
-    selected = a.layer;
-    selected.setIcon(
-      L.icon({
-        iconUrl: "js/img/marker-icon-2x-selected.png",
-        iconSize: [25, 41],
-      })
-    );
-    map.sidebar.show();
-    document.getElementsByClassName("singlenodeonly")[0].style.display =
-      "block";
-    document.getElementById("networkName").innerHTML =
-      markerClusterPhoenix.name;
-    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
-    document.getElementById("numNodes").innerHTML = ": 1";
-  });
+  //   map.sidebar.show();
+  //   document.getElementsByClassName("singlenodeonly")[0].style.display =
+  //     "block";
+  //   document.getElementById("networkName").innerHTML =
+  //     markerClusterOsmosis.name;
+  //   document.getElementById("markerMoniker").innerHTML =
+  //     a.layer.options.properties.moniker;
+  //   document.getElementById("markerID").innerHTML =
+  //     a.layer.options.properties.nodeId;
+  //   document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+  //   document.getElementById("numNodes").innerHTML = ": 1";
+  // });
 
-  markerClusterOsmosis.on("clusterclick", function (a) {
-    // a.layer is actually a cluster
-    try {
-      if (selected) {
-        selected.getAllChildMarkers();
-        markerClusterOsmosis.refreshClusters();
-      }
-    } catch (e) {
-      console.log(e);
-      selected.setIcon(
-        L.icon({
-          iconUrl: "js/img/marker-icon-2x.png",
-          iconSize: [25, 41],
-        })
-      );
-    }
-    selected = a.layer;
-    selected._icon.style.backgroundColor = "red";
-    map.sidebar.show();
-    document.getElementById("networkName").innerHTML =
-      markerClusterOsmosis.name;
-    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
-    console.log("cluster " + a.layer.getAllChildMarkers().length);
-    document.getElementById("numNodes").innerHTML =
-      "S: " + a.layer.getAllChildMarkers().length;
-    document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
-  });
+  // markerClusterPhoenix.on("click", function (a) {
+  //   console.log("marker " + a.layer);
+  //   try {
+  //     if (selected) {
+  //       selected.getAllChildMarkers();
+  //       markerClusterOsmosis.refreshClusters();
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     selected.setIcon(
+  //       L.icon({
+  //         iconUrl: "js/img/marker-icon-2x.png",
+  //         iconSize: [25, 41],
+  //       })
+  //     );
+  //   }
+  //   selected = a.layer;
+  //   selected.setIcon(
+  //     L.icon({
+  //       iconUrl: "js/img/marker-icon-2x-selected.png",
+  //       iconSize: [25, 41],
+  //     })
+  //   );
+  //   map.sidebar.show();
+  //   document.getElementsByClassName("singlenodeonly")[0].style.display =
+  //     "block";
+  //   document.getElementById("networkName").innerHTML =
+  //     markerClusterPhoenix.name;
+  //   document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+  //   document.getElementById("numNodes").innerHTML = ": 1";
+  // });
 
-  markerClusterPhoenix.on("clusterclick", function (a) {
-    // a.layer is actually a cluster
-    try {
-      if (selected) {
-        selected.getAllChildMarkers();
-        markerClusterOsmosis.refreshClusters();
-      }
-    } catch (e) {
-      console.log(e);
-      selected.setIcon(
-        L.icon({
-          iconUrl: "js/img/marker-icon-2x.png",
-          iconSize: [25, 41],
-        })
-      );
-    }
-    selected = a.layer;
+  // markerClusterOsmosis.on("clusterclick", function (a) {
+  //   // a.layer is actually a cluster
+  //   try {
+  //     if (selected) {
+  //       selected.getAllChildMarkers();
+  //       markerClusterOsmosis.refreshClusters();
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     selected.setIcon(
+  //       L.icon({
+  //         iconUrl: "js/img/marker-icon-2x.png",
+  //         iconSize: [25, 41],
+  //       })
+  //     );
+  //   }
+  //   selected = a.layer;
+  //   selected._icon.style.backgroundColor = "red";
+  //   map.sidebar.show();
+  //   document.getElementById("networkName").innerHTML =
+  //     markerClusterOsmosis.name;
+  //   document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+  //   console.log("cluster " + a.layer.getAllChildMarkers().length);
+  //   document.getElementById("numNodes").innerHTML =
+  //     "S: " + a.layer.getAllChildMarkers().length;
+  //   document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
+  // });
 
-    selected._icon.style.backgroundColor = "red";
-    map.sidebar.show();
-    document.getElementById("networkName").innerHTML =
-      markerClusterPhoenix.name;
-    document.getElementById("statsFor").innerHTML = "SELECTED NODE";
-    console.log("cluster " + a.layer.getAllChildMarkers().length);
-    document.getElementById("numNodes").innerHTML =
-      "S: " + a.layer.getAllChildMarkers().length;
-    document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
-  });
+  // markerClusterPhoenix.on("clusterclick", function (a) {
+  //   // a.layer is actually a cluster
+  //   try {
+  //     if (selected) {
+  //       selected.getAllChildMarkers();
+  //       markerClusterOsmosis.refreshClusters();
+  //     }
+  //   } catch (e) {
+  //     console.log(e);
+  //     selected.setIcon(
+  //       L.icon({
+  //         iconUrl: "js/img/marker-icon-2x.png",
+  //         iconSize: [25, 41],
+  //       })
+  //     );
+  //   }
+  //   selected = a.layer;
+
+  //   selected._icon.style.backgroundColor = "red";
+  //   map.sidebar.show();
+  //   document.getElementById("networkName").innerHTML =
+  //     markerClusterPhoenix.name;
+  //   document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+  //   console.log("cluster " + a.layer.getAllChildMarkers().length);
+  //   document.getElementById("numNodes").innerHTML =
+  //     "S: " + a.layer.getAllChildMarkers().length;
+  //   document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
+  // });
 };
-
-var addOsmosisNetwork = function (network) {
-  map.addLayer(markerClusterOsmosis);
-};
-
-var addPhoenixNetwork = function (network) {
-  map.addLayer(markerClusterPhoenix);
-};
-
-function addNetwork(network) {
-  console.log(network);
-}
 
 $(document).ready(function () {
   map = L.map("map").setView([51.505, -0.09], 13);
