@@ -9,6 +9,7 @@ markerClusterGroupOptions = {
   zoomToBoundsOnClick: false,
 };
 var markerClusterOsmosis = L.markerClusterGroup(markerClusterGroupOptions);
+
 var markerClusterPhoenix = L.markerClusterGroup(markerClusterGroupOptions);
 
 var populateNetworks = function (networks) {
@@ -18,6 +19,7 @@ var populateNetworks = function (networks) {
     // console.log(`${key}: ${value}`);
   }
   ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
+
 
   networks["osmosis-1"].forEach(function (location) {
     markerClusterOsmosis.addLayer(
@@ -30,6 +32,7 @@ var populateNetworks = function (networks) {
       })
     );
   });
+  markerClusterOsmosis.name = "Osmosis-1";
 
   networks["phoenix-1"].forEach(function (location) {
     markerClusterPhoenix.addLayer(
@@ -41,6 +44,7 @@ var populateNetworks = function (networks) {
         properties: location,
       })
     );
+    markerClusterPhoenix.name = "Phoenix-1";
   });
 
   ns.click((evt) => {
@@ -94,8 +98,7 @@ var populateNetworks = function (networks) {
     map.sidebar.show();
     document.getElementsByClassName("singlenodeonly")[0].style.display =
       "block";
-    document.getElementById("networkName").innerHTML =
-      document.getElementById("networkSelector").value;
+    document.getElementById("networkName").innerHTML = markerClusterOsmosis.name;
     document.getElementById("markerMoniker").innerHTML =
       a.layer.options.properties.moniker;
     document.getElementById("markerID").innerHTML =
@@ -129,8 +132,7 @@ var populateNetworks = function (networks) {
     map.sidebar.show();
     document.getElementsByClassName("singlenodeonly")[0].style.display =
       "block";
-    document.getElementById("networkName").innerHTML =
-      document.getElementById("networkSelector").value;
+    document.getElementById("networkName").innerHTML = markerClusterPhoenix.name;
     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     document.getElementById("numNodes").innerHTML = ": 1";
   });
@@ -154,8 +156,7 @@ var populateNetworks = function (networks) {
     selected = a.layer;
     selected._icon.style.backgroundColor='red';
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML =
-      document.getElementById("networkSelector").value;
+    document.getElementById("networkName").innerHTML = markerClusterOsmosis.name;
     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     console.log("cluster " + a.layer.getAllChildMarkers().length);
     document.getElementById("numNodes").innerHTML =
@@ -183,8 +184,7 @@ var populateNetworks = function (networks) {
     
     selected._icon.style.backgroundColor='red';
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML =
-      document.getElementById("networkSelector").value;
+    document.getElementById("networkName").innerHTML = markerClusterPhoenix.name;
     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     console.log("cluster " + a.layer.getAllChildMarkers().length);
     document.getElementById("numNodes").innerHTML =
