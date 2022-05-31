@@ -305,6 +305,9 @@ $(document).ready(function () {
     // sidebar.hide();
     document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
     document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+    selected = null;
+    updateTable();
+    updateChart();
   });
 
   sidebar.on("show", function () {
@@ -352,24 +355,36 @@ function updateTable(){
   table_header_row.appendChild(table_header_col1);
   table_header_row.appendChild(table_header_col2);
   table.appendChild(table_header_row);
-  if(selected && sele.value){
+  if(sele.value){
     switch(sele.value){
       case "COUNTRY":
-        try{
-          var countries = {};
-          selected.getAllChildMarkers().forEach(a => {
-            // console.log(a);
-            countries[a.options.properties.country] = countries[a.options.properties.country] + 1 || 1;
-          });
-          console.table(countries);
-        }catch(e){
-          // console.error(e);
-          // console.log(selected);
-          if (e instanceof TypeError) {
+        if(selected){
+          try{
             var countries = {};
-            countries[selected.options.properties.country] = 1;
+            selected.getAllChildMarkers().forEach(a => {
+              // console.log(a);
+              countries[a.options.properties.country] = countries[a.options.properties.country] + 1 || 1;
+            });
+            console.table(countries);
+          }catch(e){
+            // console.error(e);
+            // console.log(selected);
+            if (e instanceof TypeError) {
+              var countries = {};
+              countries[selected.options.properties.country] = 1;
+            }
+            console.table(countries);
           }
-          console.table(countries);
+        }else{
+          var countries = {};
+          for (const key in markerClusterGroups) {
+            if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+              const element = markerClusterGroups[key];
+              element.getLayers().forEach(a => {
+                countries[a.options.properties.country] = countries[a.options.properties.country] + 1 || 1;
+              });
+            }
+          }
         }
         for(var key in countries){
           var table_row = document.createElement("tr");
