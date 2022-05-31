@@ -74,6 +74,7 @@ var populateNetworks = function (networks) {
     }
   });
 
+  // click handlings
   for (const key in markerClusterGroups) {
     if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
       const element = markerClusterGroups[key];
@@ -113,6 +114,8 @@ var populateNetworks = function (networks) {
           a.layer.options.properties.nodeId;
         document.getElementById("statsFor").innerHTML = "SELECTED NODE";
         document.getElementById("numNodes").innerHTML = ": 1";
+        updateTable();
+        updateChart();
       });
 
       // sagolyau marker pinta
@@ -142,6 +145,8 @@ var populateNetworks = function (networks) {
         document.getElementById("numNodes").innerHTML =
           "S: " + a.layer.getAllChildMarkers().length;
         document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
+        updateTable();
+        updateChart();
       });
     }   
   }
@@ -330,5 +335,87 @@ $(document).ready(function () {
     error: function (xhr, st, et) {
       console.warn(et);
     },
-  });
+  }); 
 });
+
+function updateTable(){
+  var table = document.getElementById("dataTable");
+  table.innerHTML = "";
+  var table_header_row = document.createElement("tr");
+  var table_header_col1 = document.createElement("th");
+
+  var sele = document.getElementById("dataSelector");
+  table_header_col1.innerHTML = sele.value;
+  var table_header_col2 = document.createElement("th");
+  table_header_col2.innerHTML = "Nodes";
+
+  table_header_row.appendChild(table_header_col1);
+  table_header_row.appendChild(table_header_col2);
+  table.appendChild(table_header_row);
+  if(selected && sele.value){
+    switch(sele.value){
+      case "COUNTRY":
+        try{
+          var countries = {};
+          selected.getAllChildMarkers().forEach(a => {
+            // console.log(a);
+            countries[a.options.properties.country] = countries[a.options.properties.country] + 1 || 1;
+          });
+          console.table(countries);
+        }catch(e){
+          // console.error(e);
+          // console.log(selected);
+          if (e instanceof TypeError) {
+            var countries = {};
+            countries[selected.options.properties.country] = 1;
+          }
+          console.table(countries);
+        }
+        for(var key in countries){
+          var table_row = document.createElement("tr");
+          var table_col1 = document.createElement("td");
+          table_col1.innerHTML = key;
+          var table_col2 = document.createElement("td");
+          table_col2.innerHTML = countries[key];
+          table_row.appendChild(table_col1);
+          table_row.appendChild(table_col2);
+          table.appendChild(table_row);
+        }
+        break;
+      case "ISP":
+        try{
+          var ISPs = {};
+          selected.getAllChildMarkers().forEach(a => {
+            // console.log(a);
+            ISPs[a.options.properties.isp] = ISPs[a.options.properties.isp] + 1 || 1;
+          });
+          console.table(ISPs);
+        }catch(e){
+          // console.error(e);
+          // console.log(selected);
+          if (e instanceof TypeError) {
+            var ISPs = {};
+            ISPs[selected.options.properties.isp] = 1;
+          }
+          console.table(ISPs);
+        }
+        for(var key in ISPs){
+          var table_row = document.createElement("tr");
+          var table_col1 = document.createElement("td");
+          table_col1.innerHTML = key;
+          var table_col2 = document.createElement("td");
+          table_col2.innerHTML = ISPs[key];
+          table_row.appendChild(table_col1);
+          table_row.appendChild(table_col2);
+          table.appendChild(table_row);
+        }
+        break;
+      case "DATA CENTER":
+        break;
+    };
+  }
+}
+
+function updateChart(){
+
+}
