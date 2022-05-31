@@ -8,6 +8,8 @@ markerClusterGroupOptions = {
   showCoverageOnHover: false,
   zoomToBoundsOnClick: false,
 };
+
+var markerClusterGroups = {};
 var markerClusterOsmosis = L.markerClusterGroup(markerClusterGroupOptions);
 
 var markerClusterPhoenix = L.markerClusterGroup(markerClusterGroupOptions);
@@ -20,53 +22,54 @@ var populateNetworks = function (networks) {
   }
   ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
 
-
-  networks["osmosis-1"].forEach(function (location) {
-    markerClusterOsmosis.addLayer(
-      L.marker([location.lat, location.lon], {
-        icon: L.icon({
-          iconUrl: "js/img/marker-icon-2x.png",
-          iconSize: [25, 41],
-        }),
-        properties: location,
-      })
-    );
-  });
-  markerClusterOsmosis.name = "Osmosis-1";
-
-  networks["phoenix-1"].forEach(function (location) {
-    markerClusterPhoenix.addLayer(
-      L.marker([location.lat, location.lon], {
-        icon: L.icon({
-          iconUrl: "js/img/marker-icon-2x.png",
-          iconSize: [25, 41],
-        }),
-        properties: location,
-      })
-    );
-    markerClusterPhoenix.name = "Phoenix-1";
-  });
+  for (const [key, value] of Object.entries(networks)) {
+    markerClusterGroups[key] = L.markerClusterGroup(markerClusterGroupOptions);
+    networks[key].forEach(function (location) {
+      markerClusterGroups[key].addLayer(
+        L.marker([location.lat, location.lon], {
+          icon: L.icon({
+            iconUrl: "js/img/marker-icon-2x.png",
+            iconSize: [25, 41],
+          }),
+          properties: location,
+        })
+      );
+    });
+    markerClusterGroups[key].name = key;
+  }
 
   ns.click((evt) => {
     console.log(evt.target.value);
     switch (evt.target.value) {
       case "osmosis-1":
-        map.removeLayer(markerClusterPhoenix);
-        map.addLayer(markerClusterOsmosis);
+        for (const key in markerClusterGroups) {
+          map.removeLayer(markerClusterGroups[key]);
+          console.log(markerClusterGroups[key].name+' removed');
+        };
+        map.addLayer(markerClusterGroups[evt.target.value]);
         break;
       case "phoenix-1":
-        map.removeLayer(markerClusterOsmosis);
-        map.addLayer(markerClusterPhoenix);
+        for (const key in markerClusterGroups) {
+          map.removeLayer(markerClusterGroups[key]);
+          console.log(markerClusterGroups[key].name+' removed');
+        };
+        map.addLayer(markerClusterGroups[evt.target.value]);
         break;
       case "all":
-        map.removeLayer(markerClusterOsmosis);
-        map.removeLayer(markerClusterPhoenix);
-        map.addLayer(markerClusterOsmosis);
-        map.addLayer(markerClusterPhoenix);
+        for (const key in markerClusterGroups) {
+          map.removeLayer(markerClusterGroups[key]);
+          console.log(markerClusterGroups[key].name+' removed');
+        };
+        for (const key in markerClusterGroups) {
+          map.addLayer(markerClusterGroups[key]);
+          console.log(markerClusterGroups[key].name+' added');
+        };
         break;
       default:
-        map.removeLayer(markerClusterOsmosis);
-        map.removeLayer(markerClusterPhoenix);
+        for (const key in markerClusterGroups) {
+          map.removeLayer(markerClusterGroups[key]);
+          console.log(markerClusterGroups[key].name+' removed');
+        };
         break;
     }
   });
@@ -98,7 +101,8 @@ var populateNetworks = function (networks) {
     map.sidebar.show();
     document.getElementsByClassName("singlenodeonly")[0].style.display =
       "block";
-    document.getElementById("networkName").innerHTML = markerClusterOsmosis.name;
+    document.getElementById("networkName").innerHTML =
+      markerClusterOsmosis.name;
     document.getElementById("markerMoniker").innerHTML =
       a.layer.options.properties.moniker;
     document.getElementById("markerID").innerHTML =
@@ -108,7 +112,8 @@ var populateNetworks = function (networks) {
   });
 
   markerClusterPhoenix.on("click", function (a) {
-    console.log("marker " + a.layer);try {
+    console.log("marker " + a.layer);
+    try {
       if (selected) {
         selected.getAllChildMarkers();
         markerClusterOsmosis.refreshClusters();
@@ -132,7 +137,8 @@ var populateNetworks = function (networks) {
     map.sidebar.show();
     document.getElementsByClassName("singlenodeonly")[0].style.display =
       "block";
-    document.getElementById("networkName").innerHTML = markerClusterPhoenix.name;
+    document.getElementById("networkName").innerHTML =
+      markerClusterPhoenix.name;
     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     document.getElementById("numNodes").innerHTML = ": 1";
   });
@@ -154,9 +160,10 @@ var populateNetworks = function (networks) {
       );
     }
     selected = a.layer;
-    selected._icon.style.backgroundColor='red';
+    selected._icon.style.backgroundColor = "red";
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML = markerClusterOsmosis.name;
+    document.getElementById("networkName").innerHTML =
+      markerClusterOsmosis.name;
     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     console.log("cluster " + a.layer.getAllChildMarkers().length);
     document.getElementById("numNodes").innerHTML =
@@ -181,10 +188,11 @@ var populateNetworks = function (networks) {
       );
     }
     selected = a.layer;
-    
-    selected._icon.style.backgroundColor='red';
+
+    selected._icon.style.backgroundColor = "red";
     map.sidebar.show();
-    document.getElementById("networkName").innerHTML = markerClusterPhoenix.name;
+    document.getElementById("networkName").innerHTML =
+      markerClusterPhoenix.name;
     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
     console.log("cluster " + a.layer.getAllChildMarkers().length);
     document.getElementById("numNodes").innerHTML =
