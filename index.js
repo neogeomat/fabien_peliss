@@ -306,6 +306,15 @@ $(document).ready(function () {
     document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
     document.getElementById("networkName").innerHTML = "ALL NETWORKS";
     selected = null;
+    document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
+    var numNodes = 0;
+    for (const key in markerClusterGroups) {
+      if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+        const element = markerClusterGroups[key];
+        numNodes += element.getLayers().length;
+      }
+    }
+    document.getElementById("numNodes").innerHTML = ": " + numNodes;
     updateTable();
     updateChart();
   });
@@ -438,6 +447,44 @@ function updateTable(){
         }
         break;
       case "DATA CENTER":
+        if(selected){
+          try{
+            var DCS = {};
+            selected.getAllChildMarkers().forEach(a => {
+              // console.log(a);
+              DCS[a.options.properties.as] = DCS[a.options.properties.as] + 1 || 1;
+            });
+            console.table(DCS);
+          }catch(e){
+            // console.error(e);
+            // console.log(selected);
+            if (e instanceof TypeError) {
+              var DCS = {};
+              DCS[selected.options.properties.as] = 1;
+            }
+            console.table(DCS);
+          }
+        }else{
+          var DCS = {};
+          for (const key in markerClusterGroups) {
+            if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+              const element = markerClusterGroups[key];
+              element.getLayers().forEach(a => {
+                DCS[a.options.properties.as] = DCS[a.options.properties.as] + 1 || 1;
+              });
+            }
+          }
+        }
+        for(var key in DCS){
+          var table_row = document.createElement("tr");
+          var table_col1 = document.createElement("td");
+          table_col1.innerHTML = key;
+          var table_col2 = document.createElement("td");
+          table_col2.innerHTML = DCS[key];
+          table_row.appendChild(table_col1);
+          table_row.appendChild(table_col2);
+          table.appendChild(table_row);
+        }
         break;
     };
   }
