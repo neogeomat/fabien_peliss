@@ -305,7 +305,20 @@ $(document).ready(function () {
     // sidebar.hide();
     document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
     document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+    if(selected){
+      try{
+        markerClusterGroups[selected._group.name].refreshClusters();
+      }
+      catch{
+        selected.setIcon(
+          L.icon({
+            iconUrl: "js/img/marker-icon-2x.png",
+            iconSize: [25, 41],
+          })
+        );
+      }
     selected = null;
+    }
     document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
     var numNodes = 0;
     for (const key in markerClusterGroups) {
