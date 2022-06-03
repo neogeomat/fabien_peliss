@@ -16,11 +16,12 @@ var map;
 
         var populateNetworks = function (networks) {
             ns = $("#networkSelector");
+            ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
             for (const [key, value] of Object.entries(networks)) {
                 ns.append(`<option value=${key}>${key}</option>`);
                 // console.log(`${key}: ${value}`);
             }
-            ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
+            
 
             for (const [key, value] of Object.entries(networks)) {
                 markerClusterGroups[key] = L.markerClusterGroup(markerClusterGroupOptions);
@@ -143,7 +144,7 @@ var map;
                     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
                     console.log("cluster " + a.layer.getAllChildMarkers().length);
                     document.getElementById("numNodes").innerHTML =
-                    "S: " + a.layer.getAllChildMarkers().length;
+                     a.layer.getAllChildMarkers().length + "'s ";
                     document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
                     updateTable();
                     // updateChart();
@@ -213,6 +214,7 @@ var map;
 
             function updateTable(){
                 var sele = document.getElementById("dataSelector");
+                
                 if(sele.value){
                     switch(sele.value){
                     case "COUNTRY":
@@ -256,14 +258,8 @@ var map;
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable').DataTable({
-                            data:Object.entries(countriesPro),
-                            columns:[
-                                {title:'COUNTRY'},
-                                {title:'NODES'}
-                            ],
-                            order: [[1, 'desc']],
-                        });
+                        $('#dataTable').DataTable({dom:'itp',searching:false,data:Object.entries(countries),columns:[{title:'COUNTRY'},{title:'NODES'}],
+                            order: [[1, 'desc']]});
                         break;
                     case "ISP":
                         if(selected){
@@ -294,21 +290,13 @@ var map;
                             }
                         }
                         }
-                        for(var key in ISPs){
-                        var table_row = document.createElement("tr");
-                        var table_col1 = document.createElement("td");
-                        table_col1.innerHTML = key;
-                        var table_col2 = document.createElement("td");
-                        table_col2.innerHTML = ISPs[key];
-                        table_row.appendChild(table_col1);
-                        table_row.appendChild(table_col2);
-                        table.appendChild(table_row);
-                        }
+                        
                         if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable').DataTable({data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({dom:'itp',searching:false,data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}],
+                            order: [[1, 'desc']]});
                         break;
                     case "DATA CENTER":
                         if(selected){
@@ -339,22 +327,13 @@ var map;
                             }
                         }
                         }
-                        for(var key in DCS){
-                        var table_row = document.createElement("tr");
-                        var table_col1 = document.createElement("td");
-                        table_col1.innerHTML = key;
-                        var table_col2 = document.createElement("td");
-                        table_col2.innerHTML = DCS[key];
-                        table_row.appendChild(table_col1);
-                        table_row.appendChild(table_col2);
-                        table.appendChild(table_row);
-                        }
                         
-                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                        
+                        if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
-                            $('#dataTable2').DataTable().destroy();
+                            $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable2').DataTable({data:Object.entries(DCS),columns:[{title:'DATA CENTER'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({dom:'itp',searching:false,data:Object.entries(DCS),columns:[{title:'DATA CENTER'},{title:'NODES'}]});
                         break;
                     };
                 }
