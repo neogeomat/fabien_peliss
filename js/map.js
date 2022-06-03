@@ -266,7 +266,11 @@ var map;
                         table_row.appendChild(table_col2);
                         table.appendChild(table_row);
                         }
-                        $('#dataTable2').DataTable({data:Object.entries(countries),columns:[{title:'country'},{title:'node'}]})
+                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                            console.log("table exists");
+                            $('#dataTable2').DataTable().destroy();
+                        }
+                        $('#dataTable2').DataTable({data:Object.entries(countries),columns:[{title:'COUNTRY'},{title:'NODES'}]});
                         break;
                     case "ISP":
                         if(selected){
@@ -307,6 +311,11 @@ var map;
                         table_row.appendChild(table_col2);
                         table.appendChild(table_row);
                         }
+                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                            console.log("table exists");
+                            $('#dataTable2').DataTable().destroy();
+                        }
+                        $('#dataTable2').DataTable({data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}]});
                         break;
                     case "DATA CENTER":
                         if(selected){
@@ -347,6 +356,12 @@ var map;
                         table_row.appendChild(table_col2);
                         table.appendChild(table_row);
                         }
+                        
+                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                            console.log("table exists");
+                            $('#dataTable2').DataTable().destroy();
+                        }
+                        $('#dataTable2').DataTable({data:Object.entries(DCS),columns:[{title:'DATA CENTER'},{title:'NODES'}]});
                         break;
                     };
                 }
