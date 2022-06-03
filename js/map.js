@@ -258,29 +258,34 @@ var map;
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable').DataTable({dom:'itp',searching:false,data:Object.entries(countries),columns:[{title:'COUNTRY'},{title:'NODES'}],
-                            order: [[1, 'desc']]});
+                        $('#dataTable').DataTable({
+                            dom:'itp',
+                            searching:false,
+                            data:Object.entries(countriesPro),
+                            columns:[
+                                {title:'COUNTRY'},
+                                {title:'NODES'}
+                            ],
+                            order: [[1, 'desc']]
+                        });
                         break;
                     case "ISP":
+                        var ISPs = {};
+                        var ISPsPro = {'Others': 0};
                         if(selected){
                         try{
-                            var ISPs = {};
                             selected.getAllChildMarkers().forEach(a => {
-                            // console.log(a);
                             ISPs[a.options.properties.isp] = ISPs[a.options.properties.isp] + 1 || 1;
                             });
                         console.table(ISPs);
                         }catch(e){
-                            // console.error(e);
-                            // console.log(selected);
                             if (e instanceof TypeError) {
-                            var ISPs = {};
-                            ISPs[selected.options.properties.isp] = 1;
+                                ISPs[selected.options.properties.isp] = 1;
                             }
                             console.table(ISPs);
                         }
                         }else{
-                        var ISPs = {};
+                        
                         for (const key in markerClusterGroups) {
                             if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
                             const element = markerClusterGroups[key];
@@ -290,18 +295,37 @@ var map;
                             }
                         }
                         }
-                        
+                        var ISPsSorted = Object.keys(ISPs).sort((a, b) => ISPs[b] - ISPs[a]);
+                        var ISPSum = Object.values(ISPs).reduce((a, b) => a + b, 0);
+                        console.log(ISPSum);
+                        ISPsSorted.reverse().reduce((a, b) => {
+                            if(a<0.02*ISPSum){
+                                ISPsPro['Others'] = ISPsPro['Others'] + ISPs[b] || ISPs[b];
+                                return a+ISPs[b];
+                            }else{
+                                ISPsPro[b] = ISPs[b];
+                                return a+ISPs[b];
+                            }
+                        },1);
                         if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable').DataTable({dom:'itp',searching:false,data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}],
+                        $('#dataTable').DataTable({
+                            dom:'itp',
+                            searching:false,
+                            data:Object.entries(ISPsPro),
+                            columns:[
+                                {title:'ISP'},
+                                {title:'NODES'}
+                            ],
                             order: [[1, 'desc']]});
                         break;
                     case "DATA CENTER":
+                        var DCS = {};
+                        var DCSPro = {'Others': 0};
                         if(selected){
                         try{
-                            var DCS = {};
                             selected.getAllChildMarkers().forEach(a => {
                             // console.log(a);
                             DCS[a.options.properties.as] = DCS[a.options.properties.as] + 1 || 1;
@@ -311,13 +335,11 @@ var map;
                             // console.error(e);
                             // console.log(selected);
                             if (e instanceof TypeError) {
-                            var DCS = {};
                             DCS[selected.options.properties.as] = 1;
                             }
                             console.table(DCS);
                         }
                         }else{
-                        var DCS = {};
                         for (const key in markerClusterGroups) {
                             if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
                             const element = markerClusterGroups[key];
@@ -327,13 +349,31 @@ var map;
                             }
                         }
                         }
-                        
-                        
+                        var DCSSorted = Object.keys(DCS).sort((a, b) => DCS[b] - DCS[a]);
+                        var DCSSum = Object.values(DCS).reduce((a, b) => a + b, 0);
+                        console.log(DCSSum);
+                        DCSSorted.reverse().reduce((a, b) => {
+                            if(a<0.02*DCSSum){
+                                DCSPro['Others'] = DCSPro['Others'] + DCS[b] || DCS[b];
+                                return a+DCS[b];
+                            }else{
+                                DCSPro[b] = DCS[b];
+                                return a+DCS[b];
+                            }
+                        },1);
                         if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable').DataTable({dom:'itp',searching:false,data:Object.entries(DCS),columns:[{title:'DATA CENTER'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({
+                            dom:'itp',
+                            searching:false,
+                            data:Object.entries(DCS),
+                            columns:[
+                                {title:'DATA CENTER'},
+                                {title:'NODES'}
+                            ]
+                        });
                         break;
                     };
                 }
