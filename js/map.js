@@ -212,65 +212,58 @@ var map;
       
 
             function updateTable(){
-                var table = document.getElementById("dataTable");
-                table.innerHTML = "";
-                var table_header_row = document.createElement("tr");
-                var table_header_col1 = document.createElement("th");
-
                 var sele = document.getElementById("dataSelector");
-                table_header_col1.innerHTML = sele.value;
-                var table_header_col2 = document.createElement("th");
-                table_header_col2.innerHTML = "Nodes";
-
-                table_header_row.appendChild(table_header_col1);
-                table_header_row.appendChild(table_header_col2);
-                table.appendChild(table_header_row);
                 if(sele.value){
                     switch(sele.value){
                     case "COUNTRY":
+                        var countries = {};
+                        var countriesPro = {'Others': 0};
                         if(selected){
                         try{
-                            var countries = {};
                             selected.getAllChildMarkers().forEach(a => {
-                            // console.log(a);
                             countries[a.options.properties.country] = countries[a.options.properties.country] + 1 || 1;
                             });
                             console.table(countries);
                         }catch(e){
-                            // console.error(e);
-                            // console.log(selected);
                             if (e instanceof TypeError) {
-                            var countries = {};
-                            countries[selected.options.properties.country] = 1;
+                                countries[selected.options.properties.country] = 1;
                             }
                             console.table(countries);
                         }
                         }else{
-                        var countries = {};
-                        for (const key in markerClusterGroups) {
-                            if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
-                            const element = markerClusterGroups[key];
-                            element.getLayers().forEach(a => {
-                                countries[a.options.properties.country] = countries[a.options.properties.country] + 1 || 1;
-                            });
+                            for (const key in markerClusterGroups) {
+                                if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+                                const element = markerClusterGroups[key];
+                                element.getLayers().forEach(a => {
+                                    countries[a.options.properties.country] = countries[a.options.properties.country] + 1 || 1;
+                                });
+                                }
                             }
                         }
-                        }
-                        for(var key in countries){
-                        var table_row = document.createElement("tr");
-                        var table_col1 = document.createElement("td");
-                        table_col1.innerHTML = key;
-                        var table_col2 = document.createElement("td");
-                        table_col2.innerHTML = countries[key];
-                        table_row.appendChild(table_col1);
-                        table_row.appendChild(table_col2);
-                        table.appendChild(table_row);
-                        }
-                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                        var countriesSorted = Object.keys(countries).sort((a, b) => countries[b] - countries[a]);
+                        var countriesSum = Object.values(countries).reduce((a, b) => a + b, 0);
+                        console.log(countriesSum);
+                        countriesSorted.reverse().reduce((a, b) => {
+                            if(a<0.02*countriesSum){
+                                countriesPro['Others'] = countriesPro['Others'] + countries[b] || countries[b];
+                                return a+countries[b];
+                            }else{
+                                countriesPro[b] = countries[b];
+                                return a+countries[b];
+                            }
+                        },1);
+                        if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
-                            $('#dataTable2').DataTable().destroy();
+                            $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable2').DataTable({data:Object.entries(countries),columns:[{title:'COUNTRY'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({
+                            data:Object.entries(countriesPro),
+                            columns:[
+                                {title:'COUNTRY'},
+                                {title:'NODES'}
+                            ],
+                            order: [[1, 'desc']],
+                        });
                         break;
                     case "ISP":
                         if(selected){
@@ -311,11 +304,11 @@ var map;
                         table_row.appendChild(table_col2);
                         table.appendChild(table_row);
                         }
-                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                        if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
-                            $('#dataTable2').DataTable().destroy();
+                            $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable2').DataTable({data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}]});
                         break;
                     case "DATA CENTER":
                         if(selected){
