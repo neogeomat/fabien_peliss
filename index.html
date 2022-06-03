@@ -1,59 +1,115 @@
+
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>leaflet-sidebar example</title>
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <link rel="stylesheet" href="/style/leaflet-1.0.3.css" />
-    <link rel="stylesheet" href="/style/L.Control.Sidebar.css" />
-    <link rel="stylesheet" href="/style/MarkerCluster.css" />
-    <link rel="stylesheet" href="/style/MarkerCluster.Default.css" />
-    <!--[if lte IE 8
-      ]><link
-        rel="stylesheet"
-        href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css"
-    /><![endif]-->
-    <style></style>
-    <link rel="stylesheet" href="index.css">
-  </head>
-  <body>
-    <div id="sidebar">
-      <div id="networkName">ALL NETWORKS</div>
-      <div>
-        <span>STATS FOR THE </span><span id='statsFor'>WHOLE WORLD:</span></br>
-        <span>NUMBER OF NODE</span><span id="numNodes">XXX</span>
-        <div class="singlenodeonly hidden">
-          <span>[MONIKER:</span><span id="markerMoniker">XXX</span><span></br> ID:</span><span id="markerID"></span>
+<head>
+    <title>sidebar-v2 example</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+        crossorigin=""/>
+
+    <link rel="stylesheet" href="css/leaflet-sidebar.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+    <!-- DataTables -->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+        }
+
+        html, body, #map {
+            height: 100%;
+            font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+        }
+
+        #networkSelector {
+            position: absolute;
+            top: 20px;
+            left: calc(50% - 50px);
+            z-index: 500;
+            }
+    </style>
+</head>
+<body>
+    <!-- optionally define the sidebar content via HTML markup -->
+    <div id="sidebar" class="leaflet-sidebar collapsed">
+
+        <!-- nav tabs -->
+        <div class="leaflet-sidebar-tabs">
+            <!-- top aligned tabs -->
+            <ul role="tablist">
+                <li><a href="#home" role="tab"><i class="fa fa-bars active"></i></a></li>
+            </ul>
+
+            
         </div>
-        <div>
-          <select id="dataSelector">
-            <option value="COUNTRY">COUNTRY</option>
-            <option value="ISP">ISP</option>
-            <option value="DATA CENTER">DATA CENTER</option>
-          </select>
-          <table id="dataTable">
-          </table>
+
+        <!-- panel content -->
+        <div class="leaflet-sidebar-content">
+            <div class="leaflet-sidebar-pane" id="home">
+                <h1 id="networkName" class="leaflet-sidebar-header">
+                    ALL NETWORKS
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <div class="container-fluid">
+                    <div class="row">
+                      <div class="col-sm-12 col-md-12">
+                        <span>STATS FOR THE </span><span id='statsFor'>WHOLE WORLD:</span></br>
+                        <span>NUMBER OF NODE</span><span id="numNodes">XXX</span>
+                        <div class="singlenodeonly hidden">
+                        <span>[MONIKER:</span><span id="markerMoniker">XXX</span><span></br> ID:</span><span id="markerID"></span>
+                        </div>
+                        <div>
+                        <select id="dataSelector">
+                            <option value="COUNTRY">COUNTRY</option>
+                            <option value="ISP">ISP</option>
+                            <option value="DATA CENTER">DATA CENTER</option>
+                        </select>
+                        <table id="dataTable" >
+                          <tbody>
+                            <tr><td>asdf</td><td>node</td></tr>
+                          </tbody>
+                        </table>
+                        </div>
+              
+                      </div>
+                      
+                    </div>
+                  </div>
+                
+
+            </div>
+
+           
+
         </div>
-      </div>
     </div>
     <select id="networkSelector">
-      <option hidden disabled selected value>-- select an option --</option>
-    </select>
+        <option hidden disabled selected value>-- select an option --</option>
+      </select>
     <div id="map"></div>
 
-    <!-- <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script> -->
-    <script src="js/leaflet-src-1.0.3.js"></script>
     <script src="js/jquery.min.js"></script>
-    <!-- <script src="js/jquery-ui.min.js"></script> -->
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/leaflet-providers.js"></script>
-    <!-- <script src="js/leaflet.markercluster.js"></script> -->
-    <script src="js/leaflet.markercluster-src-1.0.3.js"></script>
-    <script src="js/L.Control.Sidebar.js"></script>
-    <script src="index.js"></script>
 
-    <script></script>
-  </body>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        crossorigin=""></script>
+    <script src="js/leaflet-sidebar.js"></script>
+    <script src="js/leaflet.markercluster-src-1.0.3.js"></script>
+
+    <!-- DataTables  & Plugins -->
+    <script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+    <script src="js/map.js"></script>
+    <script>
+                // $(document).ready( function () {
+                //     $('#dataTable').DataTable();
+                // } );
+    </script>
+</body>
 </html>
