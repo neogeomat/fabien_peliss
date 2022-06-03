@@ -266,6 +266,7 @@ var map;
                         table_row.appendChild(table_col2);
                         table.appendChild(table_row);
                         }
+                        $('#dataTable2').DataTable({data:Object.entries(countries),columns:[{title:'country'},{title:'node'}]})
                         break;
                     case "ISP":
                         if(selected){
