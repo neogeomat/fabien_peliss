@@ -58,7 +58,7 @@ var populateNetworks = function (networks) {
     markerClusterGroups[key].name = key;
   }
   
-  var urlLayer = getUrlParam('l', 'all');
+  var urlLayer = getUrlParam('n', 'all');
   if (urlLayer === 'all') {
     for (const [key, value] of Object.entries(networks)) {
       markerClusterGroups[key].addTo(map);
