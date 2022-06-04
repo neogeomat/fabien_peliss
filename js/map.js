@@ -16,11 +16,12 @@ var map;
 
         var populateNetworks = function (networks) {
             ns = $("#networkSelector");
+            ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
             for (const [key, value] of Object.entries(networks)) {
                 ns.append(`<option value=${key}>${key}</option>`);
                 // console.log(`${key}: ${value}`);
             }
-            ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
+            
 
             for (const [key, value] of Object.entries(networks)) {
                 markerClusterGroups[key] = L.markerClusterGroup(markerClusterGroupOptions);
@@ -143,7 +144,7 @@ var map;
                     document.getElementById("statsFor").innerHTML = "SELECTED NODE";
                     console.log("cluster " + a.layer.getAllChildMarkers().length);
                     document.getElementById("numNodes").innerHTML =
-                    "S: " + a.layer.getAllChildMarkers().length;
+                     a.layer.getAllChildMarkers().length + "'s ";
                     document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
                     updateTable();
                     // updateChart();
