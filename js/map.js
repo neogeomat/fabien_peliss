@@ -56,17 +56,20 @@ var populateNetworks = function (networks) {
       );
     });
     markerClusterGroups[key].name = key;
-    markerClusterGroups[key].addTo(map);
   }
   
   var urlLayer = getUrlParam('l', 'all');
   if (urlLayer === 'all') {
     for (const [key, value] of Object.entries(networks)) {
       markerClusterGroups[key].addTo(map);
+      document.getElementById("networkSelector").value = 'all';
+      updateTable();
     }
   } else {
     if(markerClusterGroups.hasOwnProperty(urlLayer)) {
       markerClusterGroups[urlLayer].addTo(map);
+      document.getElementById("networkSelector").value = urlLayer;
+      updateTable();
     }else{
       alert(`${urlLayer} is not a valid network`);
     }
