@@ -28,9 +28,13 @@ var map;
                 networks[key].forEach(function (location) {
                 markerClusterGroups[key].addLayer(
                     L.marker([location.lat, location.lon], {
-                    icon: L.icon({
-                        iconUrl: "js/img/marker-icon-2x.png",
-                        iconSize: [25, 41],
+                    icon: L.BeautifyIcon.icon({
+                        isAlphaNumericIcon: true,
+                        text: key[0].toLocaleUpperCase(),
+                        iconShape: 'marker', 
+                        borderColor: '#00ABDC', 
+                        textColor: '#00ABDC', 
+                        innerIconStyle: 'margin-top:0;'
                     }),
                     properties: location,
                     })
