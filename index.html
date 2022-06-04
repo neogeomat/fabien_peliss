@@ -6,7 +6,7 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <!-- Bootstrap core CSS -->
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
         crossorigin=""/>
@@ -52,34 +52,37 @@
         <!-- panel content -->
         <div class="leaflet-sidebar-content">
             <div class="leaflet-sidebar-pane" id="home">
-                <h1 id="networkName" class="leaflet-sidebar-header">
-                    ALL NETWORKS
+                <h1 class="leaflet-sidebar-header">
+                    <span id="networkName">ALL NETWORKS</span>
                     <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
-                <div class="container-fluid">
+                <div>
                     <div class="row">
                       <div class="col-sm-12 col-md-12">
-                        <span>STATS FOR THE </span><span id='statsFor'>WHOLE WORLD:</span></br>
-                        <span>NUMBER OF NODE</span><span id="numNodes">XXX</span>
-                        <div class="singlenodeonly hidden">
-                        <span>[MONIKER:</span><span id="markerMoniker">XXX</span><span></br> ID:</span><span id="markerID"></span>
-                        </div>
-                        <div>
-                        <select id="dataSelector" onclick="updateTable()">
-                            <option value="COUNTRY">COUNTRY</option>
-                            <option value="ISP">ISP</option>
-                            <option value="DATA CENTER">DATA CENTER</option>
-                        </select>
-                        <table id="dataTable" >
-                          <tbody>
-                            <tr><td>asdf</td><td>node</td></tr>
-                          </tbody>
-                        </table>
-                        <table id="dataTable2" ></table>
+                        <dl class="row">
+                            <dt class="col-md-6">STATS FOR THE </dt><dt class="col-md-6"><span id='statsFor'>WHOLE WORLD:</span></dt>
+                            <dt class="col-md-6">NUMBER OF NODE</dt><dt class="col-md-6"><span id="numNodes">XXX</span></dt>
+                            <dt class="col-md-8 singlenodeonly hidden">
+                            <span>[MONIKER:</span><span id="markerMoniker">XXX</span><span></br> ID:</span><span id="markerID"></span>
+                            </dt>
+                        </dl>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <select id="dataSelector" onclick="updateTable()" class="form-control">
+                                    <option value="COUNTRY">COUNTRY</option>
+                                    <option value="ISP">ISP</option>
+                                    <option value="DATA CENTER">DATA CENTER</option>
+                                </select>
+                            </div>
+                            <div class="container col-md-12">
+                                <table id="dataTable" class="table table-hover" >
+                                
+                                </table>
+                            </div>
                         </div>
               
                       </div>
-                      
+
                     </div>
                   </div>
                 
@@ -90,13 +93,23 @@
 
         </div>
     </div>
-    <select id="networkSelector">
-        <option hidden disabled selected value>-- select an option --</option>
-      </select>
-    <div id="map"></div>
+    
+    <div id="map"><div class="form-group row">
+        <div class="col-xs-5">       
+          
+        </div>
+        <div class="col-xs-2">
+            <select id="networkSelector" class="form-control">
+                <option hidden disabled selected value>-- select an option --</option>
+              </select>
+        </div>
+        <div class="col-xs-5">
+          
+        </div>
+      </div></div>
 
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
         crossorigin=""></script>

@@ -212,19 +212,10 @@ var map;
       
 
             function updateTable(){
-                var table = document.getElementById("dataTable");
-                table.innerHTML = "";
-                var table_header_row = document.createElement("tr");
-                var table_header_col1 = document.createElement("th");
+                
 
                 var sele = document.getElementById("dataSelector");
-                table_header_col1.innerHTML = sele.value;
-                var table_header_col2 = document.createElement("th");
-                table_header_col2.innerHTML = "Nodes";
-
-                table_header_row.appendChild(table_header_col1);
-                table_header_row.appendChild(table_header_col2);
-                table.appendChild(table_header_row);
+                
                 if(sele.value){
                     switch(sele.value){
                     case "COUNTRY":
@@ -256,21 +247,12 @@ var map;
                             }
                         }
                         }
-                        for(var key in countries){
-                        var table_row = document.createElement("tr");
-                        var table_col1 = document.createElement("td");
-                        table_col1.innerHTML = key;
-                        var table_col2 = document.createElement("td");
-                        table_col2.innerHTML = countries[key];
-                        table_row.appendChild(table_col1);
-                        table_row.appendChild(table_col2);
-                        table.appendChild(table_row);
-                        }
-                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                        
+                        if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
-                            $('#dataTable2').DataTable().destroy();
+                            $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable2').DataTable({data:Object.entries(countries),columns:[{title:'COUNTRY'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({dom:'t',searching:false,data:Object.entries(countries),columns:[{title:'COUNTRY'},{title:'NODES'}]});
                         break;
                     case "ISP":
                         if(selected){
@@ -301,21 +283,12 @@ var map;
                             }
                         }
                         }
-                        for(var key in ISPs){
-                        var table_row = document.createElement("tr");
-                        var table_col1 = document.createElement("td");
-                        table_col1.innerHTML = key;
-                        var table_col2 = document.createElement("td");
-                        table_col2.innerHTML = ISPs[key];
-                        table_row.appendChild(table_col1);
-                        table_row.appendChild(table_col2);
-                        table.appendChild(table_row);
-                        }
-                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                        
+                        if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
-                            $('#dataTable2').DataTable().destroy();
+                            $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable2').DataTable({data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({dom:'t',searching:false,data:Object.entries(ISPs),columns:[{title:'ISP'},{title:'NODES'}]});
                         break;
                     case "DATA CENTER":
                         if(selected){
@@ -346,22 +319,13 @@ var map;
                             }
                         }
                         }
-                        for(var key in DCS){
-                        var table_row = document.createElement("tr");
-                        var table_col1 = document.createElement("td");
-                        table_col1.innerHTML = key;
-                        var table_col2 = document.createElement("td");
-                        table_col2.innerHTML = DCS[key];
-                        table_row.appendChild(table_col1);
-                        table_row.appendChild(table_col2);
-                        table.appendChild(table_row);
-                        }
                         
-                        if ( $.fn.dataTable.isDataTable( '#dataTable2' ) ) {
+                        
+                        if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
-                            $('#dataTable2').DataTable().destroy();
+                            $('#dataTable').DataTable().destroy();
                         }
-                        $('#dataTable2').DataTable({data:Object.entries(DCS),columns:[{title:'DATA CENTER'},{title:'NODES'}]});
+                        $('#dataTable').DataTable({dom:'t',searching:false,data:Object.entries(DCS),columns:[{title:'DATA CENTER'},{title:'NODES'}]});
                         break;
                     };
                 }
