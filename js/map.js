@@ -29,13 +29,14 @@ var populateNetworks = function (networks) {
         L.marker([location.lat, location.lon], {
           icon: L.BeautifyIcon.icon({
             isAlphaNumericIcon: true,
-            text: key[0].toLocaleUpperCase(),
+            text: key.slice(0,3).toLocaleUpperCase(),
             iconShape: "marker",
             borderColor: "#00ABDC",
             textColor: "#00ABDC",
             innerIconStyle: "margin-top:0;",
           }),
           properties: location,
+          belongs_to: key,
         })
       );
     });
@@ -93,18 +94,26 @@ var populateNetworks = function (networks) {
         } catch (e) {
           console.log(e);
           selected.setIcon(
-            L.icon({
-              iconUrl: "js/img/marker-icon-2x.png",
-              iconSize: [25, 41],
-            })
+            L.BeautifyIcon.icon({
+                isAlphaNumericIcon: true,
+                text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
+                iconShape: "marker",
+                borderColor: "#00ABDC",
+                textColor: "#00ABDC",
+                innerIconStyle: "margin-top:0;",
+              })
           );
         }
         selected = a.layer;
         selected.setIcon(
-          L.icon({
-            iconUrl: "js/img/marker-icon-2x-selected.png",
-            iconSize: [25, 41],
-          })
+            L.BeautifyIcon.icon({
+                isAlphaNumericIcon: true,
+                text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
+                iconShape: "marker",
+                borderColor: "#red",
+                textColor: "red",
+                innerIconStyle: "margin-top:0;",
+              })
         );
 
         document.getElementsByClassName("singlenodeonly")[0].style.display =
@@ -130,12 +139,16 @@ var populateNetworks = function (networks) {
             markerClusterGroups[key].refreshClusters();
           }
         } catch (e) {
-          console.log(e);
+          console.err(e);
           selected.setIcon(
-            L.icon({
-              iconUrl: "js/img/marker-icon-2x.png",
-              iconSize: [25, 41],
-            })
+            L.BeautifyIcon.icon({
+                isAlphaNumericIcon: true,
+                text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
+                iconShape: "marker",
+                borderColor: "#00ABDC",
+                textColor: "#00ABDC",
+                innerIconStyle: "margin-top:0;",
+              })
           );
         }
         selected = a.layer;
