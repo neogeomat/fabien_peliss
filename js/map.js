@@ -57,7 +57,8 @@ var populateNetworks = function (networks) {
     }
   }
   
-  ns.click((evt) => {
+  ns.change((evt) => {
+    evt.stopPropagation();
     console.log(evt.target.value);
     switch (evt.target.value) {
       case "osmosis-1":
@@ -66,6 +67,7 @@ var populateNetworks = function (networks) {
           console.log(markerClusterGroups[key].name + " removed");
         }
         map.addLayer(markerClusterGroups[evt.target.value]);
+        updateTable();
         break;
       case "phoenix-1":
         for (const key in markerClusterGroups) {
@@ -73,6 +75,7 @@ var populateNetworks = function (networks) {
           console.log(markerClusterGroups[key].name + " removed");
         }
         map.addLayer(markerClusterGroups[evt.target.value]);
+        updateTable();
         break;
       case "all":
         for (const key in markerClusterGroups) {
@@ -83,15 +86,16 @@ var populateNetworks = function (networks) {
           map.addLayer(markerClusterGroups[key]);
           console.log(markerClusterGroups[key].name + " added");
         }
+        updateTable();
         break;
       default:
         for (const key in markerClusterGroups) {
           map.removeLayer(markerClusterGroups[key]);
           console.log(markerClusterGroups[key].name + " removed");
         }
+        updateTable();
         break;
     }
-    updateTable();
   });
 
   // click handlings
@@ -185,6 +189,7 @@ var populateNetworks = function (networks) {
       });
     }
   }
+  updateTable();
 };
 // standard leaflet map setup
 $(document).ready(function () {
@@ -199,7 +204,7 @@ $(document).ready(function () {
     .addTo(map)
     .open("home");
 
-  map.on("click", function () {
+  map.on("click", function (evt) {
     // sidebar.hide();
     document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
     document.getElementById("networkName").innerHTML = "ALL NETWORKS";
@@ -244,7 +249,6 @@ $(document).ready(function () {
       console.warn(et);
     },
   });
-
 
   //-------------
     //- PIE CHART -
@@ -365,7 +369,45 @@ $(document).ready(function () {
 
 function updateTable() {
   var sele = document.getElementById("dataSelector");
+  var network = document.getElementById("networkSelector").value;
 
+  if(!network) {
+    if(!selected) {
+      console.log("no network selected");
+      document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
+      document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+      document.getElementById("plural").innerHTML = "S";
+      if (selected) {
+        try {
+          markerClusterGroups[selected._group.name].refreshClusters();
+        } catch (e) {
+          console.log(e);
+          selected.setIcon(
+              L.BeautifyIcon.icon({
+                  isAlphaNumericIcon: true,
+                  text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
+                  iconShape: "marker",
+                  borderColor: "#00ABDC",
+                  textColor: "#00ABDC",
+                  innerIconStyle: "margin-top:0;",
+                })
+          );
+        }
+        selected = null;
+      }
+      document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
+      var numNodes = 0;
+      for (const key in markerClusterGroups) {
+        if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+          const element = markerClusterGroups[key];
+          numNodes += element.getLayers().length;
+        }
+      }
+      document.getElementById("numNodes").innerHTML = ": " + numNodes;
+    }
+  }
+
+// debugger;
   if (sele.value) {
     switch (sele.value) {
       case "COUNTRY":
@@ -385,13 +427,22 @@ function updateTable() {
             console.table(countries);
           }
         } else {
-          for (const key in markerClusterGroups) {
-            if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
-              const element = markerClusterGroups[key];
-              element.getLayers().forEach((a) => {
-                countries[a.options.properties.country] =
-                  countries[a.options.properties.country] + 1 || 1;
-              });
+          if(network && network != "all") {
+            const element = markerClusterGroups[network];
+            element.getLayers().forEach((a) => {
+              countries[a.options.properties.country] =
+                countries[a.options.properties.country] + 1 || 1;
+            });
+            console.table(countries);
+          } else {
+            for (const key in markerClusterGroups) {
+              if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+                const element = markerClusterGroups[key];
+                element.getLayers().forEach((a) => {
+                  countries[a.options.properties.country] =
+                    countries[a.options.properties.country] + 1 || 1;
+                });
+              }
             }
           }
         }
@@ -410,6 +461,9 @@ function updateTable() {
             return a + countries[b];
           }
         }, 0);
+
+        document.getElementById("networkName").innerHTML = network;
+        document.getElementById("numNodes").innerHTML = countriesSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           console.log("table exists");
           $("#dataTable").DataTable().destroy();
@@ -439,13 +493,22 @@ function updateTable() {
             console.table(ISPs);
           }
         } else {
-          for (const key in markerClusterGroups) {
-            if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
-              const element = markerClusterGroups[key];
-              element.getLayers().forEach((a) => {
-                ISPs[a.options.properties.isp] =
-                  ISPs[a.options.properties.isp] + 1 || 1;
-              });
+          if(network && network != "all") {
+            const element = markerClusterGroups[network];
+            element.getLayers().forEach((a) => {
+              ISPs[a.options.properties.isp] =
+                ISPs[a.options.properties.isp] + 1 || 1;
+            });
+            console.table(ISPs);
+          } else {
+            for (const key in markerClusterGroups) {
+              if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+                const element = markerClusterGroups[key];
+                element.getLayers().forEach((a) => {
+                  ISPs[a.options.properties.isp] =
+                    ISPs[a.options.properties.isp] + 1 || 1;
+                });
+              }
             }
           }
         }
@@ -461,6 +524,9 @@ function updateTable() {
             return a + ISPs[b];
           }
         }, 0);
+
+        document.getElementById("networkName").innerHTML = network;
+        document.getElementById("numNodes").innerHTML = ISPSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           console.log("table exists");
           $("#dataTable").DataTable().destroy();
@@ -490,13 +556,22 @@ function updateTable() {
             console.table(DCS);
           }
         } else {
-          for (const key in markerClusterGroups) {
-            if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
-              const element = markerClusterGroups[key];
-              element.getLayers().forEach((a) => {
-                DCS[a.options.properties.as] =
-                  DCS[a.options.properties.as] + 1 || 1;
-              });
+          if(network && network != "all") {
+            const element = markerClusterGroups[network];
+            element.getLayers().forEach((a) => {
+              DCS[a.options.properties.as] =
+                DCS[a.options.properties.as] + 1 || 1;
+            });
+            console.table(DCS);
+          } else {
+            for (const key in markerClusterGroups) {
+              if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+                const element = markerClusterGroups[key];
+                element.getLayers().forEach((a) => {
+                  DCS[a.options.properties.as] =
+                    DCS[a.options.properties.as] + 1 || 1;
+                });
+              }
             }
           }
         }
@@ -512,6 +587,9 @@ function updateTable() {
             return a + DCS[b];
           }
         }, 0);
+
+        document.getElementById("networkName").innerHTML = network;
+        document.getElementById("numNodes").innerHTML = DCSSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           console.log("table exists");
           $("#dataTable").DataTable().destroy();
@@ -519,7 +597,7 @@ function updateTable() {
         $("#dataTable").DataTable({
           dom: "itp",
           searching: false,
-          data: Object.entries(DCS),
+          data: Object.entries(DCSPro),
           columns: [{ title: "DATA CENTER" }, { title: "NODES" }],
         });
         break;
