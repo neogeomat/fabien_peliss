@@ -29,7 +29,7 @@ var populateNetworks = function (networks) {
         L.marker([location.lat, location.lon], {
           icon: L.BeautifyIcon.icon({
             isAlphaNumericIcon: true,
-            text: key.slice(0,3).toLocaleUpperCase(),
+            text: key.slice(0, 3).toLocaleUpperCase(),
             iconShape: "marker",
             borderColor: "#00ABDC",
             textColor: "#00ABDC",
@@ -41,8 +41,22 @@ var populateNetworks = function (networks) {
       );
     });
     markerClusterGroups[key].name = key;
+    markerClusterGroups[key].addTo(map);
   }
-
+  
+  var urlLayer = getUrlParam('l', 'all');
+  if (urlLayer === 'all') {
+    for (const [key, value] of Object.entries(networks)) {
+      markerClusterGroups[key].addTo(map);
+    }
+  } else {
+    if(markerClusterGroups.hasOwnProperty(urlLayer)) {
+      markerClusterGroups[urlLayer].addTo(map);
+    }else{
+      alert(`${urlLayer} is not a valid network`);
+    }
+  }
+  
   ns.click((evt) => {
     console.log(evt.target.value);
     switch (evt.target.value) {
@@ -77,6 +91,7 @@ var populateNetworks = function (networks) {
         }
         break;
     }
+    updateTable();
   });
 
   // click handlings
@@ -95,25 +110,25 @@ var populateNetworks = function (networks) {
           console.log(e);
           selected.setIcon(
             L.BeautifyIcon.icon({
-                isAlphaNumericIcon: true,
-                text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
-                iconShape: "marker",
-                borderColor: "#00ABDC",
-                textColor: "#00ABDC",
-                innerIconStyle: "margin-top:0;",
-              })
+              isAlphaNumericIcon: true,
+              text: selected.options.belongs_to.slice(0, 3).toLocaleUpperCase(),
+              iconShape: "marker",
+              borderColor: "#00ABDC",
+              textColor: "#00ABDC",
+              innerIconStyle: "margin-top:0;",
+            })
           );
         }
         selected = a.layer;
         selected.setIcon(
-            L.BeautifyIcon.icon({
-                isAlphaNumericIcon: true,
-                text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
-                iconShape: "marker",
-                borderColor: "#red",
-                textColor: "red",
-                innerIconStyle: "margin-top:0;",
-              })
+          L.BeautifyIcon.icon({
+            isAlphaNumericIcon: true,
+            text: selected.options.belongs_to.slice(0, 3).toLocaleUpperCase(),
+            iconShape: "marker",
+            borderColor: "#red",
+            textColor: "red",
+            innerIconStyle: "margin-top:0;",
+          })
         );
 
         document.getElementsByClassName("singlenodeonly")[0].style.display =
@@ -142,13 +157,13 @@ var populateNetworks = function (networks) {
           console.log(e);
           selected.setIcon(
             L.BeautifyIcon.icon({
-                isAlphaNumericIcon: true,
-                text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
-                iconShape: "marker",
-                borderColor: "#00ABDC",
-                textColor: "#00ABDC",
-                innerIconStyle: "margin-top:0;",
-              })
+              isAlphaNumericIcon: true,
+              text: selected.options.belongs_to.slice(0, 3).toLocaleUpperCase(),
+              iconShape: "marker",
+              borderColor: "#00ABDC",
+              textColor: "#00ABDC",
+              innerIconStyle: "margin-top:0;",
+            })
           );
         }
         selected = a.layer;
@@ -188,11 +203,16 @@ $(document).ready(function () {
     if (selected) {
       try {
         markerClusterGroups[selected._group.name].refreshClusters();
-      } catch {
+      } catch (e) {
+        console.log(e);
         selected.setIcon(
-          L.icon({
-            iconUrl: "js/img/marker-icon-2x.png",
-            iconSize: [25, 41],
+          L.BeautifyIcon.icon({
+            isAlphaNumericIcon: true,
+            text: selected.options.belongs_to.slice(0, 3).toLocaleUpperCase(),
+            iconShape: "marker",
+            borderColor: "#00ABDC",
+            textColor: "#00ABDC",
+            innerIconStyle: "margin-top:0;",
           })
         );
       }
@@ -385,5 +405,25 @@ function updateTable() {
         });
         break;
     }
+  }
+}
+
+function getUrlVars() {
+  var vars = {};
+  var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m,key,value) {
+      vars[key] = value;
+  });
+  return vars;
+}
+function getUrlParam(parameter, defaultvalue) {
+  var urlparameter = defaultvalue;
+  if (window.location.href.indexOf(parameter) > -1) {
+    urlparameter = getUrlVars()[parameter];
+  }
+  console.log(urlparameter);
+  if (urlparameter !== undefined) {
+    return urlparameter;
+  } else {
+    return defaultvalue;
   }
 }
