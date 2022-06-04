@@ -1,6 +1,7 @@
 var map;
 var overlay;
 var selected = null;
+var mychart;
 
 markerClusterGroupOptions = {
   chunkedLoading: true,
@@ -13,7 +14,21 @@ var markerClusterGroups = {};
 var markerClusterOsmosis = L.markerClusterGroup(markerClusterGroupOptions);
 
 var markerClusterPhoenix = L.markerClusterGroup(markerClusterGroupOptions);
-
+function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+  function getnumberofcolors(num){
+      var colors = [];
+      for(var i=0;i<num;i++){
+          colors.push(getRandomColor());
+      }
+      return colors;
+  }
 var populateNetworks = function (networks) {
   ns = $("#networkSelector");
   ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
@@ -230,27 +245,24 @@ $(document).ready(function () {
     //- PIE CHART -
     //-------------
     // Get context with jQuery - using jQuery's .get() method.
-    var donutData        = {
-        labels: [
-            'Chrome',
-            'IE',
-            'FireFox',
-            'Safari',
-            'Opera',
-            'Navigator',
-        ],
-        datasets: [
-          {
-            data: [700,500,400,600,300,100],
-            backgroundColor : ['#f56954', '#00a65a', '#f39c12', '#00c0ef', '#3c8dbc', '#d2d6de'],
-          }
-        ]
-      }
+    var donutData        
     var pieChartCanvas = $('#pieChart').get(0).getContext('2d')
-    var pieData        = donutData;
+    var pieData        = {
+                        labels: [
+                        ],
+                        datasets: [
+                        {
+                            data: [],
+                            backgroundColor : [],
+                        }
+                        ]
+                    };
     var pieOptions     = {
       maintainAspectRatio : false,
       responsive : true,
+      legend: {
+            display: false
+        },
       plugins: {
         labels: {
           // render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
@@ -333,7 +345,7 @@ $(document).ready(function () {
     }
     //Create pie or douhnut chart
     // You can switch between pie and douhnut using the method below.
-    new Chart(pieChartCanvas, {
+    mychart =new Chart(pieChartCanvas, {
       type: 'pie',
       data: pieData,
       options: pieOptions
@@ -401,6 +413,17 @@ function updateTable() {
           columns: [{ title: "COUNTRY" }, { title: "NODES" }],
           order: [[1, "desc"]],
         });
+        var lbl = new Array();
+        var vl = new Array();
+        $.each(countriesPro, function(k,v){
+            lbl.push(k);
+            vl.push(v);
+        });
+        // console.log(lbl);
+        mychart.data.labels = lbl;
+        mychart.data.datasets[0].data = vl;
+        mychart.data.datasets[0].backgroundColor = getnumberofcolors(vl.length);
+        mychart.update();
         break;
       case "ISP":
         var ISPs = {};
@@ -452,6 +475,17 @@ function updateTable() {
           columns: [{ title: "ISP" }, { title: "NODES" }],
           order: [[1, "desc"]],
         });
+        var lbl = new Array();
+        var vl = new Array();
+        $.each(ISPsPro, function(k,v){
+            lbl.push(k);
+            vl.push(v);
+        });
+        // console.log(lbl);
+        mychart.data.labels = lbl;
+        mychart.data.datasets[0].data = vl;
+        mychart.data.datasets[0].backgroundColor = getnumberofcolors(vl.length);
+        mychart.update();
         break;
       case "DATA CENTER":
         var DCS = {};
@@ -502,6 +536,17 @@ function updateTable() {
           data: Object.entries(DCS),
           columns: [{ title: "DATA CENTER" }, { title: "NODES" }],
         });
+        var lbl = new Array();
+        var vl = new Array();
+        $.each(DCS, function(k,v){
+            lbl.push(k);
+            vl.push(v);
+        });
+        // console.log(lbl);
+        mychart.data.labels = lbl;
+        mychart.data.datasets[0].data = vl;
+        mychart.data.datasets[0].backgroundColor = getnumberofcolors(vl.length);
+        mychart.update();
         break;
     }
   }
