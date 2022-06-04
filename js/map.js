@@ -245,15 +245,15 @@ var map;
                         var countriesSorted = Object.keys(countries).sort((a, b) => countries[b] - countries[a]);
                         var countriesSum = Object.values(countries).reduce((a, b) => a + b, 0);
                         console.log(countriesSum);
-                        countriesSorted.reverse().reduce((a, b) => {
-                            if(a<0.02*countriesSum){
+                        countriesSorted.reduce((a, b) => {
+                            if(a>0.98*countriesSum){
                                 countriesPro['Others'] = countriesPro['Others'] + countries[b] || countries[b];
                                 return a+countries[b];
                             }else{
                                 countriesPro[b] = countries[b];
                                 return a+countries[b];
                             }
-                        },1);
+                        },0);
                         if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
@@ -298,15 +298,15 @@ var map;
                         var ISPsSorted = Object.keys(ISPs).sort((a, b) => ISPs[b] - ISPs[a]);
                         var ISPSum = Object.values(ISPs).reduce((a, b) => a + b, 0);
                         console.log(ISPSum);
-                        ISPsSorted.reverse().reduce((a, b) => {
-                            if(a<0.02*ISPSum){
+                        ISPsSorted.reduce((a, b) => {
+                            if(a>0.98*ISPSum){
                                 ISPsPro['Others'] = ISPsPro['Others'] + ISPs[b] || ISPs[b];
                                 return a+ISPs[b];
                             }else{
                                 ISPsPro[b] = ISPs[b];
                                 return a+ISPs[b];
                             }
-                        },1);
+                        },0);
                         if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
@@ -327,13 +327,10 @@ var map;
                         if(selected){
                         try{
                             selected.getAllChildMarkers().forEach(a => {
-                            // console.log(a);
                             DCS[a.options.properties.as] = DCS[a.options.properties.as] + 1 || 1;
                             });
                             console.table(DCS);
                         }catch(e){
-                            // console.error(e);
-                            // console.log(selected);
                             if (e instanceof TypeError) {
                             DCS[selected.options.properties.as] = 1;
                             }
@@ -352,15 +349,15 @@ var map;
                         var DCSSorted = Object.keys(DCS).sort((a, b) => DCS[b] - DCS[a]);
                         var DCSSum = Object.values(DCS).reduce((a, b) => a + b, 0);
                         console.log(DCSSum);
-                        DCSSorted.reverse().reduce((a, b) => {
-                            if(a<0.02*DCSSum){
+                        DCSSorted.reduce((a, b) => {
+                            if(a>0.98*DCSSum){
                                 DCSPro['Others'] = DCSPro['Others'] + DCS[b] || DCS[b];
                                 return a+DCS[b];
                             }else{
                                 DCSPro[b] = DCS[b];
                                 return a+DCS[b];
                             }
-                        },1);
+                        },0);
                         if ( $.fn.dataTable.isDataTable( '#dataTable' ) ) {
                             console.log("table exists");
                             $('#dataTable').DataTable().destroy();
