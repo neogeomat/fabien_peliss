@@ -119,7 +119,7 @@ var populateNetworks = function (networks) {
         document.getElementsByClassName("singlenodeonly")[0].style.display =
           "block";
         document.getElementById("networkName").innerHTML =
-          markerClusterOsmosis.name;
+          markerClusterGroups[key].name;
         document.getElementById("markerMoniker").innerHTML =
           a.layer.options.properties.moniker;
         document.getElementById("markerID").innerHTML =
@@ -139,7 +139,7 @@ var populateNetworks = function (networks) {
             markerClusterGroups[key].refreshClusters();
           }
         } catch (e) {
-          console.err(e);
+          console.log(e);
           selected.setIcon(
             L.BeautifyIcon.icon({
                 isAlphaNumericIcon: true,
@@ -155,7 +155,7 @@ var populateNetworks = function (networks) {
         selected._icon.style.backgroundColor = "red";
         // map.sidebar.show();
         document.getElementById("networkName").innerHTML =
-          markerClusterOsmosis.name;
+          markerClusterGroups[key].name;
         document.getElementById("statsFor").innerHTML = "SELECTED NODE";
         console.log("cluster " + a.layer.getAllChildMarkers().length);
         document.getElementById("numNodes").innerHTML =
