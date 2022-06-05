@@ -159,7 +159,7 @@ var populateNetworks = function (networks) {
         document.getElementById("statsFor").innerHTML = "SELECTED NODE";
         console.log("cluster " + a.layer.getAllChildMarkers().length);
         document.getElementById("numNodes").innerHTML =
-          a.layer.getAllChildMarkers().length + "'s ";
+          "S:"+a.layer.getAllChildMarkers().length;
         document.getElementsByClassName("singlenodeonly")[0].style.display =
           "none";
         updateTable();
@@ -190,10 +190,14 @@ $(document).ready(function () {
         markerClusterGroups[selected._group.name].refreshClusters();
       } catch {
         selected.setIcon(
-          L.icon({
-            iconUrl: "js/img/marker-icon-2x.png",
-            iconSize: [25, 41],
-          })
+            L.BeautifyIcon.icon({
+                isAlphaNumericIcon: true,
+                text: selected.options.belongs_to.slice(0,3).toLocaleUpperCase(),
+                iconShape: "marker",
+                borderColor: "#00ABDC",
+                textColor: "#00ABDC",
+                innerIconStyle: "margin-top:0;",
+              })
         );
       }
       selected = null;
