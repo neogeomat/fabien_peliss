@@ -296,7 +296,7 @@ $(document).ready(function () {
           render: function (args) {
             // args will be something like:
             // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-            return args.label+' ' + args.percentage+'%';
+            return  args.percentage+'%';
         
             // return object if it is image
             // return { src: 'image.png', width: 16, height: 16 };
