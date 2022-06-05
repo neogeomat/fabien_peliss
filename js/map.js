@@ -486,6 +486,7 @@ function updateTable() {
         $("#dataTable").DataTable({
           dom: "itp",
           searching: false,
+          pageLength : 5,
           data: Object.entries(countriesPro),
           columns: [{ title: "COUNTRY" }, { title: "NODES" }],
           order: [[1, "desc"]],
@@ -560,6 +561,7 @@ function updateTable() {
         $("#dataTable").DataTable({
           dom: "itp",
           searching: false,
+          pageLength : 5,
           data: Object.entries(ISPsPro),
           columns: [{ title: "ISP" }, { title: "NODES" }],
           order: [[1, "desc"]],
@@ -634,6 +636,7 @@ function updateTable() {
         $("#dataTable").DataTable({
           dom: "itp",
           searching: false,
+          pageLength : 5,
           data: Object.entries(DCSPro),
           columns: [{ title: "DATA CENTER" }, { title: "NODES" }],
         });
