@@ -306,7 +306,7 @@ $(document).ready(function () {
           precision: 0,
   
           // identifies whether or not labels of value 0 are displayed, default is false
-          showZero: true,
+          showZero: false,
   
           // font size, default is defaultFontSize
           fontSize: 12,
@@ -467,7 +467,7 @@ function updateTable() {
         var countriesSum = Object.values(countries).reduce((a, b) => a + b, 0);
         console.log(countriesSum);
         countriesSorted.reduce((a, b) => {
-          if (a > 0.98 * countriesSum) {
+          if (a > 0.90 * countriesSum) {
             countriesPro["Others"] =
               countriesPro["Others"] + countries[b] || countries[b];
             return a + countries[b];
@@ -484,7 +484,7 @@ function updateTable() {
           $("#dataTable").DataTable().destroy();
         }
         $("#dataTable").DataTable({
-          dom: "itp",
+          dom: "tp",
           searching: false,
           pageLength : 5,
           data: Object.entries(countriesPro),
@@ -543,7 +543,7 @@ function updateTable() {
         var ISPSum = Object.values(ISPs).reduce((a, b) => a + b, 0);
         console.log(ISPSum);
         ISPsSorted.reduce((a, b) => {
-          if (a > 0.98 * ISPSum) {
+          if (a > 0.90 * ISPSum) {
             ISPsPro["Others"] = ISPsPro["Others"] + ISPs[b] || ISPs[b];
             return a + ISPs[b];
           } else {
@@ -559,7 +559,7 @@ function updateTable() {
           $("#dataTable").DataTable().destroy();
         }
         $("#dataTable").DataTable({
-          dom: "itp",
+          dom: "tp",
           searching: false,
           pageLength : 5,
           data: Object.entries(ISPsPro),
@@ -618,7 +618,7 @@ function updateTable() {
         var DCSSum = Object.values(DCS).reduce((a, b) => a + b, 0);
         console.log(DCSSum);
         DCSSorted.reduce((a, b) => {
-          if (a > 0.98 * DCSSum) {
+          if (a > 0.90 * DCSSum) {
             DCSPro["Others"] = DCSPro["Others"] + DCS[b] || DCS[b];
             return a + DCS[b];
           } else {
@@ -634,7 +634,7 @@ function updateTable() {
           $("#dataTable").DataTable().destroy();
         }
         $("#dataTable").DataTable({
-          dom: "itp",
+          dom: "tp",
           searching: false,
           pageLength : 5,
           data: Object.entries(DCSPro),
