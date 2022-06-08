@@ -259,9 +259,19 @@ $(document).ready(function () {
     // updateChart();
   });
 
-  $.ajax("data/peers.json", {
-    // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
+  // $.get('https://api.allorigins.win/get?url=' + 'https://tools.highstakes.ch/geoloc-api/peers', function(data) {
+
+  // console.log(data);
+// });
+
+// $.getJSON('https://api.allorigins.win/get?url=' + encodeURIComponent('https://tools.highstakes.ch/geoloc-api/peers'), function (data) {
+//                       // alert(data.contents);
+//                       console.log(data);
+//                   });
+  // $.ajax("data/peers.json", {
+  $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
+    method : 'GET',
     success: populateNetworks,
     error: function (xhr, st, et) {
       console.warn(et);
