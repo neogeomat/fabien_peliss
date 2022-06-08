@@ -516,7 +516,11 @@ function updateTable() {
           }
         }, 0);
 
-        document.getElementById("networkName").innerHTML = network;
+        if (network && network != "all") {
+          document.getElementById("networkName").innerHTML = network.toLocaleUpperCase();
+        } else {
+          document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+        }
         document.getElementById("numNodes").innerHTML = ISPSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           console.log("table exists");
@@ -591,7 +595,11 @@ function updateTable() {
           }
         }, 0);
 
-        document.getElementById("networkName").innerHTML = network;
+        if (network && network != "all") {
+          document.getElementById("networkName").innerHTML = network.toLocaleUpperCase();
+        } else {
+          document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+        }
         document.getElementById("numNodes").innerHTML = DCSSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           console.log("table exists");
