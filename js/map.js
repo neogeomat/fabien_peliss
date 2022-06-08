@@ -62,13 +62,13 @@ var populateNetworks = function (networks) {
   if (urlLayer === "all") {
     for (const [key, value] of Object.entries(networks)) {
       markerClusterGroups[key].addTo(map);
-      document.getElementById("networkSelector").value = "all";
+      document.getElementById("networkSelector").value = "ALL NETWORKS";
       updateTable();
     }
   } else {
     if (markerClusterGroups.hasOwnProperty(urlLayer)) {
       markerClusterGroups[urlLayer].addTo(map);
-      document.getElementById("networkSelector").value = urlLayer;
+      document.getElementById("networkSelector").value = urlLayer.toLocaleUpperCase();
       updateTable();
     } else {
       alert(`${urlLayer} is not a valid network`);
@@ -211,6 +211,7 @@ var populateNetworks = function (networks) {
 };
 // standard leaflet map setup
 $(document).ready(function () {
+  document.getElementsByClassName("singlenodeonly")[0].style.display = "none";
   map = L.map("map");
   map.setView([51.2, 7], 4);
   L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -259,15 +260,6 @@ $(document).ready(function () {
     // updateChart();
   });
 
-  // $.get('https://api.allorigins.win/get?url=' + 'https://tools.highstakes.ch/geoloc-api/peers', function(data) {
-
-  // console.log(data);
-// });
-
-// $.getJSON('https://api.allorigins.win/get?url=' + encodeURIComponent('https://tools.highstakes.ch/geoloc-api/peers'), function (data) {
-//                       // alert(data.contents);
-//                       console.log(data);
-//                   });
   // $.ajax("data/peers.json", {
   $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
