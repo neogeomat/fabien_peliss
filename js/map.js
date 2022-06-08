@@ -68,7 +68,8 @@ var populateNetworks = function (networks) {
   } else {
     if (markerClusterGroups.hasOwnProperty(urlLayer)) {
       markerClusterGroups[urlLayer].addTo(map);
-      document.getElementById("networkSelector").value = urlLayer.toLocaleUpperCase();
+      document.getElementById("networkSelector").value =
+        urlLayer.toLocaleUpperCase();
       updateTable();
     } else {
       alert(`${urlLayer} is not a valid network`);
@@ -78,41 +79,17 @@ var populateNetworks = function (networks) {
   ns.change((evt) => {
     evt.stopPropagation();
     console.log(evt.target.value);
-    switch (evt.target.value) {
-      case "osmosis-1":
-        for (const key in markerClusterGroups) {
-          map.removeLayer(markerClusterGroups[key]);
-          console.log(markerClusterGroups[key].name + " removed");
-        }
-        map.addLayer(markerClusterGroups[evt.target.value]);
-        updateTable();
-        break;
-      case "phoenix-1":
-        for (const key in markerClusterGroups) {
-          map.removeLayer(markerClusterGroups[key]);
-          console.log(markerClusterGroups[key].name + " removed");
-        }
-        map.addLayer(markerClusterGroups[evt.target.value]);
-        updateTable();
-        break;
-      case "all":
-        for (const key in markerClusterGroups) {
-          map.removeLayer(markerClusterGroups[key]);
-          console.log(markerClusterGroups[key].name + " removed");
-        }
-        for (const key in markerClusterGroups) {
-          map.addLayer(markerClusterGroups[key]);
-          console.log(markerClusterGroups[key].name + " added");
-        }
-        updateTable();
-        break;
-      default:
-        for (const key in markerClusterGroups) {
-          map.removeLayer(markerClusterGroups[key]);
-          console.log(markerClusterGroups[key].name + " removed");
-        }
-        updateTable();
-        break;
+    if (evt.target.value === "all") {
+      for (const [key, value] of Object.entries(networks)) {
+        markerClusterGroups[key].addTo(map);
+      }
+      updateTable();
+    } else {
+      for (const [key, value] of Object.entries(networks)) {
+        markerClusterGroups[key].removeFrom(map);
+      }
+      markerClusterGroups[evt.target.value].addTo(map);
+      updateTable();
     }
   });
 
@@ -263,7 +240,7 @@ $(document).ready(function () {
   // $.ajax("data/peers.json", {
   $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
-    method : 'GET',
+    method: "GET",
     success: populateNetworks,
     error: function (xhr, st, et) {
       console.warn(et);
@@ -392,24 +369,6 @@ function updateTable() {
       document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
       document.getElementById("networkName").innerHTML = "ALL NETWORKS";
       document.getElementById("plural").innerHTML = "S";
-      if (selected) {
-        try {
-          markerClusterGroups[selected._group.name].refreshClusters();
-        } catch (e) {
-          console.log(e);
-          selected.setIcon(
-            L.BeautifyIcon.icon({
-              isAlphaNumericIcon: true,
-              text: selected.options.belongs_to.slice(0, 3).toLocaleUpperCase(),
-              iconShape: "marker",
-              borderColor: "#00ABDC",
-              textColor: "#00ABDC",
-              innerIconStyle: "margin-top:0;",
-            })
-          );
-        }
-        selected = null;
-      }
       document.getElementsByClassName("singlenodeonly")[0].style.display =
         "none";
       var numNodes = 0;
@@ -477,8 +436,12 @@ function updateTable() {
             return a + countries[b];
           }
         }, 0);
-
-        document.getElementById("networkName").innerHTML = network;
+        // debugger;
+        if (network && network != "all") {
+          document.getElementById("networkName").innerHTML = network.toLocaleUpperCase();
+        } else {
+          document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+        }
         document.getElementById("numNodes").innerHTML = countriesSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           console.log("table exists");
