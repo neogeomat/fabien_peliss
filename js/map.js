@@ -58,11 +58,13 @@ var populateNetworks = function (networks) {
     markerClusterGroups[key].name = key;
   }
 
-  var urlLayer = getUrlParam("n", "all");
-  if (urlLayer === "all") {
+  var urlLayer = getUrlParam("n");
+  if (urlLayer === "all" || urlLayer === undefined) {
     for (const [key, value] of Object.entries(networks)) {
       markerClusterGroups[key].addTo(map);
-      document.getElementById("networkSelector").value = "ALL NETWORKS";
+      if (urlLayer === "all") {
+        document.getElementById("networkSelector").value = "ALL NETWORKS";
+      }
       updateTable();
     }
   } else {
@@ -438,7 +440,8 @@ function updateTable() {
         }, 0);
         // debugger;
         if (network && network != "all") {
-          document.getElementById("networkName").innerHTML = network.toLocaleUpperCase();
+          document.getElementById("networkName").innerHTML =
+            network.toLocaleUpperCase();
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
@@ -517,7 +520,8 @@ function updateTable() {
         }, 0);
 
         if (network && network != "all") {
-          document.getElementById("networkName").innerHTML = network.toLocaleUpperCase();
+          document.getElementById("networkName").innerHTML =
+            network.toLocaleUpperCase();
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
@@ -596,7 +600,8 @@ function updateTable() {
         }, 0);
 
         if (network && network != "all") {
-          document.getElementById("networkName").innerHTML = network.toLocaleUpperCase();
+          document.getElementById("networkName").innerHTML =
+            network.toLocaleUpperCase();
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
