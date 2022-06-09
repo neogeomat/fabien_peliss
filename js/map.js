@@ -141,7 +141,7 @@ var populateNetworks = function (networks) {
         document.getElementById("markerID").innerHTML =
           a.layer.options.properties.nodeId;
         document.getElementById("plural").innerHTML = "";
-        document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+        document.getElementById("statsFor").innerHTML = " SELECTED PIN";
         document.getElementById("numNodes").innerHTML = ": 1";
         updateTable();
         // updateChart();
@@ -173,7 +173,7 @@ var populateNetworks = function (networks) {
         // map.sidebar.show();
         document.getElementById("networkName").innerHTML =
           markerClusterGroups[key].name;
-        document.getElementById("statsFor").innerHTML = "SELECTED NODE";
+        document.getElementById("statsFor").innerHTML = " SELECTED PINS";
         console.log("cluster " + a.layer.getAllChildMarkers().length);
 
         document.getElementById("plural").innerHTML = "S";
@@ -204,7 +204,7 @@ $(document).ready(function () {
 
   map.on("click", function (evt) {
     // sidebar.hide();
-    document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
+    document.getElementById("statsFor").innerHTML = " WHOLE WORLD:";
     document.getElementById("networkName").innerHTML = "ALL NETWORKS";
     document.getElementById("plural").innerHTML = "S";
     if (selected) {
@@ -276,7 +276,7 @@ $(document).ready(function () {
         render: function (args) {
           // args will be something like:
           // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-          return args.percentage + "%";
+          return args.label+' '+args.percentage + "%";
 
           // return object if it is image
           // return { src: 'image.png', width: 16, height: 16 };
@@ -368,7 +368,7 @@ function updateTable() {
   if (!network) {
     if (!selected) {
       console.log("no network selected");
-      document.getElementById("statsFor").innerHTML = "WHOLE WORLD";
+      document.getElementById("statsFor").innerHTML = " WHOLE WORLD";
       document.getElementById("networkName").innerHTML = "ALL NETWORKS";
       document.getElementById("plural").innerHTML = "S";
       document.getElementsByClassName("singlenodeonly")[0].style.display =
