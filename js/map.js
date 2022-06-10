@@ -187,6 +187,7 @@ var populateNetworks = function (networks) {
     }
   }
   updateTable();
+  map.spin(false);
 };
 // standard leaflet map setup
 $(document).ready(function () {
@@ -240,12 +241,14 @@ $(document).ready(function () {
   });
 
   // $.ajax("data/peers.json", {
+    map.spin(true);
   $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
     success: populateNetworks,
     error: function (xhr, st, et) {
       console.warn(et);
+      map.spin(false);
     },
   });
 
