@@ -55,14 +55,44 @@
             padding: 0;
         }
         .dropdown-menu>li>a{
-            background-color: rgb(12, 12, 19);
+            background-color:#495761;
             color: aliceblue;
             padding: 10px 5px;
         }
         .dropdown-menu>li>a:hover{
-            background-color: #337ab7;
+            background-color: #5AAFEF;
+            color: aliceblue;
         }
 
+        .dropdown-menu>.active>a{
+            background-color: #5AAFEF;
+        }
+        .btn.dropdown-toggle.btn-primary{
+            background-color: #495761;
+        }
+        tr th{
+           background-color: #51BAE9;
+           color: white;
+        }
+        table.dataTable tbody tr{
+            background-color: #EFEFEF;
+        }
+        table.dataTable tbody tr td{
+            font-weight: bold;
+        }
+        table.dataTable thead>tr>th.sorting:before,
+        table.dataTable thead>tr>th.sorting_desc:before,
+        table.dataTable thead>tr>th.sorting:after, 
+        table.dataTable thead>tr>th.sorting_desc:after{
+            font-size: 1.9em;
+            
+        }
+        table.dataTable thead>tr>th.sorting_asc:before, 
+        table.dataTable thead>tr>th.sorting_desc:after, 
+        table.dataTable thead>tr>td.sorting_asc:before, 
+        table.dataTable thead>tr>td.sorting_desc:after {
+            opacity: .8;
+        }
     </style>
     <script>
         // $(document).ready( function () {
@@ -110,8 +140,10 @@
                                     <option value="DATA CENTER">DATA CENTER</option>
                                 </select>
                             </div>
+                        
                             <div class="container col-md-12">
-                                <table id="dataTable" class="table table-hover" >
+                            </br></br>
+                                <table id="dataTable" class="table" >
                                 
                                 </table>
                             </div>
