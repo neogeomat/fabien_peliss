@@ -279,7 +279,7 @@ $(document).ready(function () {
         render: function (args) {
           // args will be something like:
           // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-          return args.label+' '+args.percentage + "%";
+          return args.label+'\n '+args.percentage + "%";
 
           // return object if it is image
           // return { src: 'image.png', width: 16, height: 16 };
@@ -629,7 +629,7 @@ function updateTable() {
         // console.log(lbl);
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
-        mychart.data.datasets[0].backgroundColor = getnumberofcolors(vl.length);
+        mychart.data.datasets[0].backgroundColor = randomColor(vl.length);
         mychart.update();
         break;
     }
