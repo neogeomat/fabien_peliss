@@ -250,10 +250,13 @@ $(document).ready(function () {
       {
         data: [],
         backgroundColor: [],
+        angle:[],
+        rotation:[],
       },
     ],
   };
   var pieOptions = {
+    // rotation: (-0.5 * Math.PI) - (30/180 * Math.PI),
     maintainAspectRatio: false,
     responsive: true,
     legend: {
@@ -348,14 +351,19 @@ $(document).ready(function () {
       // ],
       datalabels: {
         // backgroundColor: 'white',
-        display:'auto',
-        borderRadius: 20,
-        borderWidth: 3,
+        // display:'auto',
+        // borderRadius: 10,
+        // borderWidth: 3,
         borderDashOffset: 20,
-        color: 'black',
+        color: "black",
+        // backgroundColor: function (context) {
+        //   return context.dataset.backgroundColor;
+        // },
         font: {
-          size: 18
+          weight: 'bold',
+          size: 12,
         },
+        textAlign: 'center',
         formatter: function(value, ctx) {
             let sum = 0;
             let dataArr = ctx.chart.data.datasets[0].data;
@@ -364,32 +372,75 @@ $(document).ready(function () {
             });
             let percentage = (value*100 / sum).toFixed(0)+"%";
             // return percentage;
+            const angle = ctx.dataset.angle[ctx.dataIndex];
+            if(angle > 45){
+              
           return `${ctx.chart.data.labels[ctx.dataIndex]} \n ${percentage}`;
+            }else{
+              return ``;
+            }
         },
         rotation: function(ctx) {
-          const valuesBefore = ctx.dataset.data.slice(0, ctx.dataIndex).reduce((a, b) => a + b, 0);
-          const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-          const rotation = ((valuesBefore + ctx.dataset.data[ctx.dataIndex] /2) /sum *360);
-          const angle = ctx.dataset.data[ctx.dataIndex] /sum *360;
-          // console.log(angle);
-          if(angle > 75) {
+          // computed in text
+
+          // const valuesBefore = ctx.dataset.data.slice(0, ctx.dataIndex).reduce((a, b) => a + b, 0);
+          // const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+          // const rotation = ((valuesBefore + ctx.dataset.data[ctx.dataIndex] /2) /sum *360);
+          // const angle = ctx.dataset.data[ctx.dataIndex] /sum *360;
+          const angle = ctx.dataset.angle[ctx.dataIndex];
+          const rotation = ctx.dataset.angle[ctx.dataIndex];
+          // ctx.dataset.angle[ctx.dataIndex] = angle;
+          // console.log("angle", angle);
+          if(angle > 45) {
             return 0;
           }else{
           return rotation < 180 ? rotation-90 : rotation+90;
           }
         },
-        padding: 0
+        padding: {
+          left:50,
+        }
       },
+      outlabels: {
+        // text: '%l PER => %p \n VAL => %v',
+        color: 'black',
+        stretch: 45,
+        font: {
+            resizable: true,
+            minSize: 12,
+            maxSize: 18
+        },
+        lineWidth:1,
+        stretch:10,
+        text:function(ctx) {
+          console.log("text", ctx);
+          
+          const valuesBefore = ctx.dataset.data.slice(0, ctx.dataIndex).reduce((a, b) => a + b, 0);
+          const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
+          const rotation = ((valuesBefore + ctx.dataset.data[ctx.dataIndex] /2) /sum *360);
+          const angle = ctx.dataset.data[ctx.dataIndex] /sum *360;
+          ctx.dataset.angle[ctx.dataIndex] = angle;
+          console.log("angle", angle);
+          ctx.dataset.rotation[ctx.dataIndex] = rotation;
+          console.log("rotation", rotation);
+          if(angle > 45){
+            return "";
+          }else{
+            return ctx.label;
+          }
+        }
+    }
     },
   };
   //Create pie or douhnut chart
   // You can switch between pie and douhnut using the method below.
   mychart = new Chart(pieChartCanvas, {
     plugins: [ChartDataLabels],
-    type: "pie",
+    type: "outlabeledPie",
     data: pieData,
     options: pieOptions,
   });
+
 });
 
 // create the sidebar instance and add it to the map
