@@ -37,20 +37,39 @@
             z-index: 500;
         }
         
+        .leaflet-sidebar-content,
+        .leaflet-sidebar-tabs {
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
         dl dt{
             padding: 5px;
         }
 
-        .leaflet-sidebar-header{
+        .leaflet-sidebar-header {
             background-color: #DC4437;
         }
-
+        
         #node-info{
             margin: 10px 0px;
         }
         #node-info span{
-            margin: 3px 0px;
+            margin: 0px 0px;
         }
+
+        .first span{
+            font-size: 0.8em;
+            font-weight: bold;
+            font-family: inherit;
+            /* background-color: #495761; */
+        }
+
+        .second span{
+            font-family: sans-serif;
+            letter-spacing: 2px;
+        }
+
         .dropdown-menu{
             padding: 0;
         }
@@ -126,8 +145,15 @@
                     <div class="row">
                       <div class="col-sm-12 col-md-12">
                         <div class="row" id="node-info">
-                            <span class="col-md-12" style="color: gray; font-size: 15px;">STATS FOR THE<span id='statsFor'> WHOLE WORLD</span></span>
-                            <span class="col-md-12" style="font-size: 20px;">NUMBER OF NODE<span id='plural'></span>:  <span id="numNodes">XXX</span></span>
+                            <span class="col-md-12 first" style="color: gray; font-size: 15px;">
+                                <span>STATS FOR THE</span>
+                                <span id='statsFor'> WHOLE WORLD</span>
+                            </span>
+                            <span class="col-md-12 second" style="font-size: 20px;">
+                                <span>NUMBER OF NODE</span>
+                                <span id='plural'></span>
+                                <span id="numNodes">: XXX</span>
+                            </span>
                             <span class="col-md-8 singlenodeonly" style="color: gray; font-size: 12px;">
                             [<span>MONIKER:</span><span id="markerMoniker">XXX</span><span></br> ID:</span><span id="markerID"></span>]
                             </span>
@@ -142,7 +168,7 @@
                             </div>
                         
                             <div class="container col-md-12">
-                            </br></br>
+                            </br>
                                 <table id="dataTable" class="table" >
                                 
                                 </table>

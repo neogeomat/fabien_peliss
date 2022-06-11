@@ -103,7 +103,7 @@ var populateNetworks = function (networks) {
         try {
           if (selected) {
             selected.getAllChildMarkers();
-            markerClusterGroups[key].refreshClusters();
+            markerClusterGroups[selected._group.name].refreshClusters();
           }
         } catch (e) {
           selected.setIcon(
@@ -132,7 +132,7 @@ var populateNetworks = function (networks) {
         document.getElementsByClassName("singlenodeonly")[0].style.display =
           "block";
         document.getElementById("networkName").innerHTML =
-          markerClusterGroups[key].name;
+          markerClusterGroups[key].name.toLocaleUpperCase();
         document.getElementById("markerMoniker").innerHTML =
           a.layer.options.properties.moniker;
         document.getElementById("markerID").innerHTML =
@@ -166,7 +166,7 @@ var populateNetworks = function (networks) {
         selected = a.layer;
         selected._icon.style.backgroundColor = "red";
         document.getElementById("networkName").innerHTML =
-          markerClusterGroups[key].name;
+          markerClusterGroups[key].name.toLocaleUpperCase();
         document.getElementById("statsFor").innerHTML = " SELECTED PINS";
 
         document.getElementById("plural").innerHTML = "S";
@@ -228,8 +228,8 @@ $(document).ready(function () {
     updateTable();
   });
   map.spin(true);
-  $.ajax("data/peers.json", {
-  // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
+  // $.ajax("data/peers.json", {
+  $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
     success: populateNetworks,
@@ -451,8 +451,8 @@ function updateTable() {
 
   if (!network) {
     if (!selected) {
-      document.getElementById("statsFor").innerHTML = " WHOLE WORLD";
       document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+      document.getElementById("statsFor").innerHTML = " WHOLE WORLD";
       document.getElementById("plural").innerHTML = "S";
       document.getElementsByClassName("singlenodeonly")[0].style.display =
         "none";
@@ -523,13 +523,13 @@ function updateTable() {
           countriesPro["Others"] = countriesOthers;
         }
         // debugger;
-        if (network && network != "all") {
-          document.getElementById("networkName").innerHTML =
-            network.toLocaleUpperCase();
-        } else {
-          document.getElementById("networkName").innerHTML = "ALL NETWORKS";
-        }
-        document.getElementById("numNodes").innerHTML = countriesSum;
+        // if (network && network != "all") {
+        //   document.getElementById("networkName").innerHTML =
+        //     network.toLocaleUpperCase();
+        // } else {
+        //   document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+        // }
+        // document.getElementById("numNodes").innerHTML = countriesSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           //
           $("#dataTable").DataTable().destroy();
