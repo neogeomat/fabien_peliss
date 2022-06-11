@@ -34,7 +34,6 @@ var populateNetworks = function (networks) {
   ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
   for (const [key, value] of Object.entries(networks)) {
     ns.append(`<option value=${key}>${key}</option>`);
-    // console.log(`${key}: ${value}`);
   }
 
   for (const [key, value] of Object.entries(networks)) {
@@ -80,7 +79,7 @@ var populateNetworks = function (networks) {
 
   ns.change((evt) => {
     evt.stopPropagation();
-    console.log(evt.target.value);
+
     if (evt.target.value === "all") {
       for (const [key, value] of Object.entries(networks)) {
         markerClusterGroups[key].addTo(map);
@@ -101,14 +100,12 @@ var populateNetworks = function (networks) {
       const element = markerClusterGroups[key];
       // yakchau marker pinta
       markerClusterGroups[key].on("click", function (a) {
-        console.log("marker " + a.layer);
         try {
           if (selected) {
             selected.getAllChildMarkers();
             markerClusterGroups[key].refreshClusters();
           }
         } catch (e) {
-          console.log(e);
           selected.setIcon(
             L.BeautifyIcon.icon({
               isAlphaNumericIcon: true,
@@ -144,7 +141,6 @@ var populateNetworks = function (networks) {
         document.getElementById("statsFor").innerHTML = " SELECTED PIN";
         document.getElementById("numNodes").innerHTML = ": 1";
         updateTable();
-        // updateChart();
       });
 
       // sagolyau marker pinta
@@ -153,10 +149,9 @@ var populateNetworks = function (networks) {
         try {
           if (selected) {
             selected.getAllChildMarkers();
-            markerClusterGroups[key].refreshClusters();
+            markerClusterGroups[selected._group.name].refreshClusters();
           }
         } catch (e) {
-          console.log(e);
           selected.setIcon(
             L.BeautifyIcon.icon({
               isAlphaNumericIcon: true,
@@ -170,11 +165,9 @@ var populateNetworks = function (networks) {
         }
         selected = a.layer;
         selected._icon.style.backgroundColor = "red";
-        // map.sidebar.show();
         document.getElementById("networkName").innerHTML =
           markerClusterGroups[key].name;
         document.getElementById("statsFor").innerHTML = " SELECTED PINS";
-        console.log("cluster " + a.layer.getAllChildMarkers().length);
 
         document.getElementById("plural").innerHTML = "S";
         document.getElementById("numNodes").innerHTML =
@@ -182,7 +175,6 @@ var populateNetworks = function (networks) {
         document.getElementsByClassName("singlenodeonly")[0].style.display =
           "none";
         updateTable();
-        // updateChart();
       });
     }
   }
@@ -204,7 +196,6 @@ $(document).ready(function () {
     .open("home");
 
   map.on("click", function (evt) {
-    // sidebar.hide();
     document.getElementById("statsFor").innerHTML = " WHOLE WORLD:";
     document.getElementById("networkName").innerHTML = "ALL NETWORKS";
     document.getElementById("plural").innerHTML = "S";
@@ -212,7 +203,6 @@ $(document).ready(function () {
       try {
         markerClusterGroups[selected._group.name].refreshClusters();
       } catch (e) {
-        console.log(e);
         selected.setIcon(
           L.BeautifyIcon.icon({
             isAlphaNumericIcon: true,
@@ -236,18 +226,14 @@ $(document).ready(function () {
     }
     document.getElementById("numNodes").innerHTML = ": " + numNodes;
     updateTable();
-
-    // updateChart();
   });
-
+  map.spin(true);
   // $.ajax("data/peers.json", {
-    map.spin(true);
   $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
     success: populateNetworks,
     error: function (xhr, st, et) {
-      console.warn(et);
       map.spin(false);
     },
   });
@@ -264,6 +250,7 @@ $(document).ready(function () {
       {
         data: [],
         backgroundColor: [],
+        rotation: [],
       },
     ],
   };
@@ -274,83 +261,92 @@ $(document).ready(function () {
       display: false,
     },
     plugins: {
-      labels: {
-        // render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
-        render: function (args) {
-          // args will be something like:
-          // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
-          return args.label+'\n '+args.percentage + "%";
+      labels: [
+        {
+          // render 'label', 'value', 'percentage', 'image' or custom function, default is 'percentage'
+          render: function (args) {
+            // args will be something like:
+            // { label: 'Label', value: 123, percentage: 50, index: 0, dataset: {...} }
+            return args.percentage + "%";
 
-          // return object if it is image
-          // return { src: 'image.png', width: 16, height: 16 };
-        },
-
-        // precision for percentage, default is 0
-        precision: 0,
-
-        // identifies whether or not labels of value 0 are displayed, default is false
-        showZero: false,
-
-        // font size, default is defaultFontSize
-        fontSize: 12,
-
-        // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
-        fontColor: "#fff",
-
-        // font style, default is defaultFontStyle
-        fontStyle: "normal",
-
-        // font family, default is defaultFontFamily
-        fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
-
-        // draw text shadows under labels, default is false
-        textShadow: true,
-
-        // text shadow intensity, default is 6
-        shadowBlur: 10,
-
-        // text shadow X offset, default is 3
-        shadowOffsetX: -5,
-
-        // text shadow Y offset, default is 3
-        shadowOffsetY: 5,
-
-        // text shadow color, default is 'rgba(0,0,0,0.3)'
-        shadowColor: "rgba(0,0,0,0.3)",
-
-        // draw label in arc, default is false
-        // bar chart ignores this
-        arc: false,
-
-        // position to draw label, available value is 'default', 'border' and 'outside'
-        // bar chart ignores this
-        // default is 'default'
-        position: "default",
-
-        // draw label even it's overlap, default is true
-        // bar chart ignores this
-        overlap: true,
-
-        // show the real calculated percentages from the values and don't apply the additional logic to fit the percentages to 100 in total, default is false
-        showActualPercentages: true,
-
-        // set images when `render` is 'image'
-        images: [
-          {
-            src: "image.png",
-            width: 16,
-            height: 16,
+            // return object if it is image
+            // return { src: 'image.png', width: 16, height: 16 };
           },
-        ],
 
-        // add padding when position is `outside`
-        // default is 2
-        outsidePadding: 4,
+          // precision for percentage, default is 0
+          precision: 0,
 
-        // add margin of text when position is `outside` or `border`
-        // default is 2
-        textMargin: 4,
-      },
+          // identifies whether or not labels of value 0 are displayed, default is false
+          showZero: false,
+
+          // font size, default is defaultFontSize
+          fontSize: 12,
+
+          // font color, can be color array for each data or function for dynamic color, default is defaultFontColor
+          fontColor: "#000",
+
+          // font style, default is defaultFontStyle
+          fontStyle: "normal",
+
+          // font family, default is defaultFontFamily
+          fontFamily: "'Helvetica Neue', 'Helvetica', 'Arial', sans-serif",
+
+          // draw text shadows under labels, default is false
+          textShadow: true,
+
+          // text shadow intensity, default is 6
+          shadowBlur: 10,
+
+          // text shadow X offset, default is 3
+          shadowOffsetX: -5,
+
+          // text shadow Y offset, default is 3
+          shadowOffsetY: 5,
+
+          // text shadow color, default is 'rgba(0,0,0,0.3)'
+          shadowColor: "rgba(0,0,0,0.3)",
+
+          // draw label in arc, default is false
+          // bar chart ignores this
+          arc: false,
+
+          // position to draw label, available value is 'default', 'border' and 'outside'
+          // bar chart ignores this
+          // default is 'default'
+          position: "default",
+
+          // draw label even it's overlap, default is true
+          // bar chart ignores this
+          overlap: false,
+
+          // show the real calculated percentages from the values and don't apply the additional logic to fit the percentages to 100 in total, default is false
+          showActualPercentages: true,
+
+          // set images when `render` is 'image'
+          images: [
+            {
+              src: "image.png",
+              width: 16,
+              height: 16,
+            },
+          ],
+
+          // add padding when position is `outside`
+          // default is 2
+          outsidePadding: 4,
+
+          // add margin of text when position is `outside` or `border`
+          // default is 2
+          textMargin: 4,
+        },
+        {
+          render: "label",
+          position: "outside",
+          arc: false,
+          // overlap: false,
+          showZero: false,
+        },
+      ],
     },
   };
   //Create pie or douhnut chart
@@ -370,7 +366,6 @@ function updateTable() {
 
   if (!network) {
     if (!selected) {
-      console.log("no network selected");
       document.getElementById("statsFor").innerHTML = " WHOLE WORLD";
       document.getElementById("networkName").innerHTML = "ALL NETWORKS";
       document.getElementById("plural").innerHTML = "S";
@@ -392,19 +387,18 @@ function updateTable() {
     switch (sele.value) {
       case "COUNTRY":
         var countries = {};
-        var countriesPro = { Others: 0 };
+        var countriesPro = {};
+        var countriesOthers = 0;
         if (selected) {
           try {
             selected.getAllChildMarkers().forEach((a) => {
               countries[a.options.properties.country] =
                 countries[a.options.properties.country] + 1 || 1;
             });
-            console.table(countries);
           } catch (e) {
             if (e instanceof TypeError) {
               countries[selected.options.properties.country] = 1;
             }
-            console.table(countries);
           }
         } else {
           if (network && network != "all") {
@@ -413,7 +407,6 @@ function updateTable() {
               countries[a.options.properties.country] =
                 countries[a.options.properties.country] + 1 || 1;
             });
-            console.table(countries);
           } else {
             for (const key in markerClusterGroups) {
               if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
@@ -430,17 +423,20 @@ function updateTable() {
           (a, b) => countries[b] - countries[a]
         );
         var countriesSum = Object.values(countries).reduce((a, b) => a + b, 0);
-        console.log(countriesSum);
+
+        var countriesThreshold = countriesSum * 0.02;
         countriesSorted.reduce((a, b) => {
-          if (a > 0.9 * countriesSum) {
-            countriesPro["Others"] =
-              countriesPro["Others"] + countries[b] || countries[b];
+          if (countries[b] < 0.02 * countriesSum) {
+            countriesOthers = countriesOthers + countries[b] || countries[b];
             return a + countries[b];
           } else {
             countriesPro[b] = countries[b];
             return a + countries[b];
           }
         }, 0);
+        if (countriesOthers > 0) {
+          countriesPro["Others"] = countriesOthers;
+        }
         // debugger;
         if (network && network != "all") {
           document.getElementById("networkName").innerHTML =
@@ -450,7 +446,7 @@ function updateTable() {
         }
         document.getElementById("numNodes").innerHTML = countriesSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
-          console.log("table exists");
+          //
           $("#dataTable").DataTable().destroy();
         }
         $("#dataTable").DataTable({
@@ -467,27 +463,34 @@ function updateTable() {
           lbl.push(k);
           vl.push(v);
         });
-        // console.log(lbl);
+        //
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
-        mychart.data.datasets[0].backgroundColor = getnumberofcolors(vl.length);
+        // debugger;
+        mychart.data.datasets[0].backgroundColor = randomColor({
+          count: vl.length,
+          luminosity: "bright",
+          seed: "countries",
+        });
+        mychart.data.datasets[0].rotation = 45;
         mychart.update();
         break;
       case "ISP":
         var ISPs = {};
-        var ISPsPro = { Others: 0 };
+        var ISPsPro = {};
+        var ISPsOthers = 0;
         if (selected) {
           try {
             selected.getAllChildMarkers().forEach((a) => {
               ISPs[a.options.properties.isp] =
                 ISPs[a.options.properties.isp] + 1 || 1;
             });
-            console.table(ISPs);
+            //
           } catch (e) {
             if (e instanceof TypeError) {
               ISPs[selected.options.properties.isp] = 1;
             }
-            console.table(ISPs);
+            //
           }
         } else {
           if (network && network != "all") {
@@ -496,7 +499,7 @@ function updateTable() {
               ISPs[a.options.properties.isp] =
                 ISPs[a.options.properties.isp] + 1 || 1;
             });
-            console.table(ISPs);
+            //
           } else {
             for (const key in markerClusterGroups) {
               if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
@@ -511,16 +514,19 @@ function updateTable() {
         }
         var ISPsSorted = Object.keys(ISPs).sort((a, b) => ISPs[b] - ISPs[a]);
         var ISPSum = Object.values(ISPs).reduce((a, b) => a + b, 0);
-        console.log(ISPSum);
+        //
         ISPsSorted.reduce((a, b) => {
-          if (a > 0.9 * ISPSum) {
-            ISPsPro["Others"] = ISPsPro["Others"] + ISPs[b] || ISPs[b];
+          if (ISPs[b]< 0.02* ISPSum) {
+            ISPsOthers = ISPsOthers + ISPs[b] || ISPs[b];
             return a + ISPs[b];
           } else {
             ISPsPro[b] = ISPs[b];
             return a + ISPs[b];
           }
         }, 0);
+        if (ISPsOthers > 0) {
+          ISPsPro["Others"] = ISPsOthers;
+        }
 
         if (network && network != "all") {
           document.getElementById("networkName").innerHTML =
@@ -530,7 +536,7 @@ function updateTable() {
         }
         document.getElementById("numNodes").innerHTML = ISPSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
-          console.log("table exists");
+          //
           $("#dataTable").DataTable().destroy();
         }
         $("#dataTable").DataTable({
@@ -547,27 +553,30 @@ function updateTable() {
           lbl.push(k);
           vl.push(v);
         });
-        // console.log(lbl);
+        //
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
-        mychart.data.datasets[0].backgroundColor = getnumberofcolors(vl.length);
+        mychart.data.datasets[0].backgroundColor = randomColor({
+          count: vl.length,
+          luminosity: "dark",
+          seed: "ISPs",
+        });
         mychart.update();
         break;
       case "DATA CENTER":
         var DCS = {};
-        var DCSPro = { Others: 0 };
+        var DCSPro = {};
+        var DCSOthers = 0;
         if (selected) {
           try {
             selected.getAllChildMarkers().forEach((a) => {
               DCS[a.options.properties.as] =
                 DCS[a.options.properties.as] + 1 || 1;
             });
-            console.table(DCS);
           } catch (e) {
             if (e instanceof TypeError) {
               DCS[selected.options.properties.as] = 1;
             }
-            console.table(DCS);
           }
         } else {
           if (network && network != "all") {
@@ -576,7 +585,6 @@ function updateTable() {
               DCS[a.options.properties.as] =
                 DCS[a.options.properties.as] + 1 || 1;
             });
-            console.table(DCS);
           } else {
             for (const key in markerClusterGroups) {
               if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
@@ -591,16 +599,19 @@ function updateTable() {
         }
         var DCSSorted = Object.keys(DCS).sort((a, b) => DCS[b] - DCS[a]);
         var DCSSum = Object.values(DCS).reduce((a, b) => a + b, 0);
-        console.log(DCSSum);
+
         DCSSorted.reduce((a, b) => {
-          if (a > 0.9 * DCSSum) {
-            DCSPro["Others"] = DCSPro["Others"] + DCS[b] || DCS[b];
+          if (DCS[b] < 0.02 * DCSSum) {
+            DCSOthers = DCSOthers + DCS[b] || DCS[b];
             return a + DCS[b];
           } else {
             DCSPro[b] = DCS[b];
             return a + DCS[b];
           }
         }, 0);
+        if (DCSOthers > 0) {
+          DCSPro["Others"] = DCSOthers;
+        }
 
         if (network && network != "all") {
           document.getElementById("networkName").innerHTML =
@@ -610,7 +621,6 @@ function updateTable() {
         }
         document.getElementById("numNodes").innerHTML = DCSSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
-          console.log("table exists");
           $("#dataTable").DataTable().destroy();
         }
         $("#dataTable").DataTable({
@@ -622,14 +632,19 @@ function updateTable() {
         });
         var lbl = new Array();
         var vl = new Array();
-        $.each(DCS, function (k, v) {
+        $.each(DCSPro, function (k, v) {
           lbl.push(k);
           vl.push(v);
         });
-        // console.log(lbl);
+
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
-        mychart.data.datasets[0].backgroundColor = randomColor(vl.length);
+        // debugger;
+        mychart.data.datasets[0].backgroundColor = randomColor({
+          count: vl.length,
+          luminosity: "dark",
+          seed: "DCS",
+        });
         mychart.update();
         break;
     }
@@ -651,7 +666,7 @@ function getUrlParam(parameter, defaultvalue) {
   if (window.location.href.indexOf(parameter) > -1) {
     urlparameter = getUrlVars()[parameter];
   }
-  console.log(urlparameter);
+
   if (urlparameter !== undefined) {
     return urlparameter;
   } else {
