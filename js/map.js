@@ -348,6 +348,7 @@ $(document).ready(function () {
       // ],
       datalabels: {
         // backgroundColor: 'white',
+        display:'auto',
         borderRadius: 20,
         borderWidth: 3,
         borderDashOffset: 20,
@@ -370,7 +371,7 @@ $(document).ready(function () {
           const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
           const rotation = ((valuesBefore + ctx.dataset.data[ctx.dataIndex] /2) /sum *360);
           const angle = ctx.dataset.data[ctx.dataIndex] /sum *360;
-          console.log(angle);
+          // console.log(angle);
           if(angle > 75) {
             return 0;
           }else{
@@ -505,7 +506,6 @@ function updateTable() {
           luminosity: "bright",
           seed: "countries",
         });
-        mychart.data.datasets[0].rotation = 45;
         mychart.update();
         break;
       case "ISP":
@@ -591,7 +591,7 @@ function updateTable() {
         mychart.data.datasets[0].data = vl;
         mychart.data.datasets[0].backgroundColor = randomColor({
           count: vl.length,
-          luminosity: "dark",
+          luminosity: "bright",
           seed: "ISPs",
         });
         mychart.update();
@@ -675,7 +675,7 @@ function updateTable() {
         // debugger;
         mychart.data.datasets[0].backgroundColor = randomColor({
           count: vl.length,
-          luminosity: "dark",
+          luminosity: "bright",
           seed: "DCS",
         });
         mychart.update();
