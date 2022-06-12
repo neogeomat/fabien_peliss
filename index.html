@@ -57,16 +57,17 @@
 
         #node-info{
             background-color: #F5F5F5 ;
-            margin-bottom: 10px;
+            /* margin-bottom: 10px; */
             padding: 10px 0px;
             margin-left: 0px;
         }
         #node-info span{
             margin: 0px 0px;   
+            letter-spacing: 1px;
         }
 
         #zero{
-            height: 20px;
+            height: 20px; /*27px in specs, 20px here = 37px out*/
             background-color: #F5F5F5 ;
             margin-left: 0px;
         }
@@ -87,6 +88,12 @@
             margin-left: 0px;
         }
 
+        #third{
+            height: 10px;
+            background-color: #F5F5F5 ;
+            margin-left: 0px;
+            margin-bottom: 10px;
+        }
         .dropdown-menu{
             padding: 0;
         }
@@ -122,13 +129,16 @@
         table.dataTable thead>tr>th.sorting:after, 
         table.dataTable thead>tr>th.sorting_desc:after{
             font-size: 1.9em;
-            
         }
         table.dataTable thead>tr>th.sorting_asc:before, 
         table.dataTable thead>tr>th.sorting_desc:after, 
         table.dataTable thead>tr>td.sorting_asc:before, 
         table.dataTable thead>tr>td.sorting_desc:after {
             opacity: .8;
+        }
+
+        .container{
+            margin-top: 10px;
         }
     </style>
     <script>
@@ -162,9 +172,8 @@
                 <div>
                     <div class="row">
                       <div class="col-sm-12 col-md-12">
-                        <div class="row" id="zero">
-
                         </div>
+                        <div id="zero"></div>
                         <div class="row" id="node-info">
                             <span id = "first" class="col-md-12" style="color: gray; font-size: 15px;">
                                 <span>STATS FOR THE</span>
@@ -176,10 +185,10 @@
                                 <span id="numNodes">: XXX</span>
                             </span>
                             <span class="col-md-8 singlenodeonly" style="color: gray; font-size: 12px;">
-                            (<span>MONIKER :</span><span id="markerMoniker">XXX</span>
-                            <span>, ID :</span><span id="markerID">XXX</span>)
-                            </span> 
+                                (<span>MONIKER: </span><span id="markerMoniker">XXX</span><span>, ID: </span><span id="markerID">XXX</span>)
+                            </span>
                         </div>
+                        <div id="third" ></div>
                         <div class="row">
                             <div class="col-md-12">
                                 <select id="dataSelector" onchange="updateTable()" class="selectpicker" data-style="btn-primary">
@@ -190,7 +199,7 @@
                             </div>
                         
                             <div class="container col-md-12">
-                            </br>
+                            <!-- </br> -->
                                 <table id="dataTable" class="table" >
                                 
                                 </table>
