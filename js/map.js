@@ -129,15 +129,16 @@ var populateNetworks = function (networks) {
           })
         );
 
-        document.getElementsByClassName("singlenodeonly")[0].style.display =
-          "block";
+        
         document.getElementById("networkName").innerHTML =
           markerClusterGroups[key].name.toLocaleUpperCase();
+        document.getElementsByClassName("singlenodeonly")[0].style.display =
+          "block";
         document.getElementById("markerMoniker").innerHTML =
           a.layer.options.properties.moniker;
         document.getElementById("markerID").innerHTML =
           a.layer.options.properties.nodeId;
-        document.getElementById("plural").innerHTML = "";
+        document.getElementById("plural").innerHTML = " ";
         document.getElementById("statsFor").innerHTML = " SELECTED PIN";
         document.getElementById("numNodes").innerHTML = ": 1";
         updateTable();
