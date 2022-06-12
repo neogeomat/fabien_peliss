@@ -40,7 +40,7 @@
         .leaflet-sidebar-content,
         .leaflet-sidebar-tabs {
             padding: 0;
-            
+            width: 100%;
         }
 
         dl dt{
@@ -50,19 +50,25 @@
         .leaflet-sidebar-header {
             background-color: #DC4437;
         }
-        
+
+        .leaflet-sidebar-close {
+            margin-right: 15px;
+        }
+
         #node-info{
             background-color: #F5F5F5 ;
             margin-bottom: 10px;
             padding: 10px 0px;
+            margin-left: 0px;
         }
         #node-info span{
-            margin: 0px 0px;
-            
+            margin: 0px 0px;   
         }
 
-        #node-info span:first-child{
-            
+        #zero{
+            height: 20px;
+            background-color: #F5F5F5 ;
+            margin-left: 0px;
         }
         #first span{
             font-size: 0.8em;
@@ -70,6 +76,7 @@
             font-family: inherit;
             color: #b5b5b5;
             letter-spacing: 1px;
+            margin-left: 0px;
         }
 
         #second span{
@@ -77,6 +84,7 @@
             letter-spacing: 2px;
             margin-right: -3px;
             color: #454545;
+            margin-left: 0px;
         }
 
         .dropdown-menu{
@@ -101,6 +109,7 @@
         tr th{
            background-color: #51BAE9;
            color: white;
+           /* width: 100%; */
         }
         table.dataTable tbody tr{
             background-color: #EFEFEF;
@@ -153,6 +162,9 @@
                 <div>
                     <div class="row">
                       <div class="col-sm-12 col-md-12">
+                        <div class="row" id="zero">
+
+                        </div>
                         <div class="row" id="node-info">
                             <span id = "first" class="col-md-12" style="color: gray; font-size: 15px;">
                                 <span>STATS FOR THE</span>
