@@ -8,6 +8,24 @@ markerClusterGroupOptions = {
   spiderfyOnMaxZoom: false,
   showCoverageOnHover: false,
   zoomToBoundsOnClick: false,
+  iconCreateFunction: function (cluster) {
+    var childCount = cluster.getChildCount();
+    var c = " marker-cluster-";
+    if (childCount < 10) {
+      c += "small";
+    } else if (childCount < 15) {
+      c += "medium";
+    }
+    else {
+      c += "large";
+    }
+    return new L.DivIcon({
+      html: '<div><span>' + childCount + '</span></div>',
+      className: 'marker-cluster' + c,
+      iconSize: new L.Point(40, 40)
+    });
+  }
+
 };
 
 var markerClusterGroups = {};
