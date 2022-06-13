@@ -31,7 +31,7 @@ function getnumberofcolors(num) {
 }
 var populateNetworks = function (networks) {
   ns = $("#networkSelector");
-  ns.append(`<option value='all' onclick="addNetwork('all')">All networks`);
+  ns.append(`<option value='all' onchange="addNetwork('all')">All networks`);
   for (const [key, value] of Object.entries(networks)) {
     ns.append(`<option value=${key}>${key}</option>`);
   }
