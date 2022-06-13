@@ -281,6 +281,7 @@ $(document).ready(function () {
     legend: {
       display: false,
     },
+    align:'end',
     plugins: {
       // labels: [
       //   {
@@ -394,7 +395,7 @@ $(document).ready(function () {
             const angle = ctx.dataset.angle[ctx.dataIndex];
             if(angle > 45){
               
-          return `${ctx.chart.data.labels[ctx.dataIndex]} \n ${percentage}`;
+          return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n')} \n ${percentage}`;
             }else{
               return ``;
             }
@@ -422,7 +423,7 @@ $(document).ready(function () {
       },
       outlabels: {
         // text: '%l PER => %p \n VAL => %v',
-        color: 'black',
+        color: '#462D26',
         stretch: 45,
         font: {
             resizable: true,
@@ -431,21 +432,21 @@ $(document).ready(function () {
         },
         lineWidth:1,
         stretch:10,
+        textAlign:'center',
         text:function(ctx) {
-          console.log("text", ctx);
+          // console.log("text", ctx.labels);
           
           const valuesBefore = ctx.dataset.data.slice(0, ctx.dataIndex).reduce((a, b) => a + b, 0);
           const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
           const rotation = ((valuesBefore + ctx.dataset.data[ctx.dataIndex] /2) /sum *360);
           const angle = ctx.dataset.data[ctx.dataIndex] /sum *360;
           ctx.dataset.angle[ctx.dataIndex] = angle;
-          console.log("angle", angle);
           ctx.dataset.rotation[ctx.dataIndex] = rotation;
-          console.log("rotation", rotation);
           if(angle > 45){
             return "";
           }else{
-            return ctx.label;
+            console.log(ctx.labels[ctx.dataIndex]);
+            return ctx.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n');
           }
         }
     }
