@@ -637,7 +637,7 @@ function updateTable() {
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
-        document.getElementById("numNodes").innerHTML = ISPSum;
+        document.getElementById("numNodes").innerHTML =":"+ ISPSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           //
           $("#dataTable").DataTable().destroy();
@@ -722,7 +722,7 @@ function updateTable() {
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
-        document.getElementById("numNodes").innerHTML = DCSSum;
+        document.getElementById("numNodes").innerHTML =":"+ DCSSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           $("#dataTable").DataTable().destroy();
         }
