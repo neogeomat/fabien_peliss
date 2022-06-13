@@ -81,7 +81,7 @@
             background-color: #F5F5F5 ;
             /* margin-bottom: 10px; */
             padding: 10px 0px;
-            margin-left: 0px;
+            /* margin-left: 0px; */
             /* margin-bottom: 10px; */
         }
         #node-info span{
@@ -167,6 +167,7 @@
             width: 97%;
             /* margin-top: 10px; */
         }
+        
     </style>
     <script>
         // $(document).ready( function () {
@@ -196,12 +197,11 @@
                     <span id="networkName">ALL NETWORKS</span>
                     <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
                 </h1>
-                <div>
-                    <div class="row">
-                      <div class="col-sm-12 col-md-12">
-                        </div>
+                
+                    <div id="info_cont" class="row">
+                      
                         
-                        <div class="row" id="node-info">
+                        <div class="row" id="node-info" style="">
                             <div id="zero"></div>
                             <span id = "first" class="col-md-12" style="color: gray; font-size: 15px;">
                                 <span>STATS FOR THE</span>
@@ -239,10 +239,10 @@
                             </div>
                         </div>
               
-                      </div>
+                      
 
                     </div>
-                  </div>
+                
             </div>
         </div>
     </div>
