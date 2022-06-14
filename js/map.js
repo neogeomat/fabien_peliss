@@ -275,7 +275,7 @@ $(document).ready(function () {
     ],
   };
   var pieOptions = {
-    rotation: (-0.5 * Math.PI) - (30/180 * Math.PI),
+    rotation: (0.5 * Math.PI) - (30/180 * Math.PI),
     maintainAspectRatio: false,
     responsive: true,
     legend: {
@@ -394,12 +394,17 @@ $(document).ready(function () {
             let percentage = (value*100 / sum).toFixed(0)+"%";
             // return percentage;
             const angle = ctx.dataset.angle[ctx.dataIndex];
-            if(angle > 45){
-              
-          return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n')} \n ${percentage}`;
+            var sele = document.getElementById("dataSelector");
+            if(sele.value == "COUNTRY"){
+              if(angle > 45){
+                return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n')} \n ${percentage}`;
+              }else{
+                return ``;
+              }
             }else{
               return ``;
             }
+            
         },
         rotation: function(ctx) {
           // computed in text
@@ -432,25 +437,29 @@ $(document).ready(function () {
             maxSize: 18
         },
         lineWidth:1,
-        stretch:10,
-        textAlign:'center',
+        // stretch:10,
+        // textAlign:'center',
         text:function(ctx) {
           // console.log("text", ctx.labels);
-          
           const valuesBefore = ctx.dataset.data.slice(0, ctx.dataIndex).reduce((a, b) => a + b, 0);
           const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
           const rotation = ((valuesBefore + ctx.dataset.data[ctx.dataIndex] /2) /sum *360);
           const angle = ctx.dataset.data[ctx.dataIndex] /sum *360;
           ctx.dataset.angle[ctx.dataIndex] = angle;
           ctx.dataset.rotation[ctx.dataIndex] = rotation;
-          if(angle > 45){
-            return "";
+          var sele = document.getElementById("dataSelector");
+          if(sele.value=='COUNTRY'){
+            if(angle > 45){
+              return "";
+            }else{
+              console.log(ctx.labels[ctx.dataIndex]);
+              return ctx.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n');
+            }
           }else{
-            console.log(ctx.labels[ctx.dataIndex]);
             return ctx.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n');
           }
-        }
-    }
+        },
+      }
     },
   };
   //Create pie or douhnut chart
@@ -621,7 +630,7 @@ function updateTable() {
         var ISPSum = Object.values(ISPs).reduce((a, b) => a + b, 0);
         //
         ISPsSorted.reduce((a, b) => {
-          if (ISPs[b]< 0.05* ISPSum) {
+          if (ISPs[b]< 0.02* ISPSum) {
             ISPsOthers = ISPsOthers + ISPs[b] || ISPs[b];
             return a + ISPs[b];
           } else {
@@ -706,7 +715,7 @@ function updateTable() {
         var DCSSum = Object.values(DCS).reduce((a, b) => a + b, 0);
 
         DCSSorted.reduce((a, b) => {
-          if (DCS[b] < 0.05 * DCSSum) {
+          if (DCS[b] < 0.02 * DCSSum) {
             DCSOthers = DCSOthers + DCS[b] || DCS[b];
             return a + DCS[b];
           } else {
