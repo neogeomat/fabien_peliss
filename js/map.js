@@ -13,7 +13,7 @@ markerClusterGroupOptions = {
     var c = " marker-cluster-";
     if (childCount < 10) {
       c += "small";
-    } else if (childCount < 15) {
+    } else if (childCount < 50) {
       c += "medium";
     }
     else {
@@ -275,7 +275,7 @@ $(document).ready(function () {
     ],
   };
   var pieOptions = {
-    // rotation: (-0.5 * Math.PI) - (30/180 * Math.PI),
+    rotation: (-0.5 * Math.PI) - (30/180 * Math.PI),
     maintainAspectRatio: false,
     responsive: true,
     legend: {
@@ -380,8 +380,9 @@ $(document).ready(function () {
         //   return context.dataset.backgroundColor;
         // },
         font: {
-          weight: 'bold',
-          size: 12,
+          resizable: true,
+          minSize: 12,
+          maxSize: 18
         },
         textAlign: 'center',
         formatter: function(value, ctx) {
@@ -620,7 +621,7 @@ function updateTable() {
         var ISPSum = Object.values(ISPs).reduce((a, b) => a + b, 0);
         //
         ISPsSorted.reduce((a, b) => {
-          if (ISPs[b]< 0.02* ISPSum) {
+          if (ISPs[b]< 0.05* ISPSum) {
             ISPsOthers = ISPsOthers + ISPs[b] || ISPs[b];
             return a + ISPs[b];
           } else {
@@ -705,7 +706,7 @@ function updateTable() {
         var DCSSum = Object.values(DCS).reduce((a, b) => a + b, 0);
 
         DCSSorted.reduce((a, b) => {
-          if (DCS[b] < 0.02 * DCSSum) {
+          if (DCS[b] < 0.05 * DCSSum) {
             DCSOthers = DCSOthers + DCS[b] || DCS[b];
             return a + DCS[b];
           } else {
@@ -747,7 +748,7 @@ function updateTable() {
         mychart.data.datasets[0].backgroundColor = randomColor({
           count: vl.length,
           luminosity: "bright",
-          seed: "DCS",
+          seed: "DCSseed",
         });
         mychart.update();
         break;
