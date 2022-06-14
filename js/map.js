@@ -384,7 +384,7 @@ $(document).ready(function () {
           minSize: 12,
           maxSize: 18
         },
-        textAlign: 'center',
+        // textAlign: 'center',
         formatter: function(value, ctx) {
             let sum = 0;
             let dataArr = ctx.chart.data.datasets[0].data;
@@ -394,17 +394,20 @@ $(document).ready(function () {
             let percentage = (value*100 / sum).toFixed(0)+"%";
             // return percentage;
             const angle = ctx.dataset.angle[ctx.dataIndex];
-            var sele = document.getElementById("dataSelector");
-            if(sele.value == "COUNTRY"){
-              if(angle > 45){
-                return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n')} \n ${percentage}`;
+            if(ctx.chart.data.labels[ctx.dataIndex].length <18){
+              if(angle > 30){
+                return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n')} \n ${percentage}`;
               }else{
                 return ``;
               }
             }else{
               return ``;
             }
-            
+            // if(angle > 45){
+              // return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n')} \n ${percentage}`;
+            // }else{
+            //   return ``;
+            // }
         },
         rotation: function(ctx) {
           // computed in text
@@ -448,15 +451,15 @@ $(document).ready(function () {
           ctx.dataset.angle[ctx.dataIndex] = angle;
           ctx.dataset.rotation[ctx.dataIndex] = rotation;
           var sele = document.getElementById("dataSelector");
-          if(sele.value=='COUNTRY'){
-            if(angle > 45){
+          if(ctx.chart.data.labels[ctx.dataIndex].length <18){
+            if(angle > 30){
               return "";
             }else{
               console.log(ctx.labels[ctx.dataIndex]);
-              return ctx.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n');
+              return ctx.labels[ctx.dataIndex].replace(' ','\n');
             }
           }else{
-            return ctx.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n');
+            return ctx.labels[ctx.dataIndex].replace(' ','\n');
           }
         },
       }
