@@ -246,15 +246,21 @@ $(document).ready(function () {
     document.getElementById("numNodes").innerHTML = ": " + numNodes;
     updateTable();
   });
-  map.spin(true);
+  
   // $.ajax("data/peers.json", {
   $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
+    beforeSend: function(){
+      map.spin(true);
+    },
     success: populateNetworks,
     error: function (xhr, st, et) {
       map.spin(false);
     },
+    complete: function() {
+      map.spin(false);
+    }
   });
 
   //-------------
