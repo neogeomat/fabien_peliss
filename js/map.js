@@ -426,7 +426,7 @@ $(document).ready(function () {
           const rotation = ctx.dataset.angle[ctx.dataIndex];
           // ctx.dataset.angle[ctx.dataIndex] = angle;
           // console.log("angle", angle);
-          if(angle > 45) {
+          if(angle > 30) {
             return 0;
           }else{
           return rotation < 180 ? rotation-90 : rotation+90;
@@ -588,6 +588,8 @@ function updateTable() {
           vl.push(v);
         });
         //
+        var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+        pieChartCanvas.canvas.style.top = '-50px';
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
         // debugger;
@@ -677,6 +679,8 @@ function updateTable() {
           vl.push(v);
         });
         //
+        var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+        pieChartCanvas.canvas.style.top = '0px';
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
         mychart.data.datasets[0].backgroundColor = randomColor({
@@ -759,7 +763,9 @@ function updateTable() {
           lbl.push(k);
           vl.push(v);
         });
-
+        //
+        var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
+        pieChartCanvas.canvas.style.top = '0px';
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
         // debugger;
