@@ -562,13 +562,13 @@ function updateTable() {
           countriesPro["Others"] = countriesOthers;
         }
         // debugger;
-        // if (network && network != "all") {
-        //   document.getElementById("networkName").innerHTML =
-        //     network.toLocaleUpperCase();
-        // } else {
-        //   document.getElementById("networkName").innerHTML = "ALL NETWORKS";
-        // }
-        // document.getElementById("numNodes").innerHTML = countriesSum;
+        if (network && network != "all") {
+          document.getElementById("networkName").innerHTML =
+            network.toLocaleUpperCase();
+        } else {
+          document.getElementById("networkName").innerHTML = "ALL NETWORKS";
+        }
+        document.getElementById("numNodes").innerHTML = ":"+countriesSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           //
           $("#dataTable").DataTable().destroy();
