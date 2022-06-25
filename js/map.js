@@ -620,11 +620,11 @@ function updateTable() {
         mychart.update();
         // modal
         if(selected){
-          if ($.fn.dataTable.isDataTable("#modalDataTable")) {
-            //
-            $("#modalDataTable").DataTable().destroy();
-          }
-          $("#modalDataTable").DataTable({
+          // if ($.fn.dataTable.isDataTable("#modalDataTable")) {
+          //   //
+          //   $("#modalDataTable").DataTable().destroy();
+          // }
+          var modeldatatable = $("#modalDataTable").DataTable({
             dom: "tp",
             searching: true,
             pageLength: 5,
@@ -643,6 +643,11 @@ function updateTable() {
             order: [[1, "desc"]],
           });
           $("#exampleModal").modal('show');
+          $('#mysearch').on( 'keyup click', function () {
+            console.log($('#mysearch').val());
+            modeldatatable.search($('#mysearch').val()).draw();
+        } );
+          
         }
 
         break;
