@@ -15,17 +15,15 @@ markerClusterGroupOptions = {
       c += "small";
     } else if (childCount < 50) {
       c += "medium";
-    }
-    else {
+    } else {
       c += "large";
     }
     return new L.DivIcon({
-      html: '<div><span>' + childCount + '</span></div>',
-      className: 'marker-cluster' + c,
-      iconSize: new L.Point(40, 40)
+      html: "<div><span>" + childCount + "</span></div>",
+      className: "marker-cluster" + c,
+      iconSize: new L.Point(40, 40),
     });
-  }
-
+  },
 };
 
 var markerClusterGroups = {};
@@ -147,7 +145,6 @@ var populateNetworks = function (networks) {
           })
         );
 
-        
         document.getElementById("networkName").innerHTML =
           markerClusterGroups[key].name.toLocaleUpperCase();
         document.getElementsByClassName("singlenodeonly")[0].style.display =
@@ -246,21 +243,21 @@ $(document).ready(function () {
     document.getElementById("numNodes").innerHTML = ": " + numNodes;
     updateTable();
   });
-  
+
   // $.ajax("data/peers.json", {
   $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
-    beforeSend: function(){
+    beforeSend: function () {
       map.spin(true);
     },
     success: populateNetworks,
     error: function (xhr, st, et) {
       map.spin(false);
     },
-    complete: function() {
+    complete: function () {
       map.spin(false);
-    }
+    },
   });
 
   //-------------
@@ -275,19 +272,19 @@ $(document).ready(function () {
       {
         data: [],
         backgroundColor: [],
-        angle:[],
-        rotation:[],
+        angle: [],
+        rotation: [],
       },
     ],
   };
   var pieOptions = {
-    rotation: (0.5 * Math.PI) - (30/180 * Math.PI),
+    rotation: 0.5 * Math.PI - (30 / 180) * Math.PI,
     maintainAspectRatio: false,
     responsive: true,
     legend: {
       display: false,
     },
-    align:'end',
+    align: "end",
     plugins: {
       // labels: [
       //   {
@@ -388,34 +385,37 @@ $(document).ready(function () {
         font: {
           resizable: true,
           minSize: 12,
-          maxSize: 18
+          maxSize: 18,
         },
         // textAlign: 'center',
-        formatter: function(value, ctx) {
-            let sum = 0;
-            let dataArr = ctx.chart.data.datasets[0].data;
-            dataArr.map(data => {
-                sum += data;
-            });
-            let percentage = (value*100 / sum).toFixed(0)+"%";
-            // return percentage;
-            const angle = ctx.dataset.angle[ctx.dataIndex];
-            if(ctx.chart.data.labels[ctx.dataIndex].length <18){
-              if(angle > 30){
-                return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n')} \n ${percentage}`;
-              }else{
-                return ``;
-              }
-            }else{
+        formatter: function (value, ctx) {
+          let sum = 0;
+          let dataArr = ctx.chart.data.datasets[0].data;
+          dataArr.map((data) => {
+            sum += data;
+          });
+          let percentage = ((value * 100) / sum).toFixed(0) + "%";
+          // return percentage;
+          const angle = ctx.dataset.angle[ctx.dataIndex];
+          if (ctx.chart.data.labels[ctx.dataIndex].length < 18) {
+            if (angle > 30) {
+              return `${ctx.chart.data.labels[ctx.dataIndex].replace(
+                " ",
+                "\n"
+              )} \n ${percentage}`;
+            } else {
               return ``;
             }
-            // if(angle > 45){
-              // return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n')} \n ${percentage}`;
-            // }else{
-            //   return ``;
-            // }
+          } else {
+            return ``;
+          }
+          // if(angle > 45){
+          // return `${ctx.chart.data.labels[ctx.dataIndex].replace(' ','\n').replace(',','\n')} \n ${percentage}`;
+          // }else{
+          //   return ``;
+          // }
         },
-        rotation: function(ctx) {
+        rotation: function (ctx) {
           // computed in text
 
           // const valuesBefore = ctx.dataset.data.slice(0, ctx.dataIndex).reduce((a, b) => a + b, 0);
@@ -426,49 +426,52 @@ $(document).ready(function () {
           const rotation = ctx.dataset.angle[ctx.dataIndex];
           // ctx.dataset.angle[ctx.dataIndex] = angle;
           // console.log("angle", angle);
-          if(angle > 30) {
+          if (angle > 30) {
             return 0;
-          }else{
-          return rotation < 180 ? rotation-90 : rotation+90;
+          } else {
+            return rotation < 180 ? rotation - 90 : rotation + 90;
           }
         },
         padding: {
-          left:50,
-        }
+          left: 50,
+        },
       },
       outlabels: {
         // text: '%l PER => %p \n VAL => %v',
-        color: '#462D26',
+        color: "#462D26",
         stretch: 45,
         font: {
-            resizable: true,
-            minSize: 12,
-            maxSize: 18
+          resizable: true,
+          minSize: 12,
+          maxSize: 18,
         },
-        lineWidth:1,
+        lineWidth: 1,
         // stretch:10,
         // textAlign:'center',
-        text:function(ctx) {
+        text: function (ctx) {
           // console.log("text", ctx.labels);
-          const valuesBefore = ctx.dataset.data.slice(0, ctx.dataIndex).reduce((a, b) => a + b, 0);
+          const valuesBefore = ctx.dataset.data
+            .slice(0, ctx.dataIndex)
+            .reduce((a, b) => a + b, 0);
           const sum = ctx.dataset.data.reduce((a, b) => a + b, 0);
-          const rotation = ((valuesBefore + ctx.dataset.data[ctx.dataIndex] /2) /sum *360);
-          const angle = ctx.dataset.data[ctx.dataIndex] /sum *360;
+          const rotation =
+            ((valuesBefore + ctx.dataset.data[ctx.dataIndex] / 2) / sum) * 360;
+          const angle = (ctx.dataset.data[ctx.dataIndex] / sum) * 360;
           ctx.dataset.angle[ctx.dataIndex] = angle;
           ctx.dataset.rotation[ctx.dataIndex] = rotation;
           var sele = document.getElementById("dataSelector");
-          if(ctx.chart.data.labels[ctx.dataIndex].length <18){
-            if(angle > 30){
+          if (ctx.chart.data.labels[ctx.dataIndex].length < 18) {
+            if (angle > 30) {
               return "";
-            }else{
+            } else {
               console.log(ctx.labels[ctx.dataIndex]);
-              return ctx.labels[ctx.dataIndex].replace(' ','\n');
+              return ctx.labels[ctx.dataIndex].replace(" ", "\n");
             }
-          }else{
-            return ctx.labels[ctx.dataIndex].replace(' ','\n');
+          } else {
+            return ctx.labels[ctx.dataIndex].replace(" ", "\n");
           }
         },
-      }
+      },
     },
   };
   //Create pie or douhnut chart
@@ -479,7 +482,6 @@ $(document).ready(function () {
     data: pieData,
     options: pieOptions,
   });
-
 });
 
 // create the sidebar instance and add it to the map
@@ -568,7 +570,7 @@ function updateTable() {
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
-        document.getElementById("numNodes").innerHTML = ":"+countriesSum;
+        document.getElementById("numNodes").innerHTML = ":" + countriesSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           //
           $("#dataTable").DataTable().destroy();
@@ -589,7 +591,7 @@ function updateTable() {
         });
         //
         var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-        pieChartCanvas.canvas.style.top = '-50px';
+        pieChartCanvas.canvas.style.top = "-50px";
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
         // debugger;
@@ -641,7 +643,7 @@ function updateTable() {
         var ISPSum = Object.values(ISPs).reduce((a, b) => a + b, 0);
         //
         ISPsSorted.reduce((a, b) => {
-          if (ISPs[b]< 0.02* ISPSum) {
+          if (ISPs[b] < 0.02 * ISPSum) {
             ISPsOthers = ISPsOthers + ISPs[b] || ISPs[b];
             return a + ISPs[b];
           } else {
@@ -659,7 +661,7 @@ function updateTable() {
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
-        document.getElementById("numNodes").innerHTML =":"+ ISPSum;
+        document.getElementById("numNodes").innerHTML = ":" + ISPSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           //
           $("#dataTable").DataTable().destroy();
@@ -680,7 +682,7 @@ function updateTable() {
         });
         //
         var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-        pieChartCanvas.canvas.style.top = '0px';
+        pieChartCanvas.canvas.style.top = "0px";
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
         mychart.data.datasets[0].backgroundColor = randomColor({
@@ -746,7 +748,7 @@ function updateTable() {
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
         }
-        document.getElementById("numNodes").innerHTML =":"+ DCSSum;
+        document.getElementById("numNodes").innerHTML = ":" + DCSSum;
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           $("#dataTable").DataTable().destroy();
         }
@@ -765,7 +767,7 @@ function updateTable() {
         });
         //
         var pieChartCanvas = $("#pieChart").get(0).getContext("2d");
-        pieChartCanvas.canvas.style.top = '0px';
+        pieChartCanvas.canvas.style.top = "0px";
         mychart.data.labels = lbl;
         mychart.data.datasets[0].data = vl;
         // debugger;
