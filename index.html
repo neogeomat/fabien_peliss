@@ -125,11 +125,11 @@
                 <button
                   id="more-details-button"
                   type="button"
-                  class="btn btn-primary"
+                  class="btn btn-primary hidden"
                   data-toggle="modal"
                   data-target="#exampleModal"
                 >
-                  Launch demo modal
+                  More Details
                 </button>
               </center>
               <!-- Modal -->
@@ -144,9 +144,7 @@
                 <div class="modal-dialog modal-lg" role="document">
                   <div class="modal-content">
                     <div class="modal-header">
-                      <span class="modal-title" id="exampleModalLabel">
-                        Modal title
-                      </span>
+                      <span id="networkNameModal" class="modal-title">ALL NETWORKS</span>
                       <button
                         type="button"
                         class="close"
@@ -165,20 +163,20 @@
                           style="color: gray; font-size: 15px"
                         >
                           <span>STATS FOR THE</span>
-                          <span id="statsFor"> WHOLE WORLD</span>
+                          <span id="statsForModal"> WHOLE WORLD</span>
                         </span>
                         <span id="second" class="col-md-12" style="font-size: 20px">
-                          <span>NUMBER OF NODE<span id="plural"></span></span>
+                          <span>NUMBER OF NODE<span id="pluralModal"></span></span>
           
-                          <span id="numNodes">: XXX</span>
+                          <span id="numNodesModal">: XXX</span>
                         </span>
-                        <span
+                        <!-- <span
                           class="col-md-8 singlenodeonly"
                           style="color: gray; font-size: 12px"
                         >
                           (<span>MONIKER: </span><span id="markerMoniker">XXX</span
                           ><span>, ID: </span><span id="markerID">XXX</span>)
-                        </span>
+                        </span> -->
                         <div id="third"></div>
                       </div>
                       <div class="row modal-row">
@@ -197,7 +195,7 @@
                         <table
                           id="modalDataTable"
                           class="table"
-                          style="z-index: 1000"
+                          style="z-index: 1000;width: 100%;"
                         ></table>
                       </div>
                     </div>

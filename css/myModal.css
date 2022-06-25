@@ -4,6 +4,8 @@
   line-height: 40px;
   font-size: 14.4pt;
   color: #fff;
+  padding: 0px;
+  padding-left: 15px;
 }
 
 .modal-body {
@@ -12,4 +14,15 @@
 
 .modal-row {
   margin: 0px;
+}
+.close{
+float: right;
+font-size: 40px;
+font-weight: 10;
+line-height: 1;
+color: #fff;
+/* text-shadow: 0 1px 0 #fff;
+filter: alpha(opacity=20); */
+opacity: 1;
+background: #dc4437;
 }

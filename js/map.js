@@ -243,27 +243,27 @@ $(document).ready(function () {
     document.getElementById("numNodes").innerHTML = ": " + numNodes;
     updateTable();
 
-  //   $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-  //     // var min = parseInt($('#min').val(), 10);
-  //     // var max = parseInt($('#max').val(), 10);
-  //     var keyword = $('#mysearch').val();
-  //     var key = data[0]; // use data for the age column
-  //     var nodes = data[1]; // use data for the age column
-   
-  //     if ( keyword == key
-  //     ) {
-  //         return true;
-  //     }
-  //     return false;
-  // });
-//   $('#mysearch').keyup(function () {
-//     console.log($(this).val());
-//     $("#dataTable").DataTable().draw();
-// });
+    //   $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+    //     // var min = parseInt($('#min').val(), 10);
+    //     // var max = parseInt($('#max').val(), 10);
+    //     var keyword = $('#mysearch').val();
+    //     var key = data[0]; // use data for the age column
+    //     var nodes = data[1]; // use data for the age column
+
+    //     if ( keyword == key
+    //     ) {
+    //         return true;
+    //     }
+    //     return false;
+    // });
+    //   $('#mysearch').keyup(function () {
+    //     console.log($(this).val());
+    //     $("#dataTable").DataTable().draw();
+    // });
   });
 
   $.ajax("data/peers.json", {
-  // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
+    // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
     beforeSend: function () {
@@ -618,30 +618,76 @@ function updateTable() {
           seed: "countries",
         });
         mychart.update();
+
+        // more details button
+        if (selected) {
+          if ($("#more-details-button").hasClass("hidden")) {
+            $("#more-details-button").removeClass("hidden");
+          }
+        }else{
+          if (!$("#more-details-button").hasClass("hidden")) {
+            $("#more-details-button").addClass("hidden");
+          }
+        }
         // modal
-        if(selected){
-          // if ($.fn.dataTable.isDataTable("#modalDataTable")) {
-          //   //
-          //   $("#modalDataTable").DataTable().destroy();
-          // }
+        if (selected) {
+          if (network && network != "all") {
+            document.getElementById("networkNameModal").innerHTML =
+              network.toLocaleUpperCase();
+          } else {
+            document.getElementById("networkNameModal").innerHTML =
+              "ALL NETWORKS";
+          }
+          document.getElementById("pluralModal").innerHTML = "S";
+          document.getElementById("numNodesModal").innerHTML =
+            ":" + countriesSum;
+          try{
+            var modalData = selected.getAllChildMarkers().map((m) => {
+              prop = m.options.properties;
+              return [
+                prop.moniker,
+                prop.nodeId,
+                m.options.belongs_to,
+                prop.country,
+                prop.isp,
+                prop.as,
+              ];
+            })
+          }catch(e){
+            prop = selected.options.properties;
+            var modalData = [[
+              prop.moniker,
+              prop.nodeId,
+              network,
+              prop.country,
+              prop.isp,
+              prop.as,
+            ]];
+          }
+          if ($.fn.dataTable.isDataTable("#modalDataTable")) {
+            //
+            $("#modalDataTable").DataTable().destroy();
+          }
           var modeldatatable = $("#modalDataTable").DataTable({
             dom: "tp",
             searching: true,
             mark: true,
             pageLength: 5,
-            data: selected.getAllChildMarkers().map(m => {
-              prop = m.options.properties; 
-              return [prop.moniker,prop.nodeId,m.options.belongs_to,prop.country,prop.isp,prop.as]
-            }),
+            data: modalData,
             columns: [
-              { title: "Moniker", width: "10%" }, 
-              { title: "Node Id", width: "10%" }, 
-              {title: "Chain", width: "10%"}, 
-              {title: 'Country', width: "10%"}, 
-              {title: 'ISP', width: "10%"}, 
-              {title: 'DataCenter', width: "10%"}
+              { title: "Moniker", width: "100px" },
+              { title: "Node Id", width: "100px" },
+              { title: "Chain", width: "100px" ,"defaultContent": "<i>Not set</i>"},
+              { title: "Country", width: "10px" },
+              { title: "ISP", width: "100px" },
+              { title: "DataCenter", width: "100px" },
             ],
-            order: [[1, "desc"]],
+            // order: [[1, "desc"]],
+          });
+          // $("#exampleModal").modal('show');
+          $("#mysearch").on("keyup click", function () {
+            console.log($("#mysearch").val());
+            modeldatatable.search($("#mysearch").val()).draw();
           });
           $("#exampleModal").modal('show');
           $('#mysearch').on( 'keyup', function () {
@@ -829,13 +875,6 @@ function updateTable() {
         break;
     }
   }
-}
-
-function updateModal(){
-  if(!selected){
-    $('#more-details-button').addClass('hidden');
-  }
-
 }
 
 function getUrlVars() {
