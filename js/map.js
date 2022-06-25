@@ -244,8 +244,8 @@ $(document).ready(function () {
     updateTable();
   });
 
-  // $.ajax("data/peers.json", {
-  $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
+  $.ajax("data/peers.json", {
+  // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
     beforeSend: function () {
@@ -464,7 +464,7 @@ $(document).ready(function () {
             if (angle > 30) {
               return "";
             } else {
-              console.log(ctx.labels[ctx.dataIndex]);
+              // console.log(ctx.labels[ctx.dataIndex]);
               return ctx.labels[ctx.dataIndex].replace(" ", "\n");
             }
           } else {
@@ -483,8 +483,6 @@ $(document).ready(function () {
     options: pieOptions,
   });
 });
-
-// create the sidebar instance and add it to the map
 
 function updateTable() {
   var sele = document.getElementById("dataSelector");
@@ -583,6 +581,7 @@ function updateTable() {
           columns: [{ title: "COUNTRY" }, { title: "NODES" }],
           order: [[1, "desc"]],
         });
+        // piechart
         var lbl = new Array();
         var vl = new Array();
         $.each(countriesPro, function (k, v) {
@@ -601,6 +600,21 @@ function updateTable() {
           seed: "countries",
         });
         mychart.update();
+        // modal
+        if ($.fn.dataTable.isDataTable("#modalDataTable")) {
+          //
+          $("#modalDataTable").DataTable().destroy();
+        }
+        $("#modalDataTable").DataTable({
+          dom: "tp",
+          searching: false,
+          pageLength: 5,
+          data: Object.entries(countriesPro),
+          columns: [{ title: "COUNTRY" }, { title: "NODES" }],
+          order: [[1, "desc"]],
+        });
+        $("#exampleModal").modal('show');
+
         break;
       case "ISP":
         var ISPs = {};
@@ -780,6 +794,13 @@ function updateTable() {
         break;
     }
   }
+}
+
+function updateModal(){
+  if(!selected){
+    $('#more-details-button').addClass('hidden');
+  }
+
 }
 
 function getUrlVars() {
