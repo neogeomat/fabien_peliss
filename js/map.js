@@ -626,7 +626,7 @@ function updateTable() {
           // }
           var modeldatatable = $("#modalDataTable").DataTable({
             dom: "tp",
-            searching: true,
+            searching: false,
             pageLength: 5,
             data: selected.getAllChildMarkers().map(m => {
               prop = m.options.properties; 
