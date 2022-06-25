@@ -633,12 +633,12 @@ function updateTable() {
               return [prop.moniker,prop.nodeId,m.options.belongs_to,prop.country,prop.isp,prop.as]
             }),
             columns: [
-              { title: "Moniker" }, 
-              { title: "Node Id" }, 
-              {title: "Chain"}, 
-              {title: 'Country'}, 
-              {title: 'ISP'}, 
-              {title: 'DataCenter'}
+              { title: "Moniker", width: "10%" }, 
+              { title: "Node Id", width: "10%" }, 
+              {title: "Chain", width: "10%"}, 
+              {title: 'Country', width: "10%"}, 
+              {title: 'ISP', width: "10%"}, 
+              {title: 'DataCenter', width: "10%"}
             ],
             order: [[1, "desc"]],
           });
