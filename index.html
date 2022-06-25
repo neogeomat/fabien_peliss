@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.2.8/css/rowReorder.dataTables.min.css">
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    
     <style>
         body {
             padding: 0;
@@ -186,12 +187,7 @@
             font-weight: bold;
         } */
     </style>
-    <script>
-        // $(document).ready( function () {
-        //     $('#dataTable').DataTable();
-        // } );
-        
-</script>
+    <link rel="stylesheet" href="css/sear.css" />    
 </head>
 <body>
     <!-- optionally define the sidebar content via HTML markup -->
@@ -236,6 +232,14 @@
                         </div>
                         
                         <div class="row">
+                            <div class="col-md-12">
+                                <div class="search">
+                                    <input type="search" class="search-box" id="mysearch"/>
+                                    <span class="search-button">
+                                      <span class="search-icon"></span>
+                                    </span>
+                                </div>
+                            </div>
                             <div class="col-md-12">
                                 <select id="dataSelector" onchange="updateTable()" class="selectpicker" data-style="btn-primary">
                                     <option value="COUNTRY">COUNTRY</option>
@@ -304,6 +308,13 @@
     <script src="js/chartjs-plugin-datalabels@1.js"></script>
     <script src="js/chartjs-plugin-piechart-outlabels-0.1.4.js"></script>
     <script src="js/map.js"></script>
-    
+    <script>
+        $(document).ready(function(){
+            $('.search-button').click(function(){
+                $(this).parent().toggleClass('open');
+            });
+        });
+        
+    </script>
 </body>
 </html>
