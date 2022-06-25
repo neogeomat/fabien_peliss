@@ -1,0 +1,15 @@
+.modal-header {
+  background-color: #dc4437;
+  height: 40px;
+  line-height: 40px;
+  font-size: 14.4pt;
+  color: #fff;
+}
+
+.modal-body {
+  padding: 0px;
+}
+
+.modal-row {
+  margin: 0px;
+}
