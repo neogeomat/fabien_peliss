@@ -262,8 +262,8 @@ $(document).ready(function () {
     // });
   });
 
-  $.ajax("data/peers.json", {
-    // $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
+  // $.ajax("data/peers.json", {
+  $.ajax("https://tools.highstakes.ch/geoloc-api/peers", {
     dataType: "json",
     method: "GET",
     beforeSend: function () {
@@ -624,7 +624,7 @@ function updateTable() {
           if ($("#more-details-button").hasClass("hidden")) {
             $("#more-details-button").removeClass("hidden");
           }
-        }else{
+        } else {
           if (!$("#more-details-button").hasClass("hidden")) {
             $("#more-details-button").addClass("hidden");
           }
@@ -638,10 +638,8 @@ function updateTable() {
             document.getElementById("networkNameModal").innerHTML =
               "ALL NETWORKS";
           }
-          document.getElementById("pluralModal").innerHTML = "S";
-          document.getElementById("numNodesModal").innerHTML =
-            ":" + countriesSum;
-          try{
+
+          try {
             var modalData = selected.getAllChildMarkers().map((m) => {
               prop = m.options.properties;
               return [
@@ -652,17 +650,28 @@ function updateTable() {
                 prop.isp,
                 prop.as,
               ];
-            })
-          }catch(e){
+            });
+            document.getElementById("statsForModal").innerHTML =
+              " SELECTED PINS";
+            document.getElementById("pluralModal").innerHTML = "S";
+            document.getElementById("numNodesModal").innerHTML =
+              ":" + selected.getChildCount();
+          } catch (e) {
             prop = selected.options.properties;
-            var modalData = [[
-              prop.moniker,
-              prop.nodeId,
-              network,
-              prop.country,
-              prop.isp,
-              prop.as,
-            ]];
+            var modalData = [
+              [
+                prop.moniker,
+                prop.nodeId,
+                network,
+                prop.country,
+                prop.isp,
+                prop.as,
+              ],
+            ];
+            document.getElementById("statsForModal").innerHTML =
+              " SELECTED PIN";
+            document.getElementById("pluralModal").innerHTML = "";
+            document.getElementById("numNodesModal").innerHTML = ": 1";
           }
           if ($.fn.dataTable.isDataTable("#modalDataTable")) {
             //
@@ -677,7 +686,11 @@ function updateTable() {
             columns: [
               { title: "Moniker", width: "100px" },
               { title: "Node Id", width: "100px" },
-              { title: "Chain", width: "100px" ,"defaultContent": "<i>Not set</i>"},
+              {
+                title: "Chain",
+                width: "100px",
+                defaultContent: "<i>Not set</i>",
+              },
               { title: "Country", width: "10px" },
               { title: "ISP", width: "100px" },
               { title: "DataCenter", width: "100px" },
@@ -685,15 +698,14 @@ function updateTable() {
             // order: [[1, "desc"]],
           });
           // $("#exampleModal").modal('show');
+          $("#mysearch").val('');
           $("#mysearch").on("keyup", function () {
             console.log($("#mysearch").val());
             modeldatatable.search($("#mysearch").val()).draw();
           });
-          $("#exampleModal").modal('show');
-          $('#mysearch').on( 'keyup', function () {
-            modeldatatable.search($('#mysearch').val()).draw();
+          $("#mysearch").on("keyup", function () {
+            modeldatatable.search($("#mysearch").val()).draw();
           });
-          
         }
 
         break;
