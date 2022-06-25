@@ -601,19 +601,31 @@ function updateTable() {
         });
         mychart.update();
         // modal
-        if ($.fn.dataTable.isDataTable("#modalDataTable")) {
-          //
-          $("#modalDataTable").DataTable().destroy();
+        if(selected){
+          if ($.fn.dataTable.isDataTable("#modalDataTable")) {
+            //
+            $("#modalDataTable").DataTable().destroy();
+          }
+          $("#modalDataTable").DataTable({
+            dom: "tp",
+            searching: true,
+            pageLength: 5,
+            data: selected.getAllChildMarkers().map(m => {
+              prop = m.options.properties; 
+              return [prop.moniker,prop.nodeId,m.options.belongs_to,prop.country,prop.isp,prop.as]
+            }),
+            columns: [
+              { title: "Moniker" }, 
+              { title: "Node Id" }, 
+              {title: "Chain"}, 
+              {title: 'Country'}, 
+              {title: 'ISP'}, 
+              {title: 'DataCenter'}
+            ],
+            order: [[1, "desc"]],
+          });
+          $("#exampleModal").modal('show');
         }
-        $("#modalDataTable").DataTable({
-          dom: "tp",
-          searching: false,
-          pageLength: 5,
-          data: Object.entries(countriesPro),
-          columns: [{ title: "COUNTRY" }, { title: "NODES" }],
-          order: [[1, "desc"]],
-        });
-        $("#exampleModal").modal('show');
 
         break;
       case "ISP":
