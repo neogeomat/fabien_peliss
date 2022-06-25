@@ -670,7 +670,8 @@ function updateTable() {
           }
           var modeldatatable = $("#modalDataTable").DataTable({
             dom: "tp",
-            searching: false,
+            searching: true,
+            mark: true,
             pageLength: 5,
             data: modalData,
             columns: [
@@ -684,10 +685,15 @@ function updateTable() {
             // order: [[1, "desc"]],
           });
           // $("#exampleModal").modal('show');
-          $("#mysearch").on("keyup click", function () {
+          $("#mysearch").on("keyup", function () {
             console.log($("#mysearch").val());
             modeldatatable.search($("#mysearch").val()).draw();
           });
+          $("#exampleModal").modal('show');
+          $('#mysearch').on( 'keyup', function () {
+            modeldatatable.search($('#mysearch').val()).draw();
+          });
+          
         }
 
         break;
