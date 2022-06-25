@@ -242,6 +242,24 @@ $(document).ready(function () {
     }
     document.getElementById("numNodes").innerHTML = ": " + numNodes;
     updateTable();
+
+  //   $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+  //     // var min = parseInt($('#min').val(), 10);
+  //     // var max = parseInt($('#max').val(), 10);
+  //     var keyword = $('#mysearch').val();
+  //     var key = data[0]; // use data for the age column
+  //     var nodes = data[1]; // use data for the age column
+   
+  //     if ( keyword == key
+  //     ) {
+  //         return true;
+  //     }
+  //     return false;
+  // });
+//   $('#mysearch').keyup(function () {
+//     console.log($(this).val());
+//     $("#dataTable").DataTable().draw();
+// });
   });
 
   $.ajax("data/peers.json", {
