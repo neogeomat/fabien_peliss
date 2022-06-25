@@ -626,7 +626,8 @@ function updateTable() {
           // }
           var modeldatatable = $("#modalDataTable").DataTable({
             dom: "tp",
-            searching: false,
+            searching: true,
+            mark: true,
             pageLength: 5,
             data: selected.getAllChildMarkers().map(m => {
               prop = m.options.properties; 
@@ -643,10 +644,9 @@ function updateTable() {
             order: [[1, "desc"]],
           });
           $("#exampleModal").modal('show');
-          $('#mysearch').on( 'keyup click', function () {
-            console.log($('#mysearch').val());
+          $('#mysearch').on( 'keyup', function () {
             modeldatatable.search($('#mysearch').val()).draw();
-        } );
+          });
           
         }
 
