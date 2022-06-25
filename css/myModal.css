@@ -1,3 +1,7 @@
+.modal-content{
+    right: -25%;
+}
+
 .modal-header {
   background-color: #dc4437;
   height: 40px;
@@ -21,8 +25,8 @@ font-size: 40px;
 font-weight: 10;
 line-height: 1;
 color: #fff;
-/* text-shadow: 0 1px 0 #fff;
-filter: alpha(opacity=20); */
+text-shadow: 0 1px 0 #fff;
+filter: alpha(opacity=20);
 opacity: 1;
 background: #dc4437;
 }
