@@ -276,6 +276,12 @@
             $('#mysearch').focusout();
           }
         });
+
+        $('#more-details-button').on('click', function (e) {
+            if($('#mysearch').parent().hasClass('open')){
+                $('#mysearch').parent().removeClass('open');
+            }
+            })
       });
     </script>
   </body>
