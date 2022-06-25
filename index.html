@@ -270,6 +270,11 @@
       $(document).ready(function () {
         $(".search-button").click(function () {
           $(this).parent().toggleClass("open");
+          if($(this).parent().hasClass('open')){
+            $('#mysearch').focus();
+          }else{
+            $('#mysearch').focusout();
+          }
         });
       });
     </script>
