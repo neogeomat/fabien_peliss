@@ -620,10 +620,19 @@ function updateTable() {
         mychart.update();
         // modal
         if(selected){
-          // if ($.fn.dataTable.isDataTable("#modalDataTable")) {
-          //   //
-          //   $("#modalDataTable").DataTable().destroy();
-          // }
+          if (network && network != "all") {
+            document.getElementById("networkNameModal").innerHTML =
+              network.toLocaleUpperCase();
+          } else {
+            document.getElementById("networkNameModal").innerHTML = "ALL NETWORKS";
+          }
+          document.getElementById("pluralModal").innerHTML = "S";
+          document.getElementById("numNodesModal").innerHTML = ":" + countriesSum;
+          
+          if ($.fn.dataTable.isDataTable("#modalDataTable")) {
+            //
+            $("#modalDataTable").DataTable().destroy();
+          }
           var modeldatatable = $("#modalDataTable").DataTable({
             dom: "tp",
             searching: true,
@@ -642,12 +651,11 @@ function updateTable() {
             ],
             order: [[1, "desc"]],
           });
-          $("#exampleModal").modal('show');
+          // $("#exampleModal").modal('show');
           $('#mysearch').on( 'keyup click', function () {
             console.log($('#mysearch').val());
             modeldatatable.search($('#mysearch').val()).draw();
-        } );
-          
+          });
         }
 
         break;
