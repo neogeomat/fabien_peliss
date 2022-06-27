@@ -644,7 +644,7 @@ function updateTable() {
               prop = m.options.properties;
               return [
                 prop.moniker,
-                prop.nodeId,
+                prop.nodeId.replace(/^(.{15})(.{15})(.*)$/, "$1 $2 $3"),
                 m.options.belongs_to,
                 prop.country,
                 prop.isp,
@@ -661,7 +661,7 @@ function updateTable() {
             var modalData = [
               [
                 prop.moniker,
-                prop.nodeId,
+                prop.nodeId.replace(/^(.{15})(.{15})(.*)$/, "$1 $2 $3"),
                 network,
                 prop.country,
                 prop.isp,
@@ -684,25 +684,21 @@ function updateTable() {
             pageLength: 5,
             data: modalData,
             columns: [
-              { title: "Moniker", width: "100px" },
-              { title: "Node Id", width: "100px" },
+              { title: "Moniker", width: "20%" },
+              { title: "Node Id", width: "5%" },
               {
                 title: "Chain",
-                width: "100px",
+                width: "15%",
                 defaultContent: "<i>Not set</i>",
               },
-              { title: "Country", width: "10px" },
-              { title: "ISP", width: "100px" },
-              { title: "DataCenter", width: "100px" },
+              { title: "Country", width: "5%" },
+              { title: "ISP", width: "25%" },
+              { title: "DataCenter", width: "30%" },
             ],
             // order: [[1, "desc"]],
           });
           // $("#exampleModal").modal('show');
-          $("#mysearch").val('');
-          $("#mysearch").on("keyup", function () {
-            console.log($("#mysearch").val());
-            modeldatatable.search($("#mysearch").val()).draw();
-          });
+          $("#mysearch").val('');          
           $("#mysearch").on("keyup", function () {
             modeldatatable.search($("#mysearch").val()).draw();
           });
