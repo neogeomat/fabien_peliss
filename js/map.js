@@ -537,30 +537,9 @@ function updateTable() {
               countries[a.options.properties.country] =
                 countries[a.options.properties.country] + 1 || 1;
             });
-            var modalData = selected.getAllChildMarkers().map((m) => {
-              prop = m.options.properties;
-              return [
-                prop.moniker,
-                prop.nodeId,
-                m.options.belongs_to,
-                prop.country,
-                prop.isp,
-                prop.as,
-              ];
-            });
           } catch (e) {
             if (e instanceof TypeError) {
               countries[selected.options.properties.country] = 1;
-              var modalData = [
-                [
-                  prop.moniker,
-                  prop.nodeId,
-                  network,
-                  prop.country,
-                  prop.isp,
-                  prop.as,
-                ],
-              ];
             }
           }
         } else {
@@ -570,17 +549,8 @@ function updateTable() {
             element.getLayers().forEach((a) => {
               countries[a.options.properties.country] =
                 countries[a.options.properties.country] + 1 || 1;
-                prop = a.options.properties;
-                modalData.push([
-                  prop.moniker,
-                  prop.nodeId,
-                  a.options.belongs_to,
-                  prop.country,
-                  prop.isp,
-                  prop.as,
-                ]);
-            });
             // debugger;
+            })
           } else {
             var modalData = [];
             for (const key in markerClusterGroups) {
@@ -589,15 +559,6 @@ function updateTable() {
                 element.getLayers().forEach((a) => {
                   countries[a.options.properties.country] =
                     countries[a.options.properties.country] + 1 || 1;
-                    prop = a.options.properties;
-                modalData.push([
-                  prop.moniker,
-                  prop.nodeId,
-                  a.options.belongs_to,
-                  prop.country,
-                  prop.isp,
-                  prop.as,
-                ]);
                 });
               }
             }
@@ -625,20 +586,10 @@ function updateTable() {
         if (network && network != "all") {
           document.getElementById("networkName").innerHTML =
             network.toLocaleUpperCase();
-          document.getElementById("networkNameModal").innerHTML =
-              network.toLocaleUpperCase();
         } else {
           document.getElementById("networkName").innerHTML = "ALL NETWORKS";
-          document.getElementById("networkNameModal").innerHTML =
-              "ALL NETWORKS";
         }
         document.getElementById("numNodes").innerHTML = ":" + countriesSum;
-        document.getElementById("statsForModal").innerHTML =
-              " WHOLE WORLD";
-            document.getElementById("pluralModal").innerHTML = "S";
-            document.getElementById("numNodesModal").innerHTML =
-              ":" + countriesSum;
-        
         // left panal datatable
         if ($.fn.dataTable.isDataTable("#dataTable")) {
           //
@@ -671,118 +622,6 @@ function updateTable() {
           seed: "countries",
         });
         mychart.update();
-
-        // more details button
-        // if (selected) {
-        //   if ($("#more-details-button").hasClass("hidden")) {
-        //     $("#more-details-button").removeClass("hidden");
-        //   }
-        // } else {
-        //   if (!$("#more-details-button").hasClass("hidden")) {
-        //     $("#more-details-button").addClass("hidden");
-        //   }
-        // }
-        // modal
-        if (selected) {
-          if (network && network != "all") {
-            document.getElementById("networkNameModal").innerHTML =
-              network.toLocaleUpperCase();
-          } else {
-            document.getElementById("networkNameModal").innerHTML =
-              "ALL NETWORKS";
-          }
-
-          try {
-            var modalData = selected.getAllChildMarkers().map((m) => {
-              prop = m.options.properties;
-              return [
-                prop.moniker,
-                prop.nodeId.replace(/^(.{15})(.{15})(.*)$/, "$1 $2 $3"),
-                m.options.belongs_to,
-                prop.country,
-                prop.isp,
-                prop.as,
-              ];
-            });
-            document.getElementById("statsForModal").innerHTML =
-              " SELECTED PINS";
-            document.getElementById("pluralModal").innerHTML = "S";
-            document.getElementById("numNodesModal").innerHTML =
-              ":" + selected.getChildCount();
-          } catch (e) {
-            prop = selected.options.properties;
-            var modalData = [
-              [
-                prop.moniker,
-                prop.nodeId.replace(/^(.{15})(.{15})(.*)$/, "$1 $2 $3"),
-                network,
-                prop.country,
-                prop.isp,
-                prop.as,
-              ],
-            ];
-            document.getElementById("statsForModal").innerHTML =
-              " SELECTED PIN";
-            document.getElementById("pluralModal").innerHTML = "";
-            document.getElementById("numNodesModal").innerHTML = ": 1";
-          }
-        }
-          if ($.fn.dataTable.isDataTable("#modalDataTable")) {
-            //
-            $("#modalDataTable").DataTable().destroy();
-          }
-          // debugger;
-          var modeldatatable = $("#modalDataTable").DataTable({
-            dom: "tp",
-            searching: true,
-            mark: true,
-            pageLength: 5,
-            data: modalData,
-            columnDefs: [
-              {
-                targets: 0,
-                render: $.fn.dataTable.render.ellipsis( 20, true )
-              },
-              {
-                targets: 1,
-                render: $.fn.dataTable.render.ellipsis( 20, true )
-              },
-              {
-                targets: 2,
-                render: $.fn.dataTable.render.ellipsis( 20, true )
-              },
-              {
-                targets: 3,
-                render: $.fn.dataTable.render.ellipsis( 20, true )
-              },
-              {
-                targets: 4,
-                render: $.fn.dataTable.render.ellipsis( 20 )
-              },
-              {
-                targets: 5,
-                render: $.fn.dataTable.render.ellipsis( 20 )
-              },
-            ],
-            columns: [
-              { title: "Moniker", width: "20%" },
-              { title: "Node Id", width: "5%" },
-              {
-                title: "Chain",
-                width: "15%",
-                defaultContent: "<i>Not set</i>",
-              },
-              { title: "Country", width: "5%" },
-              { title: "ISP", width: "25%" },
-              { title: "DataCenter", width: "30%" },
-            ],
-            // order: [[1, "desc"]],
-          });
-          // $("#exampleModal").modal('show');
-          $("#mysearch").val('');          
-          $("#mysearch").on("keyup", function () {
-            modeldatatable.search($("#mysearch").val()).draw();
-          });
         break;
       case "ISP":
         var ISPs = {};
@@ -961,6 +800,153 @@ function updateTable() {
         mychart.update();
         break;
     }
+    // modal
+    // more details button
+    // if (selected) {
+    //   if ($("#more-details-button").hasClass("hidden")) {
+    //     $("#more-details-button").removeClass("hidden");
+    //   }
+    // } else {
+    //   if (!$("#more-details-button").hasClass("hidden")) {
+    //     $("#more-details-button").addClass("hidden");
+    //   }
+    // }
+    if (selected) {
+      try {
+        var modalData = selected.getAllChildMarkers().map((m) => {
+          prop = m.options.properties;
+          return [
+            prop.moniker,
+            prop.nodeId.replace(/^(.{15})(.{15})(.*)$/, "$1 $2 $3"),
+            m.options.belongs_to,
+            prop.country,
+            prop.isp,
+            prop.as,
+          ];
+        });
+        document.getElementById("statsForModal").innerHTML =
+          " SELECTED PINS";
+        document.getElementById("pluralModal").innerHTML = "S";
+        document.getElementById("numNodesModal").innerHTML =
+          ":" + selected.getChildCount();
+      } catch (e) {
+        prop = selected.options.properties;
+        var modalData = [
+          [
+            prop.moniker,
+            prop.nodeId.replace(/^(.{15})(.{15})(.*)$/, "$1 $2 $3"),
+            network,
+            prop.country,
+            prop.isp,
+            prop.as,
+          ],
+        ];
+        document.getElementById("statsForModal").innerHTML =
+          " SELECTED PIN";
+        document.getElementById("pluralModal").innerHTML = "";
+        document.getElementById("numNodesModal").innerHTML = ": 1";
+      }
+    }else{
+      if (network && network != "all") {
+        document.getElementById("networkNameModal").innerHTML = network.toLocaleUpperCase();
+          
+        const element = markerClusterGroups[network];
+        var modalData = [];
+        element.getLayers().forEach((a) => {
+            prop = a.options.properties;
+            modalData.push([
+              prop.moniker,
+              prop.nodeId,
+              a.options.belongs_to,
+              prop.country,
+              prop.isp,
+              prop.as,
+            ]);
+        });
+      } else {
+        document.getElementById("networkNameModal").innerHTML = "ALL NETWORKS";
+        
+        document.getElementById("statsForModal").innerHTML =
+              " WHOLE WORLD";
+            document.getElementById("pluralModal").innerHTML = "S";
+            document.getElementById("numNodesModal").innerHTML =
+              ":" + countriesSum;
+        
+        var modalData = [];
+        for (const key in markerClusterGroups) {
+          if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
+            const element = markerClusterGroups[key];
+            element.getLayers().forEach((a) => {
+              prop = a.options.properties;
+              modalData.push([
+                prop.moniker,
+                prop.nodeId,
+                a.options.belongs_to,
+                prop.country,
+                prop.isp,
+                prop.as,
+              ]);
+            });
+          }
+        }
+      }
+    }
+    if ($.fn.dataTable.isDataTable("#modalDataTable")) {
+      //
+      $("#modalDataTable").DataTable().destroy();
+    }
+    // debugger;
+    var modeldatatable = $("#modalDataTable").DataTable({
+      dom: "tp",
+      searching: true,
+      mark: true,
+      pageLength: 5,
+      data: modalData,
+      columnDefs: [
+        {
+          targets: 0,
+          render: $.fn.dataTable.render.ellipsis( 20, true )
+        },
+        {
+          targets: 1,
+          render: $.fn.dataTable.render.ellipsis( 20, true )
+        },
+        {
+          targets: 2,
+          render: $.fn.dataTable.render.ellipsis( 20, true )
+        },
+        {
+          targets: 3,
+          render: $.fn.dataTable.render.ellipsis( 20, true )
+        },
+        {
+          targets: 4,
+          render: $.fn.dataTable.render.ellipsis( 20 )
+        },
+        {
+          targets: 5,
+          render: $.fn.dataTable.render.ellipsis( 20 )
+        },
+      ],
+      columns: [
+        { title: "Moniker", width: "20%" },
+        { title: "Node Id", width: "5%" },
+        {
+          title: "Chain",
+          width: "15%",
+          defaultContent: "<i>Not set</i>",
+        },
+        { title: "Country", width: "5%" },
+        { title: "ISP", width: "25%" },
+        { title: "DataCenter", width: "30%" },
+      ],
+      // order: [[1, "desc"]],
+    });
+    // $("#exampleModal").modal('show');
+    $("#mysearch").val('');          
+    $("#mysearch").on("keyup", function () {
+      modeldatatable.search($("#mysearch").val()).draw();
+    });
   }
 }
 
