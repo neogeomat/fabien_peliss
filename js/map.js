@@ -83,8 +83,8 @@ var populateNetworks = function (networks) {
       if (urlLayer === "all") {
         document.getElementById("networkSelector").value = "ALL NETWORKS";
       }
-      updateTable();
     }
+    updateTable();
   } else {
     if (markerClusterGroups.hasOwnProperty(urlLayer)) {
       markerClusterGroups[urlLayer].addTo(map);
@@ -103,14 +103,15 @@ var populateNetworks = function (networks) {
       for (const [key, value] of Object.entries(networks)) {
         markerClusterGroups[key].addTo(map);
       }
-      updateTable();
+      // updateTable();
     } else {
       for (const [key, value] of Object.entries(networks)) {
         markerClusterGroups[key].removeFrom(map);
       }
       markerClusterGroups[evt.target.value].addTo(map);
-      updateTable();
+      // updateTable();
     }
+    updateTable();
   });
 
   // click handlings
@@ -777,8 +778,8 @@ function updateTable() {
         document.getElementById("numNodesModal").innerHTML = ": 1";
       }
     }else{
+      // debugger;
       if (network && network != "all") {
-        document.getElementById("networkNameModal").innerHTML = network.toLocaleUpperCase();
           
         const element = markerClusterGroups[network];
         var modalData = [];
@@ -793,14 +794,16 @@ function updateTable() {
               prop.as,
             ]);
         });
+        document.getElementById("networkNameModal").innerHTML = network.toLocaleUpperCase();
+        document.getElementById("statsForModal").innerHTML = " WHOLE WORLD";
+        document.getElementById("pluralModal").innerHTML = "S";
+        document.getElementById("numNodesModal").innerHTML = ":" + modalData.length;
       } else {
         document.getElementById("networkNameModal").innerHTML = "ALL NETWORKS";
         
-        document.getElementById("statsForModal").innerHTML =
-              " WHOLE WORLD";
-            document.getElementById("pluralModal").innerHTML = "S";
-            document.getElementById("numNodesModal").innerHTML =
-              ":" + countriesSum;
+        document.getElementById("statsForModal").innerHTML = " WHOLE WORLD";
+        document.getElementById("pluralModal").innerHTML = "S";
+        document.getElementById("numNodesModal").innerHTML = ":" + countriesSum;
         
         var modalData = [];
         for (const key in markerClusterGroups) {
