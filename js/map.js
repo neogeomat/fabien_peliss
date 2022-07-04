@@ -137,7 +137,7 @@ var populateNetworks = function (networks) {
             // })
             L.icon({
               iconUrl: "images/markers/" + selected.options.belongs_to + ".png",
-            }),
+            })
           );
         }
         selected = a.layer;
@@ -152,7 +152,7 @@ var populateNetworks = function (networks) {
           // })
           L.icon({
             iconUrl: "images/markers/" + key + "_Selected.png",
-          }),
+          })
         );
 
         document.getElementById("networkName").innerHTML =
@@ -189,7 +189,7 @@ var populateNetworks = function (networks) {
             // })
             L.icon({
               iconUrl: "images/markers/" + selected.options.belongs_to + ".png",
-            }),
+            })
           );
         }
         selected = a.layer;
@@ -244,7 +244,7 @@ $(document).ready(function () {
           // })
           L.icon({
             iconUrl: "images/markers/" + selected.options.belongs_to + ".png",
-          }),
+          })
         );
       }
       selected = null;
@@ -480,8 +480,8 @@ function updateTable() {
             element.getLayers().forEach((a) => {
               countries[a.options.properties.country] =
                 countries[a.options.properties.country] + 1 || 1;
-            // debugger;
-            })
+              // debugger;
+            });
           } else {
             var modalData = [];
             for (const key in markerClusterGroups) {
@@ -755,8 +755,7 @@ function updateTable() {
             prop.as,
           ];
         });
-        document.getElementById("statsForModal").innerHTML =
-          " SELECTED PINS";
+        document.getElementById("statsForModal").innerHTML = " SELECTED PINS";
         document.getElementById("pluralModal").innerHTML = "S";
         document.getElementById("numNodesModal").innerHTML =
           ":" + selected.getChildCount();
@@ -772,39 +771,39 @@ function updateTable() {
             prop.as,
           ],
         ];
-        document.getElementById("statsForModal").innerHTML =
-          " SELECTED PIN";
+        document.getElementById("statsForModal").innerHTML = " SELECTED PIN";
         document.getElementById("pluralModal").innerHTML = "";
         document.getElementById("numNodesModal").innerHTML = ": 1";
       }
-    }else{
+    } else {
       // debugger;
       if (network && network != "all") {
-          
         const element = markerClusterGroups[network];
         var modalData = [];
         element.getLayers().forEach((a) => {
-            prop = a.options.properties;
-            modalData.push([
-              prop.moniker,
-              prop.nodeId,
-              a.options.belongs_to,
-              prop.country,
-              prop.isp,
-              prop.as,
-            ]);
+          prop = a.options.properties;
+          modalData.push([
+            prop.moniker,
+            prop.nodeId,
+            a.options.belongs_to,
+            prop.country,
+            prop.isp,
+            prop.as,
+          ]);
         });
-        document.getElementById("networkNameModal").innerHTML = network.toLocaleUpperCase();
+        document.getElementById("networkNameModal").innerHTML =
+          network.toLocaleUpperCase();
         document.getElementById("statsForModal").innerHTML = " WHOLE WORLD";
         document.getElementById("pluralModal").innerHTML = "S";
-        document.getElementById("numNodesModal").innerHTML = ":" + modalData.length;
+        document.getElementById("numNodesModal").innerHTML =
+          ":" + modalData.length;
       } else {
         document.getElementById("networkNameModal").innerHTML = "ALL NETWORKS";
-        
+
         document.getElementById("statsForModal").innerHTML = " WHOLE WORLD";
         document.getElementById("pluralModal").innerHTML = "S";
         document.getElementById("numNodesModal").innerHTML = ":" + countriesSum;
-        
+
         var modalData = [];
         for (const key in markerClusterGroups) {
           if (Object.hasOwnProperty.call(markerClusterGroups, key)) {
@@ -838,27 +837,27 @@ function updateTable() {
       columnDefs: [
         {
           targets: 0,
-          render: $.fn.dataTable.render.ellipsis( 20, true )
+          render: $.fn.dataTable.render.ellipsis(20, true),
         },
         {
           targets: 1,
-          render: $.fn.dataTable.render.ellipsis( 20, true )
+          render: $.fn.dataTable.render.ellipsis(20, true),
         },
         {
           targets: 2,
-          render: $.fn.dataTable.render.ellipsis( 20, true )
+          render: $.fn.dataTable.render.ellipsis(20, true),
         },
         {
           targets: 3,
-          render: $.fn.dataTable.render.ellipsis( 20, true )
+          render: $.fn.dataTable.render.ellipsis(20, true),
         },
         {
           targets: 4,
-          render: $.fn.dataTable.render.ellipsis( 20 )
+          render: $.fn.dataTable.render.ellipsis(20),
         },
         {
           targets: 5,
-          render: $.fn.dataTable.render.ellipsis( 20 )
+          render: $.fn.dataTable.render.ellipsis(20),
         },
       ],
       columns: [
@@ -876,7 +875,7 @@ function updateTable() {
       // order: [[1, "desc"]],
     });
     // $("#exampleModal").modal('show');
-    $("#mysearch").val('');          
+    $("#mysearch").val("");
     $("#mysearch").on("keyup", function () {
       modeldatatable.search($("#mysearch").val()).draw();
     });
